@@ -33,7 +33,7 @@ export class Category extends BaseEntity {
 
   @Field(() => [Category], { nullable: true })
   @TreeChildren()
-  children: Category[];
+  catChildren: Category[];
 
   @Field()
   @CreateDateColumn()

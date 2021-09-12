@@ -12,11 +12,13 @@ import { Box } from "@chakra-ui/layout";
 import { Button } from "@chakra-ui/button";
 import { useAddCategoryMutation } from "../generated/graphql";
 import AddCategory from "../components/AddCategory";
+import AddSubCategory from "../components/AddSubCategory";
 const admin: React.FC<{}> = ({}) => {
   const [, addCategory] = useAddCategoryMutation();
   return (
     <Wrapper variant="small">
       <AddCategory />
+      <AddSubCategory />
     </Wrapper>
   );
 };

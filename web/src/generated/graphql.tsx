@@ -18,12 +18,11 @@ export type Scalars = {
 
 export type Category = {
   __typename?: 'Category';
-  children: Array<Category>;
+  catChildren?: Maybe<Array<Category>>;
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
   id: Scalars['Float'];
   name: Scalars['String'];
-  parent: Category;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -35,6 +34,7 @@ export type CategoryInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addCategory: Category;
+  addSubCategory: Category;
 };
 
 
@@ -42,9 +42,20 @@ export type MutationAddCategoryArgs = {
   input: CategoryInput;
 };
 
+
+export type MutationAddSubCategoryArgs = {
+  input: SubCategoryInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   categories: Array<Category>;
+};
+
+export type SubCategoryInput = {
+  description: Scalars['String'];
+  name: Scalars['String'];
+  parentId: Scalars['Float'];
 };
 
 export type AddCategoryMutationVariables = Exact<{
@@ -54,10 +65,17 @@ export type AddCategoryMutationVariables = Exact<{
 
 export type AddCategoryMutation = { __typename?: 'Mutation', addCategory: { __typename?: 'Category', name: string, id: number, description: string } };
 
+export type AddSubCategoryMutationVariables = Exact<{
+  input: SubCategoryInput;
+}>;
+
+
+export type AddSubCategoryMutation = { __typename?: 'Mutation', addSubCategory: { __typename?: 'Category', name: string, id: number, description: string } };
+
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description: string, id: number }> };
+export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description: string, id: number, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description: string }>> }> };
 
 
 export const AddCategoryDocument = gql`
@@ -73,12 +91,30 @@ export const AddCategoryDocument = gql`
 export function useAddCategoryMutation() {
   return Urql.useMutation<AddCategoryMutation, AddCategoryMutationVariables>(AddCategoryDocument);
 };
+export const AddSubCategoryDocument = gql`
+    mutation addSubCategory($input: SubCategoryInput!) {
+  addSubCategory(input: $input) {
+    name
+    id
+    description
+  }
+}
+    `;
+
+export function useAddSubCategoryMutation() {
+  return Urql.useMutation<AddSubCategoryMutation, AddSubCategoryMutationVariables>(AddSubCategoryDocument);
+};
 export const CategoriesDocument = gql`
     query Categories {
   categories {
     name
     description
     id
+    catChildren {
+      name
+      id
+      description
+    }
   }
 }
     `;

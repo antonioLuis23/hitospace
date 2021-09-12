@@ -4,7 +4,7 @@ import { createBreakpoints } from "@chakra-ui/theme-tools";
 const fonts = {
   body: "Poppins",
   heading: "Poppins",
-  mono: `'Menlo', monospace`,
+  mono: `Poppins, 'Menlo', monospace`,
 };
 
 const breakpoints = createBreakpoints({

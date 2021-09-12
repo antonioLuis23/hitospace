@@ -3,5 +3,10 @@ query Categories {
     name
     description
     id
+    catChildren {
+      name
+      id
+      description
+    }
   }
 }

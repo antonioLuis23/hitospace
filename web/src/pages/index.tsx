@@ -2,10 +2,10 @@ import { Box, Flex, Grid, Heading } from "@chakra-ui/layout";
 import React from "react";
 import { useCategoriesQuery } from "../generated/graphql";
 import Head from "next/head";
-import Category from "../components/Category";
+import CategoryComp from "../components/CategoryComp";
 const Index = () => {
   const [{ data, fetching }] = useCategoriesQuery();
-  console.log("data:", data);
+  if (!fetching && data) console.log("data:", data);
   return (
     <React.Fragment>
       <Head>
@@ -20,11 +20,12 @@ const Index = () => {
         ) : (
           <Grid mt={10} mx={5} templateColumns="repeat(2,1fr)" gap={2}>
             {data.categories.map((cat) => (
-              <Category
+              <CategoryComp
                 key={cat.id}
                 name={cat.name}
                 id={cat.id}
                 description={cat.description}
+                catChildren={cat.catChildren}
               />
             ))}
           </Grid>
