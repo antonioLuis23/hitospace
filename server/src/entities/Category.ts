@@ -27,6 +27,14 @@ export class Category extends BaseEntity {
   @Column()
   description: string;
 
+  @Field()
+  @Column()
+  bgColor: string;
+
+  @Field()
+  @Column()
+  textColor: string;
+
   // @Field({ nullable: true })
   @TreeParent()
   parent: Category;

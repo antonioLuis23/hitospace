@@ -18,17 +18,21 @@ export type Scalars = {
 
 export type Category = {
   __typename?: 'Category';
+  bgColor: Scalars['String'];
   catChildren?: Maybe<Array<Category>>;
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
   id: Scalars['Float'];
   name: Scalars['String'];
+  textColor: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
 export type CategoryInput = {
+  bgColor: Scalars['String'];
   description: Scalars['String'];
   name: Scalars['String'];
+  textColor: Scalars['String'];
 };
 
 export type Mutation = {
@@ -53,9 +57,11 @@ export type Query = {
 };
 
 export type SubCategoryInput = {
+  bgColor: Scalars['String'];
   description: Scalars['String'];
   name: Scalars['String'];
   parentId: Scalars['Float'];
+  textColor: Scalars['String'];
 };
 
 export type AddCategoryMutationVariables = Exact<{
@@ -75,7 +81,7 @@ export type AddSubCategoryMutation = { __typename?: 'Mutation', addSubCategory: 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description: string, id: number, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description: string }>> }> };
+export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description: string, id: number, bgColor: string, textColor: string, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description: string, bgColor: string, textColor: string }>> }> };
 
 
 export const AddCategoryDocument = gql`
@@ -110,10 +116,14 @@ export const CategoriesDocument = gql`
     name
     description
     id
+    bgColor
+    textColor
     catChildren {
       name
       id
       description
+      bgColor
+      textColor
     }
   }
 }

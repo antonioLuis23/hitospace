@@ -6,13 +6,14 @@ import { Category, Maybe } from "../generated/graphql";
 interface CategoryType {
   id: number;
   name: string;
+  bgColor: string;
+  textColor: string;
   description: string;
 }
 const SubCategoryComp: React.FC<CategoryType> = (props) => {
   return (
     <Box
-      bg="blue"
-      color="rgb(31, 62, 175)"
+      bg={props.bgColor}
       textAlign="center"
       key={props.id}
       padding="1rem"
@@ -23,7 +24,7 @@ const SubCategoryComp: React.FC<CategoryType> = (props) => {
       }}
     >
       <Flex flexDirection="column" justifyContent="center">
-        <Heading as="h3" color="white" size="md">
+        <Heading as="h3" color={props.textColor} size="md">
           {props.name}
         </Heading>
       </Flex>

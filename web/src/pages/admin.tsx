@@ -13,12 +13,36 @@ import { Button } from "@chakra-ui/button";
 import { useAddCategoryMutation } from "../generated/graphql";
 import AddCategory from "../components/AddCategory";
 import AddSubCategory from "../components/AddSubCategory";
+import {
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+  Text,
+} from "@chakra-ui/react";
 const admin: React.FC<{}> = ({}) => {
   const [, addCategory] = useAddCategoryMutation();
   return (
-    <Wrapper variant="small">
-      <AddCategory />
-      <AddSubCategory />
+    <Wrapper variant="regular">
+      <Tabs>
+        <TabList>
+          <Tab>Adicionar Setor</Tab>
+          <Tab>Adicionar Subsetor</Tab>
+          <Tab>Adicionar Colaborador</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <AddCategory />
+          </TabPanel>
+          <TabPanel>
+            <AddSubCategory />
+          </TabPanel>
+          <TabPanel>
+            <Text>Adicionar Colaborador</Text>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Wrapper>
   );
 };

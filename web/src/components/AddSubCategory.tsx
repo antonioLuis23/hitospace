@@ -1,7 +1,8 @@
-import { Box } from "@chakra-ui/layout";
+import { Box, Text } from "@chakra-ui/layout";
 import { Button, Select } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import React, { useState } from "react";
+import { HexColorPicker } from "react-colorful";
 import {
   useAddCategoryMutation,
   useAddSubCategoryMutation,
@@ -13,16 +14,21 @@ const AddSubCategory = () => {
   const [parentCategory, setparentCategory] = useState("");
   const [{ data, fetching }] = useCategoriesQuery();
   const [, addSubCategory] = useAddSubCategoryMutation();
-
+  const [bgColor, setBgColor] = useState("#aabbcc");
+  const [textColor, setTextColor] = useState("#fff");
   return (
     <React.Fragment>
-      Adicione SubSetores:
       <Formik
         initialValues={{ name: "", description: "" }}
         onSubmit={async (values) => {
           console.log(values);
           const response = await addSubCategory({
-            input: { parentId: parseInt(parentCategory), ...values },
+            input: {
+              bgColor,
+              textColor,
+              parentId: parseInt(parentCategory),
+              ...values,
+            },
           });
           console.log("response:", response);
           return response;
@@ -52,6 +58,14 @@ const AddSubCategory = () => {
                 placeholder="Descrição"
                 label="Descrição"
               />
+            </Box>
+            <Box mt={4}>
+              <Text>Selecione a cor de fundo do setor</Text>
+              <HexColorPicker color={bgColor} onChange={setBgColor} />
+            </Box>
+            <Box mt={4}>
+              <Text>Selecione a cor de texto do setor</Text>
+              <HexColorPicker color={textColor} onChange={setTextColor} />
             </Box>
             <Button
               mt={4}

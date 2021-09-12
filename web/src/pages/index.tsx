@@ -24,6 +24,8 @@ const Index = () => {
                 key={cat.id}
                 name={cat.name}
                 id={cat.id}
+                bgColor={cat.bgColor}
+                textColor={cat.textColor}
                 description={cat.description}
                 catChildren={cat.catChildren}
               />

@@ -8,6 +8,12 @@ class CategoryInput {
   name: string;
   @Field()
   description: string;
+
+  @Field()
+  bgColor: string;
+
+  @Field()
+  textColor: string;
 }
 
 @InputType()
@@ -18,6 +24,11 @@ class SubCategoryInput {
   description: string;
   @Field()
   parentId: number;
+  @Field()
+  bgColor: string;
+
+  @Field()
+  textColor: string;
 }
 
 @Resolver(Category)
@@ -44,6 +55,8 @@ export class CategoryResolver {
       name: input.name,
       description: input.description,
       parent: catParent,
+      bgColor: input.bgColor,
+      textColor: input.textColor,
     });
     return await catChild.save();
   }

@@ -9,11 +9,15 @@ type CategoryProp = {
   description: Scalars["String"];
   id: Scalars["Float"];
   name: Scalars["String"];
+  textColor: Scalars["String"];
+  bgColor: Scalars["String"];
 };
 interface CategoryType {
   id: number;
   name: string;
   description: string;
+  bgColor: string;
+  textColor: string;
   catChildren?: Array<CategoryProp>;
 }
 const CategoryComp: React.FC<CategoryType> = (props) => {
@@ -25,6 +29,8 @@ const CategoryComp: React.FC<CategoryType> = (props) => {
         {props.catChildren &&
           props.catChildren.map((sub) => (
             <SubCategoryComp
+              bgColor={sub.bgColor}
+              textColor={sub.textColor}
               name={sub.name}
               description={sub.description}
               id={sub.id}
@@ -36,8 +42,7 @@ const CategoryComp: React.FC<CategoryType> = (props) => {
   }
   return (
     <Box
-      bg="blue"
-      color="rgb(31, 62, 175)"
+      bg={props.bgColor}
       textAlign="center"
       key={props.id}
       py="2.5rem"
@@ -48,7 +53,7 @@ const CategoryComp: React.FC<CategoryType> = (props) => {
       }}
     >
       <Flex flexDirection="column" justifyContent="center">
-        <Heading as="h2" color="white" size="lg">
+        <Heading as="h2" color={props.textColor} size="lg">
           {props.name}
         </Heading>
         {renderSubCat}
