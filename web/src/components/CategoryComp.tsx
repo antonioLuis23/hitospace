@@ -1,6 +1,6 @@
 import { Box, Flex, Heading } from "@chakra-ui/layout";
 import { Grid } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { Category, Maybe, Scalars } from "../generated/graphql";
 import SubCategoryComp from "./SubCategoryComp";
 
@@ -22,8 +22,9 @@ interface CategoryType {
 }
 const CategoryComp: React.FC<CategoryType> = (props) => {
   let renderSubCat = null;
+  const [openSubCat, setOpenSubCat] = useState(false);
   console.log("props.catChildren", props.catChildren.length);
-  if (props.catChildren.length > 0) {
+  if (props.catChildren.length > 0 && openSubCat) {
     renderSubCat = (
       <Grid mt={10} mx={5} templateColumns="repeat(2,1fr)" gap={2}>
         {props.catChildren &&
@@ -51,6 +52,7 @@ const CategoryComp: React.FC<CategoryType> = (props) => {
       _hover={{
         boxShadow: "2xl",
       }}
+      onClick={() => setOpenSubCat((prevState) => !prevState)}
     >
       <Flex flexDirection="column" justifyContent="center">
         <Heading as="h2" color={props.textColor} size="lg">

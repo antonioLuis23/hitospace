@@ -9,7 +9,9 @@ import {
   TreeChildren,
   TreeParent,
   Tree,
+  ManyToMany,
 } from "typeorm";
+import { Employee } from "./Employee";
 
 @ObjectType()
 @Entity()
@@ -23,8 +25,8 @@ export class Category extends BaseEntity {
   @Column()
   name: string;
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   description: string;
 
   @Field()
@@ -38,6 +40,9 @@ export class Category extends BaseEntity {
   // @Field({ nullable: true })
   @TreeParent()
   parent: Category;
+
+  @ManyToMany(() => Employee, (employee) => employee.sectors)
+  employees: Employee[];
 
   @Field(() => [Category], { nullable: true })
   @TreeChildren()

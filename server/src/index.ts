@@ -1,13 +1,16 @@
-import { createConnection } from "typeorm";
+import { Connection, createConnection } from "typeorm";
 import path from "path";
 import { Category } from "./entities/Category";
 import express from "express";
 import { buildSchema } from "type-graphql";
 import { ApolloServer } from "apollo-server-express";
 import { CategoryResolver } from "./resolvers/category";
+import { EmployeeResolver } from "./resolvers/employee";
+
+import { Employee } from "./entities/Employee";
+
 const main = async () => {
-  //const conn =
-  await createConnection({
+  const conn = await createConnection({
     type: "postgres",
     database: "vizoffice",
     username: "postgres",
@@ -15,17 +18,25 @@ const main = async () => {
     logging: true,
     synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
-    entities: [Category],
+    entities: [Category, Employee],
   });
+  // const cat = (await Category.findOne(19)) as Category;
+  // const emp = new Employee();
+  // emp.name = "Antonio";
+  // emp.sectors = [cat];
+  // emp.email = "antonio@adf.com";
+  // emp.function = "Desenvolvedor";
+  // conn.manager.save(emp);
 
   const app = express();
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [CategoryResolver],
+      resolvers: [CategoryResolver, EmployeeResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({
+      conn,
       req,
       res,
     }),
