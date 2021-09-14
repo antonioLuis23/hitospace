@@ -1,4 +1,4 @@
-import { Connection, createConnection } from "typeorm";
+import { createConnection } from "typeorm";
 import path from "path";
 import { Category } from "./entities/Category";
 import express from "express";
@@ -8,6 +8,9 @@ import { CategoryResolver } from "./resolvers/category";
 import { EmployeeResolver } from "./resolvers/employee";
 
 import { Employee } from "./entities/Employee";
+import { UserResolver } from "./resolvers/user";
+import { User } from "./entities/User";
+import { Layout } from "./entities/Layout";
 
 const main = async () => {
   const conn = await createConnection({
@@ -18,7 +21,7 @@ const main = async () => {
     logging: true,
     synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
-    entities: [Category, Employee],
+    entities: [Category, Employee, User, Layout],
   });
   // const cat = (await Category.findOne(19)) as Category;
   // const emp = new Employee();
@@ -32,7 +35,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [CategoryResolver, EmployeeResolver],
+      resolvers: [CategoryResolver, EmployeeResolver, UserResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({

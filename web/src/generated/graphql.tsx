@@ -21,7 +21,7 @@ export type Category = {
   bgColor: Scalars['String'];
   catChildren?: Maybe<Array<Category>>;
   createdAt: Scalars['DateTime'];
-  description: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
   name: Scalars['String'];
   textColor: Scalars['String'];
@@ -35,10 +35,42 @@ export type CategoryInput = {
   textColor: Scalars['String'];
 };
 
+export type Employee = {
+  __typename?: 'Employee';
+  abilities?: Maybe<Scalars['String']>;
+  chat?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  email: Scalars['String'];
+  function: Scalars['String'];
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  tags?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['String'];
+};
+
+export type EmployeeInput = {
+  abilities?: Maybe<Scalars['String']>;
+  chat?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  function: Scalars['String'];
+  name: Scalars['String'];
+  sectorIds: Array<Scalars['String']>;
+  tags?: Maybe<Scalars['String']>;
+};
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCategory: Category;
+  addEmployee: Employee;
   addSubCategory: Category;
+  login: UserResponse;
+  register: UserResponse;
 };
 
 
@@ -47,8 +79,24 @@ export type MutationAddCategoryArgs = {
 };
 
 
+export type MutationAddEmployeeArgs = {
+  input: EmployeeInput;
+};
+
+
 export type MutationAddSubCategoryArgs = {
   input: SubCategoryInput;
+};
+
+
+export type MutationLoginArgs = {
+  password: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
+};
+
+
+export type MutationRegisterArgs = {
+  options: UsernamePasswordInput;
 };
 
 export type Query = {
@@ -64,26 +112,90 @@ export type SubCategoryInput = {
   textColor: Scalars['String'];
 };
 
+export type User = {
+  __typename?: 'User';
+  createdAt: Scalars['String'];
+  email: Scalars['String'];
+  id: Scalars['Float'];
+  updatedAt: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
+
+export type UsernamePasswordInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
+
+export type RegularUserFragment = { __typename?: 'User', id: number, username: string };
+
+export type RegularUserResponseFragment = { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, username: string }> };
+
 export type AddCategoryMutationVariables = Exact<{
   input: CategoryInput;
 }>;
 
 
-export type AddCategoryMutation = { __typename?: 'Mutation', addCategory: { __typename?: 'Category', name: string, id: number, description: string } };
+export type AddCategoryMutation = { __typename?: 'Mutation', addCategory: { __typename?: 'Category', name: string, id: number, description?: Maybe<string> } };
 
 export type AddSubCategoryMutationVariables = Exact<{
   input: SubCategoryInput;
 }>;
 
 
-export type AddSubCategoryMutation = { __typename?: 'Mutation', addSubCategory: { __typename?: 'Category', name: string, id: number, description: string } };
+export type AddSubCategoryMutation = { __typename?: 'Mutation', addSubCategory: { __typename?: 'Category', name: string, id: number, description?: Maybe<string> } };
+
+export type LoginMutationVariables = Exact<{
+  usernameOrEmail: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, username: string }> } };
+
+export type RegisterMutationVariables = Exact<{
+  options: UsernamePasswordInput;
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, username: string }> } };
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description: string, id: number, bgColor: string, textColor: string, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description: string, bgColor: string, textColor: string }>> }> };
+export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description?: Maybe<string>, id: number, bgColor: string, textColor: string, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description?: Maybe<string>, bgColor: string, textColor: string }>> }> };
 
-
+export const RegularErrorFragmentDoc = gql`
+    fragment RegularError on FieldError {
+  field
+  message
+}
+    `;
+export const RegularUserFragmentDoc = gql`
+    fragment RegularUser on User {
+  id
+  username
+}
+    `;
+export const RegularUserResponseFragmentDoc = gql`
+    fragment RegularUserResponse on UserResponse {
+  errors {
+    ...RegularError
+  }
+  user {
+    ...RegularUser
+  }
+}
+    ${RegularErrorFragmentDoc}
+${RegularUserFragmentDoc}`;
 export const AddCategoryDocument = gql`
     mutation addCategory($input: CategoryInput!) {
   addCategory(input: $input) {
@@ -109,6 +221,28 @@ export const AddSubCategoryDocument = gql`
 
 export function useAddSubCategoryMutation() {
   return Urql.useMutation<AddSubCategoryMutation, AddSubCategoryMutationVariables>(AddSubCategoryDocument);
+};
+export const LoginDocument = gql`
+    mutation Login($usernameOrEmail: String!, $password: String!) {
+  login(usernameOrEmail: $usernameOrEmail, password: $password) {
+    ...RegularUserResponse
+  }
+}
+    ${RegularUserResponseFragmentDoc}`;
+
+export function useLoginMutation() {
+  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
+export const RegisterDocument = gql`
+    mutation Register($options: UsernamePasswordInput!) {
+  register(options: $options) {
+    ...RegularUserResponse
+  }
+}
+    ${RegularUserResponseFragmentDoc}`;
+
+export function useRegisterMutation() {
+  return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
 export const CategoriesDocument = gql`
     query Categories {

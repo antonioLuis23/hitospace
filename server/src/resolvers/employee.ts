@@ -1,15 +1,6 @@
 import { Category } from "../entities/Category";
 import { Employee } from "../entities/Employee";
-import {
-  Arg,
-  Ctx,
-  Field,
-  InputType,
-  Mutation,
-  Query,
-  Resolver,
-} from "type-graphql";
-import { ConnectionManager } from "typeorm";
+import { Arg, Ctx, Field, InputType, Mutation, Resolver } from "type-graphql";
 import { MyContext } from "../MyContext";
 @InputType()
 class EmployeeInput {
