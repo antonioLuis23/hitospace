@@ -29,8 +29,12 @@ class CompanyLayoutInput {
 @Resolver(User)
 export class CompanyLayoutResolver {
   @Query(() => [CompanyLayout])
-  async layouts() {
-    return CompanyLayout.find();
+  @UseMiddleware(isAuth)
+  async layouts(@Ctx() { payload }: MyContext) {
+    if (!payload!.userId || payload!.userId === "") {
+      return null;
+    }
+    return CompanyLayout.find({ where: { userId: payload!.userId } });
   }
 
   @Mutation(() => CompanyLayout)

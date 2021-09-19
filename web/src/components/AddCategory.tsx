@@ -1,11 +1,14 @@
 import { Box, Text } from "@chakra-ui/layout";
-import { Button, Grid } from "@chakra-ui/react";
+import { Button, Grid, Select } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import React, { useState } from "react";
-import { useAddCategoryMutation } from "../generated/graphql";
+import { useAddCategoryMutation, useLayoutsQuery } from "../generated/graphql";
 import { InputField } from "./InputField";
 import { HexColorPicker } from "react-colorful";
 const AddCategory = () => {
+  const [parentLayout, setparentLayout] = useState("");
+  const { data } = useLayoutsQuery();
+
   const [addCategory] = useAddCategoryMutation();
   const [bgColor, setBgColor] = useState("#aabbcc");
   const [textColor, setTextColor] = useState("#fff");
@@ -20,7 +23,12 @@ const AddCategory = () => {
         onSubmit={async (values) => {
           const response = await addCategory({
             variables: {
-              input: { bgColor, textColor, ...values },
+              input: {
+                bgColor,
+                textColor,
+                layoutId: parseInt(parentLayout),
+                ...values,
+              },
             },
           });
           return response;
@@ -28,6 +36,21 @@ const AddCategory = () => {
       >
         {({ isSubmitting }) => (
           <Form>
+            <Text fontWeight="bold">Selecione Layout</Text>
+            <Select
+              onChange={(e) => {
+                setparentLayout(e.target.value);
+              }}
+              value={parentLayout}
+              placeholder="Selecione Layout"
+            >
+              {data &&
+                data.layouts.map((cat) => (
+                  <option value={cat.id} key={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+            </Select>
             <InputField name="name" placeholder="Nome" label="Nome do setor" />
             <Box mt={4}>
               <InputField

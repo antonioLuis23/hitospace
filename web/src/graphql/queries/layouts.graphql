@@ -1,0 +1,6 @@
+query Layouts {
+  layouts {
+    id
+    name
+  }
+}

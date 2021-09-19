@@ -47,9 +47,7 @@ export class Category extends BaseEntity {
   employees: Employee[];
 
   @Field(() => CompanyLayout)
-  @ManyToOne(() => CompanyLayout, (layout) => layout.categories, {
-    onDelete: "CASCADE",
-  })
+  @ManyToOne(() => CompanyLayout, (layout) => layout.categories)
   layout: CompanyLayout;
 
   @Field(() => [Category], { nullable: true })

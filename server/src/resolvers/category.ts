@@ -1,6 +1,7 @@
 import { Category } from "../entities/Category";
 import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
 import { getManager } from "typeorm";
+import { CompanyLayout } from "../entities/CompanyLayout";
 
 @InputType()
 class CategoryInput {
@@ -36,6 +37,7 @@ class SubCategoryInput {
 }
 
 @Resolver(Category)
+@Resolver(CompanyLayout)
 export class CategoryResolver {
   @Query(() => [Category])
   async categories() {
@@ -46,7 +48,9 @@ export class CategoryResolver {
 
   @Mutation(() => Category)
   async addCategory(@Arg("input") input: CategoryInput): Promise<Category> {
-    return Category.create({ ...input }).save();
+    let companyLayout = await CompanyLayout.findOne(input.layoutId);
+    let { layoutId, ...newInput } = input;
+    return Category.create({ ...newInput, layout: companyLayout }).save();
   }
 
   @Mutation(() => Category)

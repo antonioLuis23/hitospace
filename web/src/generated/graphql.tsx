@@ -32,6 +32,7 @@ export type Category = {
 export type CategoryInput = {
   bgColor: Scalars['String'];
   description: Scalars['String'];
+  layoutId: Scalars['Float'];
   name: Scalars['String'];
   textColor: Scalars['String'];
 };
@@ -218,6 +219,11 @@ export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description?: Maybe<string>, id: number, bgColor: string, textColor: string, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description?: Maybe<string>, bgColor: string, textColor: string }>> }> };
+
+export type LayoutsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LayoutsQuery = { __typename?: 'Query', layouts: Array<{ __typename?: 'CompanyLayout', id: number, name: string }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -529,6 +535,41 @@ export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export const LayoutsDocument = gql`
+    query Layouts {
+  layouts {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useLayoutsQuery__
+ *
+ * To run a query within a React component, call `useLayoutsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLayoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLayoutsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLayoutsQuery(baseOptions?: Apollo.QueryHookOptions<LayoutsQuery, LayoutsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LayoutsQuery, LayoutsQueryVariables>(LayoutsDocument, options);
+      }
+export function useLayoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LayoutsQuery, LayoutsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LayoutsQuery, LayoutsQueryVariables>(LayoutsDocument, options);
+        }
+export type LayoutsQueryHookResult = ReturnType<typeof useLayoutsQuery>;
+export type LayoutsLazyQueryHookResult = ReturnType<typeof useLayoutsLazyQuery>;
+export type LayoutsQueryResult = Apollo.QueryResult<LayoutsQuery, LayoutsQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -567,6 +608,7 @@ export const namedOperations = {
   Query: {
     Bye: 'Bye',
     Categories: 'Categories',
+    Layouts: 'Layouts',
     Me: 'Me'
   },
   Mutation: {
