@@ -3,11 +3,14 @@ import React from "react";
 import { useCategoriesQuery } from "../generated/graphql";
 import Head from "next/head";
 import CategoryComp from "../components/CategoryComp";
+import { withUrqlClient } from "next-urql";
+import Layout from "../components/Layout";
+import withApollo from "../lib/apollo";
 const Index = () => {
-  const [{ data, fetching }] = useCategoriesQuery();
-  if (!fetching && data) console.log("data:", data);
+  const { data, loading } = useCategoriesQuery();
+  if (!loading && data) console.log("data:", data);
   return (
-    <React.Fragment>
+    <Layout>
       <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
@@ -15,7 +18,7 @@ const Index = () => {
         />
       </Head>
       <Box>
-        {fetching && !data ? (
+        {loading && !data ? (
           <div>loading...</div>
         ) : (
           <Grid mt={10} mx={5} templateColumns="repeat(2,1fr)" gap={2}>
@@ -33,8 +36,8 @@ const Index = () => {
           </Grid>
         )}
       </Box>
-    </React.Fragment>
+    </Layout>
   );
 };
 
-export default Index;
+export default withApollo(Index);

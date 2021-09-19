@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Layout } from "./Layout";
+import { CompanyLayout } from "./CompanyLayout";
 
 @ObjectType()
 @Entity()
@@ -28,8 +28,11 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
-  @OneToMany(() => Layout, (layout) => layout.user)
-  layouts: Layout[];
+  @Column("int", { default: 0 })
+  tokenVersion: number;
+
+  @OneToMany(() => CompanyLayout, (layout) => layout.user)
+  layouts: CompanyLayout[];
 
   @Field(() => String)
   @CreateDateColumn()

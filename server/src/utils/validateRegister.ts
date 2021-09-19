@@ -2,7 +2,6 @@ import { User } from "../entities/User";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 
 export const validateRegister = async (options: UsernamePasswordInput) => {
-  console.log("options:::::", options);
   if (!options.email.includes("@")) {
     return [
       {

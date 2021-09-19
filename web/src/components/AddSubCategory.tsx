@@ -4,7 +4,6 @@ import { Formik, Form } from "formik";
 import React, { useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import {
-  useAddCategoryMutation,
   useAddSubCategoryMutation,
   useCategoriesQuery,
 } from "../generated/graphql";
@@ -12,8 +11,8 @@ import { InputField } from "./InputField";
 
 const AddSubCategory = () => {
   const [parentCategory, setparentCategory] = useState("");
-  const [{ data, fetching }] = useCategoriesQuery();
-  const [, addSubCategory] = useAddSubCategoryMutation();
+  const { data } = useCategoriesQuery();
+  const [addSubCategory] = useAddSubCategoryMutation();
   const [bgColor, setBgColor] = useState("#aabbcc");
   const [textColor, setTextColor] = useState("#fff");
   return (
@@ -21,16 +20,16 @@ const AddSubCategory = () => {
       <Formik
         initialValues={{ name: "", description: "" }}
         onSubmit={async (values) => {
-          console.log(values);
           const response = await addSubCategory({
-            input: {
-              bgColor,
-              textColor,
-              parentId: parseInt(parentCategory),
-              ...values,
+            variables: {
+              input: {
+                bgColor,
+                textColor,
+                parentId: parseInt(parentCategory),
+                ...values,
+              },
             },
           });
-          console.log("response:", response);
           return response;
         }}
       >
@@ -39,7 +38,6 @@ const AddSubCategory = () => {
             <Text>Selecione Setor</Text>
             <Select
               onChange={(e) => {
-                console.log("e:", e.target.value);
                 setparentCategory(e.target.value);
               }}
               value={parentCategory}

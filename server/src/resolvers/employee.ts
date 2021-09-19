@@ -40,7 +40,6 @@ export class EmployeeResolver {
       )) as Category;
       catParents.push(cat);
     }
-    console.log("catParents", catParents);
     let { sectorIds, ...newInput } = input;
     let catChild = await Employee.create({
       sectors: catParents,

@@ -5,14 +5,16 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Category } from "./Category";
 import { User } from "./User";
 
 @ObjectType()
 @Entity()
-export class Layout extends BaseEntity {
+export class CompanyLayout extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -27,11 +29,18 @@ export class Layout extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  visibility: string;
+  isPublic: boolean;
 
-  @Field(() => User)
+  @Field()
+  @Column()
+  userId: number;
+
+  // @Field(() => User)
   @ManyToOne(() => User, (user) => user.layouts)
   user: User;
+
+  @OneToMany(() => Category, (category) => category.layout)
+  categories: Category[];
 
   @Field(() => String)
   @CreateDateColumn()

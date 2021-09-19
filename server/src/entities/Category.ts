@@ -10,8 +10,10 @@ import {
   TreeParent,
   Tree,
   ManyToMany,
+  ManyToOne,
 } from "typeorm";
 import { Employee } from "./Employee";
+import { CompanyLayout } from "./CompanyLayout";
 
 @ObjectType()
 @Entity()
@@ -43,6 +45,12 @@ export class Category extends BaseEntity {
 
   @ManyToMany(() => Employee, (employee) => employee.sectors)
   employees: Employee[];
+
+  @Field(() => CompanyLayout)
+  @ManyToOne(() => CompanyLayout, (layout) => layout.categories, {
+    onDelete: "CASCADE",
+  })
+  layout: CompanyLayout;
 
   @Field(() => [Category], { nullable: true })
   @TreeChildren()

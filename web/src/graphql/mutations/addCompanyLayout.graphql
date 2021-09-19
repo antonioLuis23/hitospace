@@ -1,0 +1,8 @@
+mutation addCompanyLayout($input: CompanyLayoutInput!) {
+  addCompanyLayout(input: $input) {
+    name
+    id
+    description
+    userId
+  }
+}

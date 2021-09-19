@@ -1,24 +1,30 @@
-import React from "react";
-import { Formik, Form } from "formik";
 import { Box, Button, Flex, Link } from "@chakra-ui/react";
-import { InputField } from "../components/InputField";
-import { useLoginMutation } from "../generated/graphql";
-import { toErrorMap } from "../utils/toErrorMap";
-import { useRouter } from "next/router";
+import { Form, Formik } from "formik";
 import NextLink from "next/link";
-import Wrapper from "../components/Wrapper";
+import { useRouter } from "next/router";
+import React from "react";
+import { InputField } from "../components/InputField";
+import { Wrapper } from "../components/Wrapper";
+import { useLoginMutation } from "../generated/graphql";
+import { setAccessToken } from "../lib/accessToken";
+import withApollo from "../lib/apollo";
+import { toErrorMap } from "../utils/toErrorMap";
 export const Login: React.FC<{}> = ({}) => {
   const router = useRouter();
-  const [, login] = useLoginMutation();
+  const [login] = useLoginMutation();
   return (
     <Wrapper variant="small">
       <Formik
         initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await login(values);
+          const response = await login({ variables: values });
+          console.log("response:", response);
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
           } else if (response.data?.login.user) {
+            const token = response.data.login.accessToken;
+            console.log("token:::", token);
+            setAccessToken(token);
             if (typeof router.query.next === "string") {
               router.push(router.query.next);
             } else {
@@ -62,4 +68,4 @@ export const Login: React.FC<{}> = ({}) => {
   );
 };
 
-export default Login;
+export default withApollo(Login);

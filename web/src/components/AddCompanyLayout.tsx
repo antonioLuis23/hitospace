@@ -2,13 +2,11 @@ import { Box, Text } from "@chakra-ui/layout";
 import { Button, Grid } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import React, { useState } from "react";
-import { useAddCategoryMutation } from "../generated/graphql";
+import { useAddCompanyLayoutMutation } from "../generated/graphql";
 import { InputField } from "./InputField";
 import { HexColorPicker } from "react-colorful";
-const AddCategory = () => {
-  const [addCategory] = useAddCategoryMutation();
-  const [bgColor, setBgColor] = useState("#aabbcc");
-  const [textColor, setTextColor] = useState("#fff");
+const AddCompanyLayout = () => {
+  const [addCompanyLayout] = useAddCompanyLayoutMutation();
 
   return (
     <React.Fragment>
@@ -18,17 +16,18 @@ const AddCategory = () => {
           description: "",
         }}
         onSubmit={async (values) => {
-          const response = await addCategory({
+          const response = await addCompanyLayout({
             variables: {
-              input: { bgColor, textColor, ...values },
+              input: { ...values },
             },
           });
+          console.log("response:", response);
           return response;
         }}
       >
         {({ isSubmitting }) => (
           <Form>
-            <InputField name="name" placeholder="Nome" label="Nome do setor" />
+            <InputField name="name" placeholder="Nome" label="Nome do layout" />
             <Box mt={4}>
               <InputField
                 name="description"
@@ -36,16 +35,6 @@ const AddCategory = () => {
                 label="Descrição"
               />
             </Box>
-            <Grid templateColumns="repeat(2, 1fr)">
-              <Box mt={4} mr={4}>
-                <Text mb={4}>Selecione a cor de fundo do setor</Text>
-                <HexColorPicker color={bgColor} onChange={setBgColor} />
-              </Box>
-              <Box mt={4}>
-                <Text mb={4}>Selecione a cor de texto do setor</Text>
-                <HexColorPicker color={textColor} onChange={setTextColor} />
-              </Box>
-            </Grid>
             <Button
               mt={4}
               type="submit"
@@ -61,4 +50,4 @@ const AddCategory = () => {
   );
 };
 
-export default AddCategory;
+export default AddCompanyLayout;

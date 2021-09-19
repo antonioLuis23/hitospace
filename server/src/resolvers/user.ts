@@ -1,10 +1,23 @@
 // import { MyContext } from "../MyContext";
-import { Arg, Field, Mutation, ObjectType, Resolver } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../entities/User";
 import argon2 from "argon2";
 import { UsernamePasswordInput } from "../utils/UsernamePasswordInput";
 import { validateRegister } from "../utils/validateRegister";
+import { MyContext } from "../MyContext";
+import { createAccessToken, createRefreshToken } from "../auth";
+import { isAuth } from "../isAuth";
+import { sendRefreshToken } from "../sendRefreshToken";
 
 @ObjectType()
 class FieldError {
@@ -22,10 +35,29 @@ class UserResponse {
 
   @Field({ nullable: true })
   user?: User;
+
+  @Field({ nullable: true })
+  accessToken?: string;
 }
 
 @Resolver(User)
 export class UserResolver {
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  bye(@Ctx() { payload }: MyContext) {
+    return `your user id is: ${payload!.userId}`;
+  }
+
+  @Query(() => User, { nullable: true })
+  @UseMiddleware(isAuth)
+  me(@Ctx() { payload }: MyContext) {
+    if (payload!.userId === "") {
+      return null;
+    }
+    return User.findOne(payload!.userId);
+    // return `your user id is: ${payload!.userId}`;
+  }
+
   @Mutation(() => UserResponse)
   async register(
     @Arg("options") options: UsernamePasswordInput
@@ -59,11 +91,19 @@ export class UserResolver {
     return { user };
   }
 
+  // @Mutation(() => Boolean)
+  // async revokeRefreshTokensForUser(@Arg("userId", () => Int) userId: number) {
+  //   await getConnection()
+  //     .getRepository(User)
+  //     .increment({ id: userId }, "tokenVersion", 1);
+  //   return true;
+  // }
+
   @Mutation(() => UserResponse)
   async login(
     @Arg("usernameOrEmail") usernameOrEmail: string,
-    @Arg("password") password: string
-    // @Ctx() { redis, setCookies }: MyContext
+    @Arg("password") password: string,
+    @Ctx() { res }: MyContext
   ): Promise<UserResponse> {
     const user = await User.findOne(
       usernameOrEmail.includes("@")
@@ -93,6 +133,25 @@ export class UserResolver {
       };
     }
 
-    return { user };
+    sendRefreshToken(res, createRefreshToken(user));
+
+    return {
+      user,
+      accessToken: createAccessToken(user),
+    };
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Ctx() { res }: MyContext) {
+    res.cookie("gte", "", {
+      httpOnly: true,
+      path: "/",
+      expires: new Date("1970-12-12T00:00:00"),
+      // domain: ".example.com",
+      sameSite: "none",
+      secure: true,
+      maxAge: 1,
+    });
+    return true;
   }
 }

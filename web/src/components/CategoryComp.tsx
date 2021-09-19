@@ -6,7 +6,7 @@ import SubCategoryComp from "./SubCategoryComp";
 
 type CategoryProp = {
   __typename?: "Category";
-  description: Scalars["String"];
+  description?: Scalars["String"];
   id: Scalars["Float"];
   name: Scalars["String"];
   textColor: Scalars["String"];

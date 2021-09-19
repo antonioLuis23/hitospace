@@ -6,8 +6,12 @@ import { getManager } from "typeorm";
 class CategoryInput {
   @Field()
   name: string;
+
   @Field()
   description: string;
+
+  @Field()
+  layoutId: number;
 
   @Field()
   bgColor: string;
@@ -37,7 +41,6 @@ export class CategoryResolver {
   async categories() {
     const manager = getManager();
     const trees = await manager.getTreeRepository(Category).findTrees();
-    console.log("trees:::::", trees);
     return trees;
   }
 
