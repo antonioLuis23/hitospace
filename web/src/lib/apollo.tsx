@@ -53,13 +53,16 @@ const initApolloClient = (initialState = {}, serverAccessToken?: string) => {
       }
     },
     fetchAccessToken: () => {
+      console.log("entrou fetchAccessToken!!!!!!");
       return fetch("http://localhost:4000/refresh_token", {
         method: "POST",
         credentials: "include",
       });
     },
     handleFetch: (accessToken) => {
+      console.log("entrou handle Fetch. AccessToken:", accessToken);
       setAccessToken(accessToken);
+      serverAccessToken = accessToken;
     },
     handleError: (err) => {
       console.warn("Your refresh token is invalid. Try to relogin");
@@ -169,6 +172,7 @@ const withApollo = (PageComponent, { ssr = true } = {}) => {
 
       // Extract query data from the Apollo store
       const apolloState = apolloClient.cache.extract();
+      console.log("apolloState:", apolloState);
 
       return {
         ...pageProps,

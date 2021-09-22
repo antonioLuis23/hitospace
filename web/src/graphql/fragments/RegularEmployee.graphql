@@ -1,0 +1,5 @@
+fragment RegularEmployee on Employee {
+  name
+  id
+  function
+}

@@ -9,8 +9,9 @@ import {
 import React from "react";
 import AddCategory from "../components/AddCategory";
 import AddCompanyLayout from "../components/AddCompanyLayout";
+import AddEmployee from "../components/AddEmployee";
 import AddSubCategory from "../components/AddSubCategory";
-import Layout from "../components/Layout";
+import Layout from "../components/UI/Layout";
 import { useAddCategoryMutation } from "../generated/graphql";
 import withApollo from "../lib/apollo";
 import { useIsAuth } from "../utils/useIsAuth";
@@ -37,7 +38,7 @@ const Admin: React.FC<{}> = ({}) => {
             <AddSubCategory />
           </TabPanel>
           <TabPanel>
-            <Text>Adicionar Colaborador</Text>
+            <AddEmployee />
           </TabPanel>
         </TabPanels>
       </Tabs>

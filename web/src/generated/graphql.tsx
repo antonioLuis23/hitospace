@@ -1,10 +1,16 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { gql } from "@apollo/client";
+import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+const defaultOptions = {};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -17,254 +23,399 @@ export type Scalars = {
 };
 
 export type Category = {
-  __typename?: 'Category';
-  bgColor: Scalars['String'];
+  __typename?: "Category";
+  bgColor: Scalars["String"];
   catChildren?: Maybe<Array<Category>>;
-  createdAt: Scalars['DateTime'];
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['Float'];
+  createdAt: Scalars["DateTime"];
+  description?: Maybe<Scalars["String"]>;
+  employees?: Maybe<Array<Employee>>;
+  id: Scalars["Float"];
   layout: CompanyLayout;
-  name: Scalars['String'];
-  textColor: Scalars['String'];
-  updatedAt: Scalars['DateTime'];
+  name: Scalars["String"];
+  textColor: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
 };
 
 export type CategoryInput = {
-  bgColor: Scalars['String'];
-  description: Scalars['String'];
-  layoutId: Scalars['Float'];
-  name: Scalars['String'];
-  textColor: Scalars['String'];
+  bgColor: Scalars["String"];
+  description: Scalars["String"];
+  layoutId: Scalars["Float"];
+  name: Scalars["String"];
+  textColor: Scalars["String"];
 };
 
 export type CompanyLayout = {
-  __typename?: 'CompanyLayout';
-  createdAt: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  id: Scalars['Float'];
-  isPublic?: Maybe<Scalars['Boolean']>;
-  name: Scalars['String'];
-  updatedAt: Scalars['String'];
-  userId: Scalars['Float'];
+  __typename?: "CompanyLayout";
+  createdAt: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
+  id: Scalars["Float"];
+  isPublic?: Maybe<Scalars["Boolean"]>;
+  name: Scalars["String"];
+  updatedAt: Scalars["String"];
+  userId: Scalars["Float"];
 };
 
 export type CompanyLayoutInput = {
-  description?: Maybe<Scalars['String']>;
-  isPublic?: Maybe<Scalars['Boolean']>;
-  name: Scalars['String'];
+  description?: Maybe<Scalars["String"]>;
+  isPublic?: Maybe<Scalars["Boolean"]>;
+  name: Scalars["String"];
 };
 
 export type Employee = {
-  __typename?: 'Employee';
-  abilities?: Maybe<Scalars['String']>;
-  chat?: Maybe<Scalars['String']>;
-  createdAt: Scalars['String'];
-  email: Scalars['String'];
-  function: Scalars['String'];
-  id: Scalars['Float'];
-  name: Scalars['String'];
-  tags?: Maybe<Scalars['String']>;
-  updatedAt: Scalars['String'];
+  __typename?: "Employee";
+  abilities?: Maybe<Scalars["String"]>;
+  chat?: Maybe<Scalars["String"]>;
+  createdAt: Scalars["String"];
+  email: Scalars["String"];
+  function: Scalars["String"];
+  id: Scalars["Float"];
+  name: Scalars["String"];
+  tags?: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["String"];
 };
 
 export type EmployeeInput = {
-  abilities?: Maybe<Scalars['String']>;
-  chat?: Maybe<Scalars['String']>;
-  email: Scalars['String'];
-  function: Scalars['String'];
-  name: Scalars['String'];
-  sectorIds: Array<Scalars['String']>;
-  tags?: Maybe<Scalars['String']>;
+  abilities?: Maybe<Scalars["String"]>;
+  chat?: Maybe<Scalars["String"]>;
+  email: Scalars["String"];
+  function: Scalars["String"];
+  name: Scalars["String"];
+  sectorIds: Array<Scalars["String"]>;
+  tags?: Maybe<Scalars["String"]>;
 };
 
 export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
+  __typename?: "FieldError";
+  field: Scalars["String"];
+  message: Scalars["String"];
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
+  __typename?: "Mutation";
   addCategory: Category;
   addCompanyLayout: CompanyLayout;
   addEmployee: Employee;
   addSubCategory: Category;
   login: UserResponse;
-  logout: Scalars['Boolean'];
+  logout: Scalars["Boolean"];
   register: UserResponse;
 };
-
 
 export type MutationAddCategoryArgs = {
   input: CategoryInput;
 };
 
-
 export type MutationAddCompanyLayoutArgs = {
   input: CompanyLayoutInput;
 };
-
 
 export type MutationAddEmployeeArgs = {
   input: EmployeeInput;
 };
 
-
 export type MutationAddSubCategoryArgs = {
   input: SubCategoryInput;
 };
 
-
 export type MutationLoginArgs = {
-  password: Scalars['String'];
-  usernameOrEmail: Scalars['String'];
+  password: Scalars["String"];
+  usernameOrEmail: Scalars["String"];
 };
-
 
 export type MutationRegisterArgs = {
   options: UsernamePasswordInput;
 };
 
 export type Query = {
-  __typename?: 'Query';
-  bye: Scalars['String'];
+  __typename?: "Query";
+  bye: Scalars["String"];
   categories: Array<Category>;
+  getEmployeesByCategory: Array<Employee>;
   layouts: Array<CompanyLayout>;
   me?: Maybe<User>;
 };
 
+export type QueryGetEmployeesByCategoryArgs = {
+  catId: Scalars["Float"];
+};
+
 export type SubCategoryInput = {
-  bgColor: Scalars['String'];
-  description: Scalars['String'];
-  name: Scalars['String'];
-  parentId: Scalars['Float'];
-  textColor: Scalars['String'];
+  bgColor: Scalars["String"];
+  description: Scalars["String"];
+  name: Scalars["String"];
+  parentId: Scalars["Float"];
+  textColor: Scalars["String"];
 };
 
 export type User = {
-  __typename?: 'User';
-  createdAt: Scalars['String'];
-  email: Scalars['String'];
-  id: Scalars['Float'];
-  updatedAt: Scalars['String'];
-  username: Scalars['String'];
+  __typename?: "User";
+  createdAt: Scalars["String"];
+  email: Scalars["String"];
+  id: Scalars["Float"];
+  updatedAt: Scalars["String"];
+  username: Scalars["String"];
 };
 
 export type UserResponse = {
-  __typename?: 'UserResponse';
-  accessToken?: Maybe<Scalars['String']>;
+  __typename?: "UserResponse";
+  accessToken?: Maybe<Scalars["String"]>;
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
 };
 
 export type UsernamePasswordInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-  username: Scalars['String'];
+  email: Scalars["String"];
+  password: Scalars["String"];
+  username: Scalars["String"];
 };
 
-export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
+export type RegularEmployeeFragment = {
+  __typename?: "Employee";
+  name: string;
+  id: number;
+  function: string;
+};
 
-export type RegularUserFragment = { __typename?: 'User', id: number, username: string, email: string };
+export type RegularErrorFragment = {
+  __typename?: "FieldError";
+  field: string;
+  message: string;
+};
 
-export type RegularUserResponseFragment = { __typename?: 'UserResponse', accessToken?: Maybe<string>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, username: string, email: string }> };
+export type RegularUserFragment = {
+  __typename?: "User";
+  id: number;
+  username: string;
+  email: string;
+};
+
+export type RegularUserResponseFragment = {
+  __typename?: "UserResponse";
+  accessToken?: Maybe<string>;
+  errors?: Maybe<
+    Array<{ __typename?: "FieldError"; field: string; message: string }>
+  >;
+  user?: Maybe<{
+    __typename?: "User";
+    id: number;
+    username: string;
+    email: string;
+  }>;
+};
 
 export type AddCategoryMutationVariables = Exact<{
   input: CategoryInput;
 }>;
 
-
-export type AddCategoryMutation = { __typename?: 'Mutation', addCategory: { __typename?: 'Category', name: string, id: number, description?: Maybe<string> } };
+export type AddCategoryMutation = {
+  __typename?: "Mutation";
+  addCategory: {
+    __typename?: "Category";
+    name: string;
+    id: number;
+    description?: Maybe<string>;
+  };
+};
 
 export type AddCompanyLayoutMutationVariables = Exact<{
   input: CompanyLayoutInput;
 }>;
 
+export type AddCompanyLayoutMutation = {
+  __typename?: "Mutation";
+  addCompanyLayout: {
+    __typename?: "CompanyLayout";
+    name: string;
+    id: number;
+    description?: Maybe<string>;
+    userId: number;
+  };
+};
 
-export type AddCompanyLayoutMutation = { __typename?: 'Mutation', addCompanyLayout: { __typename?: 'CompanyLayout', name: string, id: number, description?: Maybe<string>, userId: number } };
+export type AddEmployeeMutationVariables = Exact<{
+  input: EmployeeInput;
+}>;
+
+export type AddEmployeeMutation = {
+  __typename?: "Mutation";
+  addEmployee: {
+    __typename?: "Employee";
+    id: number;
+    name: string;
+    function: string;
+  };
+};
 
 export type AddSubCategoryMutationVariables = Exact<{
   input: SubCategoryInput;
 }>;
 
-
-export type AddSubCategoryMutation = { __typename?: 'Mutation', addSubCategory: { __typename?: 'Category', name: string, id: number, description?: Maybe<string> } };
+export type AddSubCategoryMutation = {
+  __typename?: "Mutation";
+  addSubCategory: {
+    __typename?: "Category";
+    name: string;
+    id: number;
+    description?: Maybe<string>;
+  };
+};
 
 export type LoginMutationVariables = Exact<{
-  usernameOrEmail: Scalars['String'];
-  password: Scalars['String'];
+  usernameOrEmail: Scalars["String"];
+  password: Scalars["String"];
 }>;
 
+export type LoginMutation = {
+  __typename?: "Mutation";
+  login: {
+    __typename?: "UserResponse";
+    accessToken?: Maybe<string>;
+    errors?: Maybe<
+      Array<{ __typename?: "FieldError"; field: string; message: string }>
+    >;
+    user?: Maybe<{
+      __typename?: "User";
+      id: number;
+      username: string;
+      email: string;
+    }>;
+  };
+};
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', accessToken?: Maybe<string>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, username: string, email: string }> } };
+export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+export type LogoutMutation = { __typename?: "Mutation"; logout: boolean };
 
 export type RegisterMutationVariables = Exact<{
   options: UsernamePasswordInput;
 }>;
 
+export type RegisterMutation = {
+  __typename?: "Mutation";
+  register: {
+    __typename?: "UserResponse";
+    accessToken?: Maybe<string>;
+    errors?: Maybe<
+      Array<{ __typename?: "FieldError"; field: string; message: string }>
+    >;
+    user?: Maybe<{
+      __typename?: "User";
+      id: number;
+      username: string;
+      email: string;
+    }>;
+  };
+};
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', accessToken?: Maybe<string>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, username: string, email: string }> } };
+export type ByeQueryVariables = Exact<{ [key: string]: never }>;
 
-export type ByeQueryVariables = Exact<{ [key: string]: never; }>;
+export type ByeQuery = { __typename?: "Query"; bye: string };
 
+export type CategoriesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type ByeQuery = { __typename?: 'Query', bye: string };
+export type CategoriesQuery = {
+  __typename?: "Query";
+  categories: Array<{
+    __typename?: "Category";
+    name: string;
+    description?: Maybe<string>;
+    id: number;
+    bgColor: string;
+    textColor: string;
+    employees?: Maybe<
+      Array<{
+        __typename?: "Employee";
+        name: string;
+        id: number;
+        function: string;
+      }>
+    >;
+    catChildren?: Maybe<
+      Array<{
+        __typename?: "Category";
+        name: string;
+        id: number;
+        description?: Maybe<string>;
+        bgColor: string;
+        textColor: string;
+        employees?: Maybe<
+          Array<{
+            __typename?: "Employee";
+            name: string;
+            id: number;
+            function: string;
+          }>
+        >;
+      }>
+    >;
+  }>;
+};
 
-export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type LayoutsQueryVariables = Exact<{ [key: string]: never }>;
 
+export type LayoutsQuery = {
+  __typename?: "Query";
+  layouts: Array<{ __typename?: "CompanyLayout"; id: number; name: string }>;
+};
 
-export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description?: Maybe<string>, id: number, bgColor: string, textColor: string, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description?: Maybe<string>, bgColor: string, textColor: string }>> }> };
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
-export type LayoutsQueryVariables = Exact<{ [key: string]: never; }>;
+export type MeQuery = {
+  __typename?: "Query";
+  me?: Maybe<{
+    __typename?: "User";
+    id: number;
+    username: string;
+    email: string;
+  }>;
+};
 
-
-export type LayoutsQuery = { __typename?: 'Query', layouts: Array<{ __typename?: 'CompanyLayout', id: number, name: string }> };
-
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: number, username: string, email: string }> };
-
-export const RegularErrorFragmentDoc = gql`
-    fragment RegularError on FieldError {
-  field
-  message
-}
-    `;
-export const RegularUserFragmentDoc = gql`
-    fragment RegularUser on User {
-  id
-  username
-  email
-}
-    `;
-export const RegularUserResponseFragmentDoc = gql`
-    fragment RegularUserResponse on UserResponse {
-  errors {
-    ...RegularError
-  }
-  user {
-    ...RegularUser
-  }
-  accessToken
-}
-    ${RegularErrorFragmentDoc}
-${RegularUserFragmentDoc}`;
-export const AddCategoryDocument = gql`
-    mutation addCategory($input: CategoryInput!) {
-  addCategory(input: $input) {
+export const RegularEmployeeFragmentDoc = gql`
+  fragment RegularEmployee on Employee {
     name
     id
-    description
+    function
   }
-}
-    `;
-export type AddCategoryMutationFn = Apollo.MutationFunction<AddCategoryMutation, AddCategoryMutationVariables>;
+`;
+export const RegularErrorFragmentDoc = gql`
+  fragment RegularError on FieldError {
+    field
+    message
+  }
+`;
+export const RegularUserFragmentDoc = gql`
+  fragment RegularUser on User {
+    id
+    username
+    email
+  }
+`;
+export const RegularUserResponseFragmentDoc = gql`
+  fragment RegularUserResponse on UserResponse {
+    errors {
+      ...RegularError
+    }
+    user {
+      ...RegularUser
+    }
+    accessToken
+  }
+  ${RegularErrorFragmentDoc}
+  ${RegularUserFragmentDoc}
+`;
+export const AddCategoryDocument = gql`
+  mutation addCategory($input: CategoryInput!) {
+    addCategory(input: $input) {
+      name
+      id
+      description
+    }
+  }
+`;
+export type AddCategoryMutationFn = Apollo.MutationFunction<
+  AddCategoryMutation,
+  AddCategoryMutationVariables
+>;
 
 /**
  * __useAddCategoryMutation__
@@ -283,24 +434,41 @@ export type AddCategoryMutationFn = Apollo.MutationFunction<AddCategoryMutation,
  *   },
  * });
  */
-export function useAddCategoryMutation(baseOptions?: Apollo.MutationHookOptions<AddCategoryMutation, AddCategoryMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddCategoryMutation, AddCategoryMutationVariables>(AddCategoryDocument, options);
-      }
-export type AddCategoryMutationHookResult = ReturnType<typeof useAddCategoryMutation>;
-export type AddCategoryMutationResult = Apollo.MutationResult<AddCategoryMutation>;
-export type AddCategoryMutationOptions = Apollo.BaseMutationOptions<AddCategoryMutation, AddCategoryMutationVariables>;
-export const AddCompanyLayoutDocument = gql`
-    mutation addCompanyLayout($input: CompanyLayoutInput!) {
-  addCompanyLayout(input: $input) {
-    name
-    id
-    description
-    userId
-  }
+export function useAddCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddCategoryMutation,
+    AddCategoryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AddCategoryMutation, AddCategoryMutationVariables>(
+    AddCategoryDocument,
+    options
+  );
 }
-    `;
-export type AddCompanyLayoutMutationFn = Apollo.MutationFunction<AddCompanyLayoutMutation, AddCompanyLayoutMutationVariables>;
+export type AddCategoryMutationHookResult = ReturnType<
+  typeof useAddCategoryMutation
+>;
+export type AddCategoryMutationResult =
+  Apollo.MutationResult<AddCategoryMutation>;
+export type AddCategoryMutationOptions = Apollo.BaseMutationOptions<
+  AddCategoryMutation,
+  AddCategoryMutationVariables
+>;
+export const AddCompanyLayoutDocument = gql`
+  mutation addCompanyLayout($input: CompanyLayoutInput!) {
+    addCompanyLayout(input: $input) {
+      name
+      id
+      description
+      userId
+    }
+  }
+`;
+export type AddCompanyLayoutMutationFn = Apollo.MutationFunction<
+  AddCompanyLayoutMutation,
+  AddCompanyLayoutMutationVariables
+>;
 
 /**
  * __useAddCompanyLayoutMutation__
@@ -319,23 +487,92 @@ export type AddCompanyLayoutMutationFn = Apollo.MutationFunction<AddCompanyLayou
  *   },
  * });
  */
-export function useAddCompanyLayoutMutation(baseOptions?: Apollo.MutationHookOptions<AddCompanyLayoutMutation, AddCompanyLayoutMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddCompanyLayoutMutation, AddCompanyLayoutMutationVariables>(AddCompanyLayoutDocument, options);
-      }
-export type AddCompanyLayoutMutationHookResult = ReturnType<typeof useAddCompanyLayoutMutation>;
-export type AddCompanyLayoutMutationResult = Apollo.MutationResult<AddCompanyLayoutMutation>;
-export type AddCompanyLayoutMutationOptions = Apollo.BaseMutationOptions<AddCompanyLayoutMutation, AddCompanyLayoutMutationVariables>;
-export const AddSubCategoryDocument = gql`
-    mutation addSubCategory($input: SubCategoryInput!) {
-  addSubCategory(input: $input) {
-    name
-    id
-    description
-  }
+export function useAddCompanyLayoutMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddCompanyLayoutMutation,
+    AddCompanyLayoutMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    AddCompanyLayoutMutation,
+    AddCompanyLayoutMutationVariables
+  >(AddCompanyLayoutDocument, options);
 }
-    `;
-export type AddSubCategoryMutationFn = Apollo.MutationFunction<AddSubCategoryMutation, AddSubCategoryMutationVariables>;
+export type AddCompanyLayoutMutationHookResult = ReturnType<
+  typeof useAddCompanyLayoutMutation
+>;
+export type AddCompanyLayoutMutationResult =
+  Apollo.MutationResult<AddCompanyLayoutMutation>;
+export type AddCompanyLayoutMutationOptions = Apollo.BaseMutationOptions<
+  AddCompanyLayoutMutation,
+  AddCompanyLayoutMutationVariables
+>;
+export const AddEmployeeDocument = gql`
+  mutation addEmployee($input: EmployeeInput!) {
+    addEmployee(input: $input) {
+      id
+      name
+      function
+    }
+  }
+`;
+export type AddEmployeeMutationFn = Apollo.MutationFunction<
+  AddEmployeeMutation,
+  AddEmployeeMutationVariables
+>;
+
+/**
+ * __useAddEmployeeMutation__
+ *
+ * To run a mutation, you first call `useAddEmployeeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddEmployeeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addEmployeeMutation, { data, loading, error }] = useAddEmployeeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddEmployeeMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddEmployeeMutation,
+    AddEmployeeMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AddEmployeeMutation, AddEmployeeMutationVariables>(
+    AddEmployeeDocument,
+    options
+  );
+}
+export type AddEmployeeMutationHookResult = ReturnType<
+  typeof useAddEmployeeMutation
+>;
+export type AddEmployeeMutationResult =
+  Apollo.MutationResult<AddEmployeeMutation>;
+export type AddEmployeeMutationOptions = Apollo.BaseMutationOptions<
+  AddEmployeeMutation,
+  AddEmployeeMutationVariables
+>;
+export const AddSubCategoryDocument = gql`
+  mutation addSubCategory($input: SubCategoryInput!) {
+    addSubCategory(input: $input) {
+      name
+      id
+      description
+    }
+  }
+`;
+export type AddSubCategoryMutationFn = Apollo.MutationFunction<
+  AddSubCategoryMutation,
+  AddSubCategoryMutationVariables
+>;
 
 /**
  * __useAddSubCategoryMutation__
@@ -354,21 +591,39 @@ export type AddSubCategoryMutationFn = Apollo.MutationFunction<AddSubCategoryMut
  *   },
  * });
  */
-export function useAddSubCategoryMutation(baseOptions?: Apollo.MutationHookOptions<AddSubCategoryMutation, AddSubCategoryMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddSubCategoryMutation, AddSubCategoryMutationVariables>(AddSubCategoryDocument, options);
-      }
-export type AddSubCategoryMutationHookResult = ReturnType<typeof useAddSubCategoryMutation>;
-export type AddSubCategoryMutationResult = Apollo.MutationResult<AddSubCategoryMutation>;
-export type AddSubCategoryMutationOptions = Apollo.BaseMutationOptions<AddSubCategoryMutation, AddSubCategoryMutationVariables>;
-export const LoginDocument = gql`
-    mutation Login($usernameOrEmail: String!, $password: String!) {
-  login(usernameOrEmail: $usernameOrEmail, password: $password) {
-    ...RegularUserResponse
-  }
+export function useAddSubCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddSubCategoryMutation,
+    AddSubCategoryMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    AddSubCategoryMutation,
+    AddSubCategoryMutationVariables
+  >(AddSubCategoryDocument, options);
 }
-    ${RegularUserResponseFragmentDoc}`;
-export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+export type AddSubCategoryMutationHookResult = ReturnType<
+  typeof useAddSubCategoryMutation
+>;
+export type AddSubCategoryMutationResult =
+  Apollo.MutationResult<AddSubCategoryMutation>;
+export type AddSubCategoryMutationOptions = Apollo.BaseMutationOptions<
+  AddSubCategoryMutation,
+  AddSubCategoryMutationVariables
+>;
+export const LoginDocument = gql`
+  mutation Login($usernameOrEmail: String!, $password: String!) {
+    login(usernameOrEmail: $usernameOrEmail, password: $password) {
+      ...RegularUserResponse
+    }
+  }
+  ${RegularUserResponseFragmentDoc}
+`;
+export type LoginMutationFn = Apollo.MutationFunction<
+  LoginMutation,
+  LoginMutationVariables
+>;
 
 /**
  * __useLoginMutation__
@@ -388,19 +643,33 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  *   },
  * });
  */
-export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
-      }
+export function useLoginMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LoginMutation,
+    LoginMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(
+    LoginDocument,
+    options
+  );
+}
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
-export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<
+  LoginMutation,
+  LoginMutationVariables
+>;
 export const LogoutDocument = gql`
-    mutation Logout {
-  logout
-}
-    `;
-export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
+  mutation Logout {
+    logout
+  }
+`;
+export type LogoutMutationFn = Apollo.MutationFunction<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
 
 /**
  * __useLogoutMutation__
@@ -418,21 +687,36 @@ export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMut
  *   },
  * });
  */
-export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
-      }
+export function useLogoutMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LogoutMutation,
+    LogoutMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(
+    LogoutDocument,
+    options
+  );
+}
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<
+  LogoutMutation,
+  LogoutMutationVariables
+>;
 export const RegisterDocument = gql`
-    mutation Register($options: UsernamePasswordInput!) {
-  register(options: $options) {
-    ...RegularUserResponse
+  mutation Register($options: UsernamePasswordInput!) {
+    register(options: $options) {
+      ...RegularUserResponse
+    }
   }
-}
-    ${RegularUserResponseFragmentDoc}`;
-export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+  ${RegularUserResponseFragmentDoc}
+`;
+export type RegisterMutationFn = Apollo.MutationFunction<
+  RegisterMutation,
+  RegisterMutationVariables
+>;
 
 /**
  * __useRegisterMutation__
@@ -451,18 +735,29 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  *   },
  * });
  */
-export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
-      }
+export function useRegisterMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RegisterMutation,
+    RegisterMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(
+    RegisterDocument,
+    options
+  );
+}
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<
+  RegisterMutation,
+  RegisterMutationVariables
+>;
 export const ByeDocument = gql`
-    query Bye {
-  bye
-}
-    `;
+  query Bye {
+    bye
+  }
+`;
 
 /**
  * __useByeQuery__
@@ -479,35 +774,46 @@ export const ByeDocument = gql`
  *   },
  * });
  */
-export function useByeQuery(baseOptions?: Apollo.QueryHookOptions<ByeQuery, ByeQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ByeQuery, ByeQueryVariables>(ByeDocument, options);
-      }
-export function useByeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ByeQuery, ByeQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ByeQuery, ByeQueryVariables>(ByeDocument, options);
-        }
+export function useByeQuery(
+  baseOptions?: Apollo.QueryHookOptions<ByeQuery, ByeQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ByeQuery, ByeQueryVariables>(ByeDocument, options);
+}
+export function useByeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ByeQuery, ByeQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<ByeQuery, ByeQueryVariables>(ByeDocument, options);
+}
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = Apollo.QueryResult<ByeQuery, ByeQueryVariables>;
 export const CategoriesDocument = gql`
-    query Categories {
-  categories {
-    name
-    description
-    id
-    bgColor
-    textColor
-    catChildren {
+  query Categories {
+    categories {
       name
-      id
       description
+      id
       bgColor
       textColor
+      employees {
+        ...RegularEmployee
+      }
+      catChildren {
+        name
+        id
+        description
+        bgColor
+        textColor
+        employees {
+          ...RegularEmployee
+        }
+      }
     }
   }
-}
-    `;
+  ${RegularEmployeeFragmentDoc}
+`;
 
 /**
  * __useCategoriesQuery__
@@ -524,25 +830,46 @@ export const CategoriesDocument = gql`
  *   },
  * });
  */
-export function useCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
-      }
-export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, options);
-        }
-export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
-export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
-export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
-export const LayoutsDocument = gql`
-    query Layouts {
-  layouts {
-    id
-    name
-  }
+export function useCategoriesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    CategoriesQuery,
+    CategoriesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<CategoriesQuery, CategoriesQueryVariables>(
+    CategoriesDocument,
+    options
+  );
 }
-    `;
+export function useCategoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CategoriesQuery,
+    CategoriesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(
+    CategoriesDocument,
+    options
+  );
+}
+export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
+export type CategoriesLazyQueryHookResult = ReturnType<
+  typeof useCategoriesLazyQuery
+>;
+export type CategoriesQueryResult = Apollo.QueryResult<
+  CategoriesQuery,
+  CategoriesQueryVariables
+>;
+export const LayoutsDocument = gql`
+  query Layouts {
+    layouts {
+      id
+      name
+    }
+  }
+`;
 
 /**
  * __useLayoutsQuery__
@@ -559,24 +886,38 @@ export const LayoutsDocument = gql`
  *   },
  * });
  */
-export function useLayoutsQuery(baseOptions?: Apollo.QueryHookOptions<LayoutsQuery, LayoutsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<LayoutsQuery, LayoutsQueryVariables>(LayoutsDocument, options);
-      }
-export function useLayoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LayoutsQuery, LayoutsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<LayoutsQuery, LayoutsQueryVariables>(LayoutsDocument, options);
-        }
+export function useLayoutsQuery(
+  baseOptions?: Apollo.QueryHookOptions<LayoutsQuery, LayoutsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<LayoutsQuery, LayoutsQueryVariables>(
+    LayoutsDocument,
+    options
+  );
+}
+export function useLayoutsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<LayoutsQuery, LayoutsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<LayoutsQuery, LayoutsQueryVariables>(
+    LayoutsDocument,
+    options
+  );
+}
 export type LayoutsQueryHookResult = ReturnType<typeof useLayoutsQuery>;
 export type LayoutsLazyQueryHookResult = ReturnType<typeof useLayoutsLazyQuery>;
-export type LayoutsQueryResult = Apollo.QueryResult<LayoutsQuery, LayoutsQueryVariables>;
+export type LayoutsQueryResult = Apollo.QueryResult<
+  LayoutsQuery,
+  LayoutsQueryVariables
+>;
 export const MeDocument = gql`
-    query Me {
-  me {
-    ...RegularUser
+  query Me {
+    me {
+      ...RegularUser
+    }
   }
-}
-    ${RegularUserFragmentDoc}`;
+  ${RegularUserFragmentDoc}
+`;
 
 /**
  * __useMeQuery__
@@ -593,35 +934,41 @@ export const MeDocument = gql`
  *   },
  * });
  */
-export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-      }
-export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-        }
+export function useMeQuery(
+  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
+export function useMeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const namedOperations = {
   Query: {
-    Bye: 'Bye',
-    Categories: 'Categories',
-    Layouts: 'Layouts',
-    Me: 'Me'
+    Bye: "Bye",
+    Categories: "Categories",
+    Layouts: "Layouts",
+    Me: "Me",
   },
   Mutation: {
-    addCategory: 'addCategory',
-    addCompanyLayout: 'addCompanyLayout',
-    addSubCategory: 'addSubCategory',
-    Login: 'Login',
-    Logout: 'Logout',
-    Register: 'Register'
+    addCategory: "addCategory",
+    addCompanyLayout: "addCompanyLayout",
+    addEmployee: "addEmployee",
+    addSubCategory: "addSubCategory",
+    Login: "Login",
+    Logout: "Logout",
+    Register: "Register",
   },
   Fragment: {
-    RegularError: 'RegularError',
-    RegularUser: 'RegularUser',
-    RegularUserResponse: 'RegularUserResponse'
-  }
-}
+    RegularEmployee: "RegularEmployee",
+    RegularError: "RegularError",
+    RegularUser: "RegularUser",
+    RegularUserResponse: "RegularUserResponse",
+  },
+};

@@ -2,7 +2,6 @@ import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
 import React from "react";
 import theme from "../theme";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-// const accessToken = localStorage.getItem("gte");
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
   credentials: "include",

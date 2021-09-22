@@ -5,12 +5,18 @@ query Categories {
     id
     bgColor
     textColor
+    employees {
+      ...RegularEmployee
+    }
     catChildren {
       name
       id
       description
       bgColor
       textColor
+      employees {
+        ...RegularEmployee
+      }
     }
   }
 }

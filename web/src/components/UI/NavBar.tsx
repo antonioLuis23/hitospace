@@ -1,13 +1,13 @@
 import { Box, Button, Flex, Link } from "@chakra-ui/react";
 import React, { Fragment, useState } from "react";
 import NextLink from "next/link";
-import { isServer } from "../utils/isServer";
+import { isServer } from "../../utils/isServer";
 import {
   useMeQuery,
   useLogoutMutation,
   namedOperations,
-} from "../generated/graphql";
-import { setAccessToken } from "../lib/accessToken";
+} from "../../generated/graphql";
+import { setAccessToken } from "../../lib/accessToken";
 interface NavBarProps {}
 
 const NavBar: React.FC<NavBarProps> = ({}) => {

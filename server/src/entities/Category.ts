@@ -43,6 +43,7 @@ export class Category extends BaseEntity {
   @TreeParent()
   parent: Category;
 
+  @Field(() => [Employee], { nullable: true })
   @ManyToMany(() => Employee, (employee) => employee.sectors)
   employees: Employee[];
 

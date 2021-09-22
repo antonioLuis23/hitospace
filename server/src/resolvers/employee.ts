@@ -1,6 +1,14 @@
 import { Category } from "../entities/Category";
 import { Employee } from "../entities/Employee";
-import { Arg, Ctx, Field, InputType, Mutation, Resolver } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Field,
+  InputType,
+  Mutation,
+  Query,
+  Resolver,
+} from "type-graphql";
 import { MyContext } from "../MyContext";
 @InputType()
 class EmployeeInput {
@@ -48,5 +56,13 @@ export class EmployeeResolver {
     console.log("catChild", catChild);
 
     return await conn.manager.save(catChild);
+  }
+
+  @Query(() => [Employee])
+  async getEmployeesByCategory(@Arg("catId") catId: number) {
+    return Employee.find({
+      relations: ["sectors"],
+      where: { categoryId: catId },
+    });
   }
 }

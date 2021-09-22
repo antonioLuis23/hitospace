@@ -2,6 +2,8 @@ import { Category } from "../entities/Category";
 import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
 import { getManager } from "typeorm";
 import { CompanyLayout } from "../entities/CompanyLayout";
+import { getConnection } from "typeorm";
+import { Employee } from "src/entities/Employee";
 
 @InputType()
 class CategoryInput {
@@ -36,6 +38,18 @@ class SubCategoryInput {
   textColor: string;
 }
 
+const getEmployeeByCategory = async (catId: number): Promise<Employee[]> => {
+  return getConnection().query(
+    `
+  select emp.* 
+  from employee emp
+  join employee_sectors_category empcat on (emp.id = empcat."employeeId")
+  where empcat."categoryId" = $1
+
+  `,
+    [catId]
+  ) as Promise<Employee[]>;
+};
 @Resolver(Category)
 @Resolver(CompanyLayout)
 export class CategoryResolver {
@@ -43,6 +57,17 @@ export class CategoryResolver {
   async categories() {
     const manager = getManager();
     const trees = await manager.getTreeRepository(Category).findTrees();
+    for (let i = 0; i < trees.length; i++) {
+      trees[i]["employees"] = await getEmployeeByCategory(trees[i].id);
+      if (trees[i].catChildren.length > 0) {
+        for (let j = 0; j < trees[i].catChildren.length; j++) {
+          const catChildrenEmp = await getEmployeeByCategory(
+            trees[i].catChildren[j].id
+          );
+          trees[i].catChildren[j]["employees"] = catChildrenEmp;
+        }
+      }
+    }
     return trees;
   }
 
