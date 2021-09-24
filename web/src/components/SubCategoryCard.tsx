@@ -1,33 +1,48 @@
 import { Box, Flex, Heading } from "@chakra-ui/layout";
-import { Grid } from "@chakra-ui/react";
-import React from "react";
-import { Category, Maybe } from "../generated/graphql";
+import React, { useState } from "react";
+import { CategoriesQuery, Category, Maybe } from "../generated/graphql";
+import EmployeeContainer from "./EmployeesContainer";
 
-interface CategoryType {
-  id: number;
-  name: string;
-  bgColor: string;
-  textColor: string;
-  description: string;
+interface SubCategoryType {
+  subCategory: CategoriesQuery["categories"][0];
+  zoomFunction: any;
 }
-const SubCategoryComp: React.FC<CategoryType> = (props) => {
+const SubCategoryComp: React.FC<SubCategoryType> = (props) => {
+  const [openPanel, setOpenPanel] = useState(false);
+
   return (
-    <Box
-      bg={props.bgColor}
-      textAlign="center"
-      key={props.id}
-      padding="1rem"
-      boxShadow="0 2px 6px"
-      transition="all 0.2s ease-in-out"
-      _hover={{
-        background: "rgba(0,0,0,.1)",
-      }}
-    >
-      <Flex flexDirection="column" justifyContent="center">
-        <Heading as="h3" color={props.textColor} size="md">
-          {props.name}
-        </Heading>
-      </Flex>
+    <Box>
+      <Box
+        px={4}
+        bg="#F8F8F8"
+        textAlign="center"
+        py={openPanel ? "0.1rem" : "1rem"}
+        key={props.subCategory.id}
+        boxShadow="md"
+        borderRadius="md"
+        transition="all 0.2s ease-in-out"
+        _hover={{
+          boxShadow: "lg",
+        }}
+        onClick={(e) => {
+          const target: any = e.target;
+          console.log("innerText", target.innerText);
+          console.log("subCategory.name", props.subCategory.name);
+          if (target.innerText.includes(props.subCategory.name)) {
+            props.zoomFunction(e.target, undefined, 200);
+            setOpenPanel((prevState) => !prevState);
+          }
+        }}
+      >
+        <Flex flexDirection="column" justifyContent="center">
+          <Heading as="h3" color="#343434" size={openPanel ? "xs" : "md"}>
+            {props.subCategory.name}
+          </Heading>
+          {openPanel && (
+            <EmployeeContainer employees={props.subCategory.employees} />
+          )}
+        </Flex>
+      </Box>
     </Box>
   );
 };

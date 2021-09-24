@@ -172,7 +172,6 @@ const withApollo = (PageComponent, { ssr = true } = {}) => {
 
       // Extract query data from the Apollo store
       const apolloState = apolloClient.cache.extract();
-      console.log("apolloState:", apolloState);
 
       return {
         ...pageProps,

@@ -9,20 +9,20 @@ interface EmployeeContainerType {
 }
 const EmployeeContainer: React.FC<EmployeeContainerType> = (props) => {
   const employeeCards = (
-    <Grid gridTemplateColumns="repeat(auto-fit, minmax(15rem, 3fr));" gap={3}>
+    <Grid gridTemplateColumns="repeat(auto-fit, minmax(1rem, 3fr));" gap={3}>
       {props.employees &&
         props.employees.map((sub) => (
           <Box key={sub.id}>
             <Box>
               <Image
-                src="/assets/icons/person-white-48dp.svg"
+                src="/assets/icons/person-black-48dp.svg"
                 alt="Person icon"
                 width="20px"
                 height="20px"
               />
             </Box>
             <Box>
-              <Text fontSize="xs" color="white">
+              <Text fontSize="xs" color="black">
                 {sub.name}
               </Text>
             </Box>

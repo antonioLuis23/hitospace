@@ -59,7 +59,7 @@ const AddCategory = () => {
                 label="Descrição"
               />
             </Box>
-            <Grid templateColumns="repeat(2, 1fr)">
+            {/* <Grid templateColumns="repeat(2, 1fr)">
               <Box mt={4} mr={4}>
                 <Text mb={4}>Selecione a cor de fundo do setor</Text>
                 <HexColorPicker color={bgColor} onChange={setBgColor} />
@@ -68,7 +68,7 @@ const AddCategory = () => {
                 <Text mb={4}>Selecione a cor de texto do setor</Text>
                 <HexColorPicker color={textColor} onChange={setTextColor} />
               </Box>
-            </Grid>
+            </Grid> */}
             <Button
               mt={4}
               type="submit"

@@ -7,6 +7,7 @@ import withApollo from "../lib/apollo";
 import Head from "next/head";
 import Script from "next/script";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import EmployeeCard from "../components/EmployeeCard";
 const Index = () => {
   const { data: dataMe, loading: loadingMe } = useMeQuery({
     fetchPolicy: "no-cache",
@@ -26,6 +27,7 @@ const Index = () => {
   if (!loading && data) console.log("data:", data);
   return (
     <React.Fragment>
+      {/* <EmployeeCard /> */}
       <Layout variant="large">
         <TransformWrapper
           initialScale={1}
@@ -41,7 +43,18 @@ const Index = () => {
                 <button onClick={() => resetTransform()}>x</button>
               </div>
               <TransformComponent>
-                <Box width="92vw" height="90vh">
+                <Box
+                  width="92vw"
+                  height="90vh"
+                  onClick={(e) => {
+                    const target: any = e.target;
+                    console.log("body innerText", target.id);
+                    if (target.id === "bodyContainer") {
+                      resetTransform();
+                    }
+                  }}
+                  id="bodyContainer"
+                >
                   {loading && !data ? (
                     <div>loading...</div>
                   ) : (

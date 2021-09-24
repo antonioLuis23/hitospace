@@ -12,51 +12,56 @@ interface CategoryPropsType {
 }
 const CategoryCard: React.FC<CategoryPropsType> = (props) => {
   let renderSubCat = null;
-  const [openSubCat, setOpenSubCat] = useState(false);
-  if (props.cat.catChildren.length > 0 && openSubCat) {
+  const [openPanel, setOpenPanel] = useState(false);
+  if (props.cat.catChildren.length > 0 && openPanel) {
     renderSubCat = (
-      <Grid mt={10} mx={5} templateColumns="repeat(2,1fr)" gap={2}>
+      <Grid mt={2} mx={5} templateColumns="repeat(2,1fr)" gap={2}>
         {props.cat.catChildren &&
           props.cat.catChildren.map((sub) => (
             <SubCategoryCard
-              bgColor={sub.bgColor}
-              textColor={sub.textColor}
-              name={sub.name}
-              description={sub.description}
-              id={sub.id}
               key={sub.id}
+              subCategory={sub}
+              zoomFunction={props.zoomFunction}
             />
           ))}
       </Grid>
     );
   }
   let renderEmployees = null;
-  if (props.cat.employees.length > 0 && openSubCat) {
+  if (props.cat.employees.length > 0 && openPanel) {
     renderEmployees = <EmployeeContainer employees={props.cat.employees} />;
   }
 
   return (
     <Box
-      bg={props.cat.bgColor}
+      // bg={props.cat.bgColor}
+      bg="#F8F8F8"
       textAlign="center"
       key={props.cat.id}
-      py={openSubCat ? "0.5rem" : "2.5rem"}
+      py={openPanel ? "0.5rem" : "2.5rem"}
       cursor="pointer"
       transition="all 0.2s ease-in-out"
+      // boxShadow="2px 2px 13px rgba(0, 0, 0, 0.11)"
+      boxShadow="md"
+      borderRadius="md"
       _hover={{
-        boxShadow: "2xl",
+        boxShadow: "lg",
       }}
       onClick={(e) => {
-        console.log("e;::", e.target);
-        props.zoomFunction(e.target, undefined, 200);
-        setOpenSubCat((prevState) => !prevState);
+        const target: any = e.target;
+        console.log("e;::", target.innerText);
+        if (target.innerText.includes(props.cat.name)) {
+          props.zoomFunction(target, undefined, 200);
+          setOpenPanel((prevState) => !prevState);
+        }
       }}
     >
       <Flex flexDirection="column" justifyContent="center">
         <Heading
           as="h2"
-          color={props.cat.textColor}
-          size={openSubCat ? "sm" : "lg"}
+          // color={props.cat.textColor}
+          color="#343434"
+          size={openPanel ? "sm" : "lg"}
         >
           {props.cat.name}
         </Heading>

@@ -8,6 +8,7 @@ import {
   namedOperations,
 } from "../../generated/graphql";
 import { setAccessToken } from "../../lib/accessToken";
+import { ColorModeSwitcher } from "../ColorModeSwitcher";
 interface NavBarProps {}
 
 const NavBar: React.FC<NavBarProps> = ({}) => {
@@ -34,6 +35,7 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
   } else {
     body = (
       <Flex>
+        <ColorModeSwitcher />
         <Box mr={2}>{data.me.username}</Box>
         <NextLink href="/">
           <Button variant="link" color="white" mr={4}>
