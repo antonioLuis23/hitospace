@@ -4,10 +4,9 @@ import { useCategoriesQuery, useMeQuery } from "../generated/graphql";
 import CategoryCard from "../components/CategoryCard";
 import Layout from "../components/UI/Layout";
 import withApollo from "../lib/apollo";
-import Head from "next/head";
-import Script from "next/script";
+
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import EmployeeCard from "../components/EmployeeCard";
+import EmployeeCard from "../components/Employee/EmployeeCard";
 const Index = () => {
   const { data: dataMe, loading: loadingMe } = useMeQuery({
     fetchPolicy: "no-cache",

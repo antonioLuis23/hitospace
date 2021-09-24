@@ -3,7 +3,7 @@ import { Grid } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { ReactZoomPanPinchContext } from "react-zoom-pan-pinch";
 import { CategoriesQuery } from "../generated/graphql";
-import EmployeeContainer from "./EmployeesContainer";
+import EmployeeContainer from "./Employee/EmployeesContainer";
 import SubCategoryCard from "./SubCategoryCard";
 
 interface CategoryPropsType {

@@ -7,10 +7,10 @@ const EmployeeCard = () => {
   return (
     <Flex
       bg={useColorModeValue("#F9FAFB", "gray.600")}
-      p={50}
       w="full"
       alignItems="center"
       justifyContent="center"
+      rounded="lg"
     >
       <Box
         w="sm"

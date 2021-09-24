@@ -1,7 +1,7 @@
 import { Box, Flex, Heading } from "@chakra-ui/layout";
 import React, { useState } from "react";
 import { CategoriesQuery, Category, Maybe } from "../generated/graphql";
-import EmployeeContainer from "./EmployeesContainer";
+import EmployeeContainer from "./Employee/EmployeesContainer";
 
 interface SubCategoryType {
   subCategory: CategoriesQuery["categories"][0];
