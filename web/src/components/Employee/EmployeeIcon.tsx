@@ -10,9 +10,9 @@ import {
   ModalOverlay,
   Portal,
   Text,
+  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-
 import React from "react";
 import Image from "next/image";
 import { CategoriesQuery } from "../../generated/graphql";
@@ -25,17 +25,30 @@ const EmployeeIcon: React.FC<EmployeeInfoType> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <React.Fragment>
-      <Box key={props.employee.id} onClick={onOpen}>
+      <Box
+        key={props.employee.id}
+        onClick={onOpen}
+        borderRadius={"md"}
+        boxShadow={"md"}
+        width="4rem"
+        placeSelf="center"
+        padding="3px"
+        // boxShadow={"md"}
+        // borderRadius={"md"}
+      >
         <Box>
           <Image
-            src="/assets/icons/person-black-48dp.svg"
+            src={useColorModeValue(
+              "/assets/icons/person-black-48dp.svg",
+              "/assets/icons/person-white-48dp.svg"
+            )}
             alt="Person icon"
             width="20px"
             height="20px"
           />
         </Box>
         <Box>
-          <Text fontSize="xs" color="black">
+          <Text fontSize="xs" color={useColorModeValue("gray.700", "gray.50")}>
             {props.employee.name}
           </Text>
         </Box>
@@ -44,7 +57,7 @@ const EmployeeIcon: React.FC<EmployeeInfoType> = (props) => {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent width="23%">
-            <EmployeeCard />
+            <EmployeeCard employee={props.employee} />
           </ModalContent>
         </Modal>
       </Portal>

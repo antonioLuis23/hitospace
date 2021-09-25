@@ -40,6 +40,18 @@ export class Employee extends BaseEntity {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
+  locationCountry: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  locationState: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  locationCity: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   chat: string;
 
   @ManyToMany(() => Category, (category) => category.employees, {

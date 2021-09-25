@@ -3,7 +3,13 @@ import { useColorModeValue, Icon, chakra, Image } from "@chakra-ui/react";
 import React from "react";
 import { MdHeadset, MdEmail, MdLocationOn } from "react-icons/md";
 import { BsFillBriefcaseFill } from "react-icons/bs";
-const EmployeeCard = () => {
+import { CategoriesQuery } from "../../generated/graphql";
+
+interface EmployeeCardType {
+  employee: CategoriesQuery["categories"][0]["employees"][0];
+}
+
+const EmployeeCard: React.FC<EmployeeCardType> = (props) => {
   return (
     <Flex
       bg={useColorModeValue("#F9FAFB", "gray.600")}
@@ -35,7 +41,7 @@ const EmployeeCard = () => {
             fontWeight="bold"
             color={useColorModeValue("white", "white")}
           >
-            Patterson johnson
+            {props.employee.name}
           </chakra.h1>
         </Flex>
 

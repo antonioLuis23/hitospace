@@ -24,7 +24,7 @@ const main = async () => {
     username: "postgres",
     password: "postgres",
     logging: true,
-    synchronize: true,
+    synchronize: true, //colocar false em produção e usar migrations
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Category, Employee, User, CompanyLayout],
   });

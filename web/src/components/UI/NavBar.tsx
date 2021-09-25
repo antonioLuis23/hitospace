@@ -9,6 +9,8 @@ import {
 } from "../../generated/graphql";
 import { setAccessToken } from "../../lib/accessToken";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
+import NavNotLoggedIn from "./NavNotLoggedIn";
+import NavLoggedIn from "./NavLoggedIn";
 interface NavBarProps {}
 
 const NavBar: React.FC<NavBarProps> = ({}) => {
@@ -21,50 +23,51 @@ const NavBar: React.FC<NavBarProps> = ({}) => {
   if (loading) {
   } else if (!data?.me) {
     body = (
-      <Fragment>
-        <NextLink href="/login">
-          <Link color="white" mr={2}>
-            Login
-          </Link>
-        </NextLink>
-        <NextLink href="/register">
-          <Link color="white">Register</Link>
-        </NextLink>
-      </Fragment>
+      // <Fragment>
+      //   <NextLink href="/login">
+      //     <Link color="white" mr={2}>
+      //       Login
+      //     </Link>
+      //   </NextLink>
+      //   <NextLink href="/register">
+      //     <Link color="white">Register</Link>
+      //   </NextLink>
+      // </Fragment>
+      <NavNotLoggedIn />
     );
   } else {
     body = (
-      <Flex>
-        <ColorModeSwitcher />
-        <Box mr={2}>{data.me.username}</Box>
-        <NextLink href="/">
-          <Button variant="link" color="white" mr={4}>
-            Início
-          </Button>
-        </NextLink>
-        <NextLink href="/admin">
-          <Button variant="link" color="white" mr={4}>
-            Admin
-          </Button>
-        </NextLink>
-        <Button
-          onClick={async () => {
-            console.log("entrou button logout click");
-            setAccessToken("");
-            await logout();
-          }}
-          isLoading={logoutFetching}
-          variant="link"
-        >
-          Logout
-        </Button>
-      </Flex>
+      <NavLoggedIn />
+      //   <Flex>
+      //     <ColorModeSwitcher />
+      //     <Box mr={2}>{data.me.username}</Box>
+      //     <NextLink href="/">
+      //       <Button variant="link" color="white" mr={4}>
+      //         Início
+      //       </Button>
+      //     </NextLink>
+      //     <NextLink href="/admin">
+      //       <Button variant="link" color="white" mr={4}>
+      //         Admin
+      //       </Button>
+      //     </NextLink>
+      //     <Button
+      //       onClick={async () => {
+      //         console.log("entrou button logout click");
+      //         setAccessToken("");
+      //         await logout();
+      //       }}
+      //       isLoading={logoutFetching}
+      //       variant="link"
+      //     >
+      //       Logout
+      //     </Button>
+      //   </Flex>
     );
   }
-  return (
-    <Flex zIndex={2} position="sticky" top={0} bg="tan" p={4}>
-      <Box ml={"auto"}>{body}</Box>
-    </Flex>
-  );
+  return <React.Fragment>{body}</React.Fragment>;
+  // <Flex zIndex={2} position="sticky" top={0} bg="tan" p={4}>
+  //   <Box ml={"auto"}>{body}</Box>
+  // </Flex>
 };
 export default NavBar;

@@ -53,7 +53,6 @@ export class EmployeeResolver {
       sectors: catParents,
       ...newInput,
     });
-    console.log("catChild", catChild);
 
     return await conn.manager.save(catChild);
   }

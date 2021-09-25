@@ -30,7 +30,6 @@ export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
     console.log("token::", token);
     const payload = verify(token, process.env.ACCESS_TOKEN_SECRET!);
     let user = await User.findOne((payload! as any).userId);
-    console.log("user:::", user);
     if (!user) {
       return next();
     }
