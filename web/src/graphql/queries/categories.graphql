@@ -1,10 +1,8 @@
-query Categories {
-  categories {
+query Categories($layoutId: Int!) {
+  categories(layoutId: $layoutId) {
     name
     description
     id
-    bgColor
-    textColor
     employees {
       ...RegularEmployee
     }
@@ -12,8 +10,6 @@ query Categories {
       name
       id
       description
-      bgColor
-      textColor
       employees {
         ...RegularEmployee
       }

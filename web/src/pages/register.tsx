@@ -8,13 +8,14 @@ import { toErrorMap } from "../utils/toErrorMap";
 import { useRouter } from "next/router";
 import { Wrapper } from "../components/UI/Wrapper";
 import withApollo from "../lib/apollo";
+import Layout from "../components/UI/Layout";
 interface registerProps {}
 
 export const Register: React.FC<registerProps> = ({}) => {
   const router = useRouter();
   const [register] = useRegisterMutation();
   return (
-    <Wrapper variant="small">
+    <Layout variant="small">
       <Formik
         initialValues={{ email: "", username: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
@@ -60,7 +61,7 @@ export const Register: React.FC<registerProps> = ({}) => {
           </Form>
         )}
       </Formik>
-    </Wrapper>
+    </Layout>
   );
 };
 

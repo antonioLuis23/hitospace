@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../components/InputField";
+import Layout from "../components/UI/Layout";
 import { Wrapper } from "../components/UI/Wrapper";
 import { useLoginMutation } from "../generated/graphql";
 import { setAccessToken } from "../lib/accessToken";

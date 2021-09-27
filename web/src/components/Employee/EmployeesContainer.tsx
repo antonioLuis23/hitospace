@@ -14,6 +14,7 @@ const EmployeeContainer: React.FC<EmployeeContainerType> = (props) => {
       gridTemplateColumns="repeat(auto-fit, minmax(4rem, 3fr))"
       mt={2}
       gap={1}
+      width="100%"
     >
       {props.employees &&
         props.employees.map((sub) => (

@@ -4,7 +4,7 @@ import { verify } from "jsonwebtoken";
 import { User } from "./entities/User";
 
 export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
-  // console.log("context.req.headers", context.req.headers);
+  console.log("context.req.headers", context.req.headers);
   const authorization = context.req.headers["authorization"];
 
   // EXCLUIR ISSO EM PRODUÇÃO
@@ -29,13 +29,14 @@ export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
     const token = (<any>authorization).split(" ")[1];
     console.log("token::", token);
     const payload = verify(token, process.env.ACCESS_TOKEN_SECRET!);
+    console.log("passed verification");
     let user = await User.findOne((payload! as any).userId);
     if (!user) {
       return next();
     }
     context.payload = payload as any;
   } catch (err) {
-    console.log(err);
+    console.log("erro no token:", err);
     context.payload = { userId: "" };
   }
   return next();

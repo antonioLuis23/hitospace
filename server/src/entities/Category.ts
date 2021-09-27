@@ -31,14 +31,6 @@ export class Category extends BaseEntity {
   @Column({ nullable: true })
   description: string;
 
-  @Field()
-  @Column()
-  bgColor: string;
-
-  @Field()
-  @Column()
-  textColor: string;
-
   // @Field({ nullable: true })
   @TreeParent()
   parent: Category;
@@ -46,6 +38,10 @@ export class Category extends BaseEntity {
   @Field(() => [Employee], { nullable: true })
   @ManyToMany(() => Employee, (employee) => employee.sectors)
   employees: Employee[];
+
+  @Field()
+  @Column()
+  layoutId: number;
 
   @Field(() => CompanyLayout)
   @ManyToOne(() => CompanyLayout, (layout) => layout.categories)

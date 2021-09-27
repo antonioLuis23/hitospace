@@ -6,8 +6,8 @@ import {
   useAddEmployeeMutation,
   useCategoriesQuery,
   useLayoutsQuery,
-} from "../generated/graphql";
-import { InputField } from "./InputField";
+} from "../../generated/graphql";
+import { InputField } from "../InputField";
 const AddCategory = () => {
   const changeCategoryHandler = (e) => {
     let index = dataCategories.categories.findIndex(

@@ -15,7 +15,7 @@ import NextLink from "next/link";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
 
 const NavNotLoggedIn = () => {
-  const bg = useColorModeValue("#F8F8F8", "gray.800");
+  const bg = useColorModeValue("#F8F8F8", "#131823");
   const mobileNav = useDisclosure();
 
   return (
@@ -31,14 +31,14 @@ const NavNotLoggedIn = () => {
           <Flex>
             <chakra.a
               href="/"
-              title="Vesospace Home Page"
+              title="Kurospace Home Page"
               display="flex"
               alignItems="center"
             >
-              <VisuallyHidden>Vesospace</VisuallyHidden>
+              <VisuallyHidden>Kurospace</VisuallyHidden>
 
               <chakra.h1 fontSize="xl" fontWeight="medium" ml="2">
-                Vesospace
+                Kurospace
               </chakra.h1>
             </chakra.a>
           </Flex>
@@ -53,11 +53,9 @@ const NavNotLoggedIn = () => {
             >
               <Button variant="ghost">Recursos</Button>
               <Button variant="ghost">Blog</Button>
-              <Button variant="ghost">
-                <Link as={NextLink} href="/login">
-                  Login
-                </Link>
-              </Button>
+              <Link as={NextLink} href="/login">
+                <Button variant="ghost">Login</Button>
+              </Link>
             </HStack>
             <Button colorScheme="gray" size="sm">
               <Link as={NextLink} href="/register">
@@ -101,11 +99,11 @@ const NavNotLoggedIn = () => {
                 <Button w="full" variant="ghost">
                   Blog
                 </Button>
-                <Button w="full" variant="ghost">
-                  <Link as={NextLink} href="/login">
+                <Link as={NextLink} href="/login">
+                  <Button w="full" variant="ghost">
                     Login
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </VStack>
             </Box>
           </HStack>

@@ -43,7 +43,7 @@ const Hero = () => {
           fontSize={{ base: "lg", md: "xl" }}
           color={useColorModeValue("gray.600", "gray.300")}
         >
-          Vesospace é um aplicativo que permite reunir informação de todos os
+          Kurospace é um aplicativo que permite reunir informação de todos os
           colaboradores da empresa dividido por setores além de permitir você
           receber insights sobre a evolução de cada um.
           {/* Hellonext is a feature voting software where you can allow your users

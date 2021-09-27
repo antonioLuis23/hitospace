@@ -1,29 +1,28 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Flex, Grid } from "@chakra-ui/layout";
-import { Spinner } from "@chakra-ui/react";
+import { Flex, Box, Grid, Text } from "@chakra-ui/layout";
+import { Spinner } from "@chakra-ui/spinner";
+import { useRouter } from "next/router";
 import React from "react";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import CategoryCard from "../components/CategoryCard";
-import Hero from "../components/UI/Hero";
-import Layout from "../components/UI/Layout";
-import { useCategoriesQuery, useMeQuery } from "../generated/graphql";
-import withApollo from "../lib/apollo";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import CategoryCard from "../../components/CategoryCard";
+import Layout from "../../components/UI/Layout";
+import { useCategoriesQuery } from "../../generated/graphql";
 
-const Index = () => {
-  const { data: dataMe, loading: loadingMe } = useMeQuery({
-    fetchPolicy: "no-cache",
+const CategoriesById = () => {
+  const router = useRouter();
+  const intId =
+    typeof router.query.id === "string" ? parseInt(router.query.id) : -1;
+
+  const { data, loading } = useCategoriesQuery({
+    skip: intId === -1,
+    variables: { layoutId: intId },
   });
-  const { data, loading } = useCategoriesQuery({ variables: { layoutId: 4 } });
-
-  if (!dataMe?.me && !loading) {
-    return (
-      <Layout>
-        <Hero />
-      </Layout>
-    );
+  if (loading && !data) {
+    return <Text>Carregando...</Text>;
   }
-
-  if (!loading && data) console.log("data:", data);
+  if (!loading && !data) {
+    return <Text>Sem dados</Text>;
+  }
   return (
     <React.Fragment>
       {/* <EmployeeCard /> */}
@@ -97,4 +96,4 @@ const Index = () => {
   );
 };
 
-export default withApollo(Index);
+export default CategoriesById;

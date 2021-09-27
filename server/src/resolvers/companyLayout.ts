@@ -44,11 +44,13 @@ export class CompanyLayoutResolver {
     @Ctx() { payload }: MyContext
   ): Promise<CompanyLayout | null> {
     if (payload!.userId === "" || payload!.userId === undefined) {
+      console.log("not logged in!!!");
       return null;
     }
 
     let user = await User.findOne(payload!.userId);
     if (!user) {
+      console.log("no user!!!");
       return null;
     }
     return CompanyLayout.create({

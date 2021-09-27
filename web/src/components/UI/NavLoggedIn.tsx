@@ -26,9 +26,9 @@ import NextLink from "next/link";
 import { setAccessToken } from "../../lib/accessToken";
 import { useLogoutMutation, namedOperations } from "../../generated/graphql";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
-
+import Router from "next/router";
 const NavLoggedIn = () => {
-  const bg = useColorModeValue("#F8F8F8", "gray.800");
+  const bg = useColorModeValue("#F8F8F8", "#131823");
   const mobileNav = useDisclosure();
   const [logout, { loading: logoutFetching }] = useLogoutMutation({
     refetchQueries: [namedOperations.Query.Me],
@@ -75,21 +75,21 @@ const NavLoggedIn = () => {
                   justifySelf="self-start"
                   onClick={mobileNav.onClose}
                 />
-                <Button w="full" variant="ghost" leftIcon={<AiFillHome />}>
-                  <Link as={NextLink} href="/">
+                <Link as={NextLink} href="/">
+                  <Button w="full" variant="ghost" leftIcon={<AiFillHome />}>
                     Início
-                  </Link>
-                </Button>
-                <Button
-                  w="full"
-                  variant="solid"
-                  colorScheme="brand"
-                  leftIcon={<FaTools />}
-                >
-                  <Link as={NextLink} href="/admin">
+                  </Button>
+                </Link>
+                <Link as={NextLink} href="/admin">
+                  <Button
+                    w="full"
+                    variant="solid"
+                    colorScheme="brand"
+                    leftIcon={<FaTools />}
+                  >
                     Admin
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
                 {/* <Button
                   w="full"
                   variant="ghost"
@@ -101,33 +101,33 @@ const NavLoggedIn = () => {
             </Box>
             <chakra.a
               href="/"
-              title="Vesospace Home Page"
+              title="Kurospace Home Page"
               display="flex"
               alignItems="center"
             >
-              <VisuallyHidden>Vesospace</VisuallyHidden>
+              <VisuallyHidden>Kurospace</VisuallyHidden>
 
               <chakra.h1 fontSize="xl" fontWeight="medium" ml="2">
-                Vesospace
+                Kurospace
               </chakra.h1>
             </chakra.a>
 
             <HStack spacing={3} display={{ base: "none", md: "inline-flex" }}>
-              <Button variant="ghost" leftIcon={<AiFillHome />} size="sm">
-                <Link as={NextLink} href="/">
+              <Link as={NextLink} href="/">
+                <Button variant="ghost" leftIcon={<AiFillHome />} size="sm">
                   Início
-                </Link>
-              </Button>
-              <Button
-                variant="solid"
-                colorScheme="gray"
-                leftIcon={<FaTools />}
-                size="sm"
-              >
-                <Link as={NextLink} href="/admin">
+                </Button>
+              </Link>
+              <Link as={NextLink} href="/admin">
+                <Button
+                  variant="solid"
+                  colorScheme="gray"
+                  leftIcon={<FaTools />}
+                  size="sm"
+                >
                   Admin
-                </Link>
-              </Button>
+                </Button>
+              </Link>
               {/* <Button
                 variant="ghost"
                 leftIcon={<BsFillCameraVideoFill />}
@@ -169,6 +169,7 @@ const NavLoggedIn = () => {
                 console.log("entrou button logout click");
                 setAccessToken("");
                 await logout();
+                Router.replace("/");
               }}
               isLoading={logoutFetching}
             >

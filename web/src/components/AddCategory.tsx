@@ -24,8 +24,6 @@ const AddCategory = () => {
           const response = await addCategory({
             variables: {
               input: {
-                bgColor,
-                textColor,
                 layoutId: parseInt(parentLayout),
                 ...values,
               },
