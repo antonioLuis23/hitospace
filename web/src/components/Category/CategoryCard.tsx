@@ -7,6 +7,8 @@ import Card from "../UI/Card";
 import AddCategoryButton from "./AddCategoryButton";
 import AddCategoryModal from "./AddCategoryModal";
 import { ApolloQueryResult } from "@apollo/client";
+import { IoMdPersonAdd } from "react-icons/io";
+import AddEmployeeModal from "../Employee/AddEmployeeModal";
 
 interface CategoryPropsType {
   cat: CategoriesQuery["categories"][0];
@@ -38,6 +40,11 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   let renderSubCat = null;
   const [openPanel, setOpenPanel] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isAddEmployeeOpen,
+    onOpen: onAddEmployeeOpen,
+    onClose: onAddEmployeeClose,
+  } = useDisclosure();
 
   const clickCategoryCard = (e) => {
     const target: any = e.target;
@@ -89,7 +96,7 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   }
 
   let renderEmployees = null;
-  if ((cat.employees.length > 0 && openPanel) || (isEditable && openPanel)) {
+  if (cat.employees.length > 0 && openPanel) {
     renderEmployees = (
       <EmployeeContainer
         employees={cat.employees}
@@ -101,22 +108,32 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   }
 
   return (
-    <Card
-      title={cat.name}
-      keyId={cat.id}
-      clickFunction={clickCategoryCard}
-      sizeHeading={openPanel ? sizeHeadingOpen : sizeHeadingClose}
-      sizePy={openPanel ? sizePyOpen : sizePyClose}
-    >
-      <AddCategoryModal
-        isOpen={isOpen}
-        onClose={onClose}
+    <React.Fragment>
+      <AddEmployeeModal
+        isOpen={isAddEmployeeOpen}
+        onClose={onAddEmployeeClose}
         refetchCategory={refetchCategory}
         parentId={cat.id}
       />
-      {renderEmployees}
-      {renderSubCat}
-    </Card>
+      <Card
+        title={cat.name}
+        keyId={cat.id}
+        clickFunction={clickCategoryCard}
+        onClickAddPerson={onAddEmployeeOpen}
+        sizeHeading={openPanel ? sizeHeadingOpen : sizeHeadingClose}
+        sizePy={openPanel ? sizePyOpen : sizePyClose}
+        isEditable={isEditable}
+      >
+        <AddCategoryModal
+          isOpen={isOpen}
+          onClose={onClose}
+          refetchCategory={refetchCategory}
+          parentId={cat.id}
+        />
+        {renderEmployees}
+        {renderSubCat}
+      </Card>
+    </React.Fragment>
   );
 };
 

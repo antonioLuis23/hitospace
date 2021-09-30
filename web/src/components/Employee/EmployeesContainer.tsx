@@ -1,4 +1,4 @@
-import { Grid, Box } from "@chakra-ui/layout";
+import { Grid, Box, Flex } from "@chakra-ui/layout";
 import { Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { CategoriesQuery, Exact } from "../../generated/graphql";
@@ -30,23 +30,18 @@ const EmployeeContainer: React.FC<EmployeeContainerType> = ({
 
   const employeeCards = (
     <React.Fragment>
-      <AddEmployeeModal
-        isOpen={isOpen}
-        onClose={onClose}
-        refetchCategory={refetchCategory}
-        parentId={parentId}
-      />
-      {isEditable && <AddEmployeeButton onClickButton={onOpen} />}
+      {/* {isEditable && <AddEmployeeButton onClickButton={onOpen} />} */}
 
-      <Grid
-        gridTemplateColumns="repeat(auto-fit, minmax(4rem, 3fr))"
+      <Flex
+        // gridTemplateColumns="repeat(auto-fit, minmax(4rem, 3fr))"
+        justifyContent="center"
         mt={2}
-        gap={1}
-        width="100%"
+        width="90%"
+        sx={{ gap: "10px" }}
       >
         {employees &&
           employees.map((sub) => <EmployeeIcon key={sub.id} employee={sub} />)}
-      </Grid>
+      </Flex>
     </React.Fragment>
   );
   return employeeCards;

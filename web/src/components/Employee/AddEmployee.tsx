@@ -1,6 +1,6 @@
 import { ApolloQueryResult } from "@apollo/client";
 import { Box, Text } from "@chakra-ui/layout";
-import { Button, Grid, Select } from "@chakra-ui/react";
+import { Button, Grid, Select, useToast } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import React, { useState } from "react";
 import {
@@ -24,11 +24,12 @@ interface AddEmployeeType {
   parentId?: number;
 }
 
-const AddCategory: React.FC<AddEmployeeType> = ({
+const AddEmployee: React.FC<AddEmployeeType> = ({
   closeModal,
   refetchCategory,
   parentId,
 }) => {
+  const toast = useToast();
   const submitFormHandler = async (values) => {
     const response = await addEmployee({
       variables: {
@@ -41,6 +42,16 @@ const AddCategory: React.FC<AddEmployeeType> = ({
     console.log("response:", response);
     refetchCategory();
     closeModal();
+    if (response.data.addEmployee) {
+      toast({
+        title: "Pessoa Adicionada!",
+        // description: "We've created your account for you.",
+        status: "success",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+    }
     return response;
   };
 
@@ -93,4 +104,4 @@ const AddCategory: React.FC<AddEmployeeType> = ({
   );
 };
 
-export default AddCategory;
+export default AddEmployee;

@@ -31,6 +31,7 @@ const EmployeeIcon: React.FC<EmployeeInfoType> = (props) => {
         borderRadius={"md"}
         boxShadow={"md"}
         width="4rem"
+        height="4rem"
         placeSelf="center"
         padding="3px"
         // boxShadow={"md"}
