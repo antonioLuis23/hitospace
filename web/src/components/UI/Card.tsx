@@ -9,11 +9,17 @@ interface CardType {
   keyId: number | string;
   sizeHeading: string;
   sizePy: string;
+  sizeIcon?: string;
+  margin?: string;
+  width?: string;
   IconCard?: IconType;
 }
 const Card: React.FC<CardType> = ({
   title = "",
   IconCard = null,
+  sizeIcon = "2.5rem",
+  margin = "initial",
+  width = "100%",
   ...props
 }) => {
   return (
@@ -22,16 +28,18 @@ const Card: React.FC<CardType> = ({
       textAlign="center"
       key={props.keyId}
       py={props.sizePy}
+      width={width}
+      margin={margin}
       cursor="pointer"
       transition="all 0.2s ease-in-out"
       boxShadow={useColorModeValue(
         "md",
-        "2px 3px 9px 0px rgb(97 106 209 / 16%)"
+        "1px 1px 5px 0px rgb(97 106 209 / 11%)"
       )}
       borderRadius="md"
       _hover={useColorModeValue(
         { boxShadow: "lg" },
-        { boxShadow: "4px 5px 9px 0px rgb(97 106 209 / 16%)" }
+        { boxShadow: "2px 3px 6px 0px rgb(97 106 209 / 14%)" }
       )}
       onClick={props.clickFunction}
     >
@@ -42,7 +50,7 @@ const Card: React.FC<CardType> = ({
         height="100%"
       >
         {IconCard ? (
-          <IconCard size="2.5rem" />
+          <IconCard size={sizeIcon} />
         ) : (
           <Heading
             as="h2"

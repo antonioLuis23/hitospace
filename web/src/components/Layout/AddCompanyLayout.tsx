@@ -1,7 +1,7 @@
 import { Box, Grid, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { useLayoutsQuery } from "../../generated/graphql";
-import AddCardButton from "./AddCardButton";
+import AddLayoutButton from "./AddLayoutButton";
 import LayoutCard from "./LayoutCard";
 import ModalAddLayout from "./ModalAddLayout";
 
@@ -25,7 +25,7 @@ const AddCompanyLayout = () => {
             data.layouts.map((layout) => (
               <LayoutCard key={layout.id} layout={layout} />
             ))}
-          <AddCardButton onClickButton={onOpen} />
+          <AddLayoutButton onClickButton={onOpen} />
           <ModalAddLayout
             isOpen={isOpen}
             onClose={onClose}

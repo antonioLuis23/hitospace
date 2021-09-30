@@ -2,7 +2,7 @@ import { Box, Flex, Heading } from "@chakra-ui/layout";
 import { useColorModeValue } from "@chakra-ui/system";
 import React from "react";
 import { LayoutsQuery } from "../../generated/graphql";
-import Card from "./Card";
+import Card from "../UI/Card";
 import { useRouter } from "next/router";
 
 interface CompanyLayoutType {

@@ -128,7 +128,6 @@ export class CategoryResolver {
           let catChild = Category.create({
             ...newInput,
             parent: catParent,
-            layout: companyLayout,
           });
           return catChild.save();
         } else {

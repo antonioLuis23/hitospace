@@ -1,11 +1,11 @@
 import React from "react";
-import Card from "./Card";
+import Card from "../UI/Card";
 import { IoMdAdd } from "react-icons/io";
 
-interface AddCardButtonType {
+interface AddLayoutButtonType {
   onClickButton: () => void;
 }
-const AddCardButton: React.FC<AddCardButtonType> = ({ onClickButton }) => {
+const AddLayoutButton: React.FC<AddLayoutButtonType> = ({ onClickButton }) => {
   return (
     <Card
       IconCard={IoMdAdd}
@@ -17,4 +17,4 @@ const AddCardButton: React.FC<AddCardButtonType> = ({ onClickButton }) => {
   );
 };
 
-export default AddCardButton;
+export default AddLayoutButton;
