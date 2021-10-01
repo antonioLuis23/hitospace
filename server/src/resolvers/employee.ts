@@ -29,6 +29,15 @@ class EmployeeInput {
   @Field({ nullable: true })
   abilities: string;
 
+  @Field({ nullable: true })
+  country: string;
+
+  @Field({ nullable: true })
+  state: string;
+
+  @Field({ nullable: true })
+  city: string;
+
   @Field(() => [String])
   sectorIds: string[];
 }

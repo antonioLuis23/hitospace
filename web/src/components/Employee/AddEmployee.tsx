@@ -64,6 +64,10 @@ const AddEmployee: React.FC<AddEmployeeType> = ({
           name: "",
           function: "",
           email: "",
+          abilities: "",
+          country: "",
+          state: "",
+          city: "",
         }}
         onSubmit={submitFormHandler}
       >
@@ -87,6 +91,22 @@ const AddEmployee: React.FC<AddEmployeeType> = ({
             </Box>
             <Box mt={4}>
               <InputField name="function" placeholder="Função" label="Função" />
+            </Box>
+            <Box mt={4}>
+              <InputField
+                name="abilities"
+                placeholder="Habilidades"
+                label="Habilidades"
+              />
+            </Box>
+            <Box mt={4}>
+              <InputField name="country" placeholder="País" label="País" />
+            </Box>
+            <Box mt={4}>
+              <InputField name="state" placeholder="Estado" label="Estado" />
+            </Box>
+            <Box mt={4}>
+              <InputField name="city" placeholder="Cidade" label="Cidade" />
             </Box>
 
             <Button

@@ -19,36 +19,36 @@ export class Employee extends BaseEntity {
   id!: number;
 
   @Field()
-  @Column()
+  @Column({ type: "text" })
   name!: string;
 
   @Field()
-  @Column({ unique: true })
+  @Column({ type: "text", unique: true })
   email!: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ type: "text", nullable: true })
   abilities: string;
 
   @Field()
-  @Column()
+  @Column({ type: "text" })
   function!: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ type: "text", nullable: true })
   tags: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
-  locationCountry: string;
+  @Column({ type: "text", nullable: true })
+  country: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
-  locationState: string;
+  @Column({ type: "text", nullable: true })
+  state: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
-  locationCity: string;
+  @Column({ type: "text", nullable: true })
+  city: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })

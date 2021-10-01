@@ -44,15 +44,9 @@ const Card: React.FC<CardType> = ({
       margin={margin}
       cursor="pointer"
       transition="all 0.2s ease-in-out"
-      boxShadow={useColorModeValue(
-        "md",
-        "1px 1px 5px 0px rgb(97 106 209 / 11%)"
-      )}
+      boxShadow={useColorModeValue("md", "md")}
       borderRadius="md"
-      _hover={useColorModeValue(
-        { boxShadow: "lg" },
-        { boxShadow: "2px 3px 6px 0px rgb(97 106 209 / 14%)" }
-      )}
+      _hover={useColorModeValue({ boxShadow: "lg" }, { boxShadow: "lg" })}
       onClick={props.clickFunction}
     >
       {isEditable && showEditButtons && (
