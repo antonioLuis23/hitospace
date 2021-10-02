@@ -10,6 +10,7 @@ import {
   Resolver,
 } from "type-graphql";
 import { MyContext } from "../MyContext";
+import { getConnection } from "typeorm";
 @InputType()
 class EmployeeInput {
   @Field()
@@ -51,15 +52,19 @@ export class EmployeeResolver {
     @Ctx() { conn }: MyContext
   ): Promise<Employee> {
     let catParents: Category[] = [];
+    let sectorsName = "";
     for (let i = 0; i < input.sectorIds.length; i++) {
       const cat = (await Category.findOne(
         parseInt(input.sectorIds[i])
       )) as Category;
+      sectorsName += cat.name + ", ";
       catParents.push(cat);
     }
+    sectorsName = sectorsName.slice(0, -2);
     let { sectorIds, ...newInput } = input;
     let catChild = await Employee.create({
       sectors: catParents,
+      sectorsName,
       ...newInput,
     });
 
@@ -72,5 +77,21 @@ export class EmployeeResolver {
       relations: ["sectors"],
       where: { categoryId: catId },
     });
+  }
+
+  @Query(() => [Employee])
+  async searchEmployees(@Arg("search") search: string) {
+    const data = await getConnection()
+      .createQueryBuilder(Employee, "c")
+      .select()
+      .where("document @@ plainto_tsquery('portuguese', :query)", {
+        query: search,
+      })
+      .orderBy(
+        "ts_rank(document, plainto_tsquery('portuguese', :query))",
+        "DESC"
+      )
+      .getMany();
+    return data;
   }
 }

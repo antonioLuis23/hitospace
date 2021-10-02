@@ -60,6 +60,13 @@ export class Employee extends BaseEntity {
   @JoinTable()
   sectors: Category[];
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  sectorsName: string;
+
+  @Column("tsvector", { select: false })
+  document: any;
+
   @Field(() => String)
   @CreateDateColumn()
   createdAt: Date;

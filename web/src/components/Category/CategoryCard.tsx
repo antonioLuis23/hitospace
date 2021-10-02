@@ -7,13 +7,10 @@ import Card from "../UI/Card";
 import AddCategoryButton from "./AddCategoryButton";
 import AddCategoryModal from "./AddCategoryModal";
 import { ApolloQueryResult } from "@apollo/client";
-import { IoMdPersonAdd } from "react-icons/io";
 import AddEmployeeModal from "../Employee/AddEmployeeModal";
 
 interface CategoryPropsType {
   cat: CategoriesQuery["categories"][0];
-  zoomFunction: any;
-  setTransform: any;
   isEditable: boolean;
   sizeHeadingOpen?: string;
   sizeHeadingClose?: string;
@@ -48,9 +45,8 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
 
   const clickCategoryCard = (e) => {
     const target: any = e.target;
-    console.log("e;::", target);
-    if (target.innerText && target.innerText.includes(cat.name)) {
-      // props.zoomFunction(target, undefined, 200);
+    // console.log("target:", target);
+    if (target.textContent && target.textContent.includes(cat.name)) {
       setOpenPanel((prevState) => !prevState);
     }
   };
@@ -77,8 +73,6 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
               sizeHeadingOpen="sm"
               sizePyOpen="0.5rem"
               sizePyClose="1.4rem"
-              zoomFunction={props.zoomFunction}
-              setTransform={props.setTransform}
               isEditable={isEditable}
               refetchCategory={refetchCategory}
             />
@@ -97,6 +91,7 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
 
   let renderEmployees = null;
   if (cat.employees.length > 0 && openPanel) {
+    console.log("entrou aqui???");
     renderEmployees = (
       <EmployeeContainer
         employees={cat.employees}

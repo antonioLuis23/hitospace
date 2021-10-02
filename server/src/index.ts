@@ -1,33 +1,20 @@
-import { createConnection } from "typeorm";
-import path from "path";
-import { Category } from "./entities/Category";
-import express from "express";
-import { buildSchema } from "type-graphql";
 import { ApolloServer } from "apollo-server-express";
-import { CategoryResolver } from "./resolvers/category";
-import { EmployeeResolver } from "./resolvers/employee";
-import "dotenv/config";
-import { Employee } from "./entities/Employee";
-import { UserResolver } from "./resolvers/user";
-import { User } from "./entities/User";
-import { CompanyLayout } from "./entities/CompanyLayout";
-import { CompanyLayoutResolver } from "./resolvers/companyLayout";
 import cookieParser from "cookie-parser";
-import { verify } from "jsonwebtoken";
-import { createAccessToken, createRefreshToken } from "./auth";
-import { sendRefreshToken } from "./sendRefreshToken";
 import cors from "cors";
+import "dotenv/config";
+import express from "express";
+import { verify } from "jsonwebtoken";
+import { buildSchema } from "type-graphql";
+import { createConnection } from "typeorm";
+import { createAccessToken, createRefreshToken } from "./auth";
+import { User } from "./entities/User";
+import { CategoryResolver } from "./resolvers/category";
+import { CompanyLayoutResolver } from "./resolvers/companyLayout";
+import { EmployeeResolver } from "./resolvers/employee";
+import { UserResolver } from "./resolvers/user";
+import { sendRefreshToken } from "./sendRefreshToken";
 const main = async () => {
-  const conn = await createConnection({
-    type: "postgres",
-    database: "vizoffice",
-    username: "postgres",
-    password: "postgres",
-    logging: true,
-    synchronize: true, //colocar false em produção e usar migrations
-    migrations: [path.join(__dirname, "./migrations/*")],
-    entities: [Category, Employee, User, CompanyLayout],
-  });
+  const conn = await createConnection();
 
   // // Fetch all the entities
   // const entities = getConnection().entityMetadatas;

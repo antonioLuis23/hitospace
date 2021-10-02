@@ -1,0 +1,10 @@
+{
+  "type": "postgres",
+  "database": "vizoffice",
+  "username": "postgres",
+  "password": "postgres",
+  "logging": true,
+  "synchronize": true,
+  "migrations": ["dist/migrations/**/*.js"],
+  "entities": ["dist/entities/**/*.js"]
+}
