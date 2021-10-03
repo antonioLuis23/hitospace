@@ -57,14 +57,15 @@ export type Employee = {
   __typename?: 'Employee';
   abilities?: Maybe<Scalars['String']>;
   chat?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
   email: Scalars['String'];
   function: Scalars['String'];
   id: Scalars['Float'];
-  locationCity?: Maybe<Scalars['String']>;
-  locationCountry?: Maybe<Scalars['String']>;
-  locationState?: Maybe<Scalars['String']>;
   name: Scalars['String'];
+  sectorsName?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
   tags?: Maybe<Scalars['String']>;
   updatedAt: Scalars['String'];
 };
@@ -72,10 +73,13 @@ export type Employee = {
 export type EmployeeInput = {
   abilities?: Maybe<Scalars['String']>;
   chat?: Maybe<Scalars['String']>;
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   function: Scalars['String'];
   name: Scalars['String'];
   sectorIds: Array<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
   tags?: Maybe<Scalars['String']>;
 };
 
@@ -134,6 +138,7 @@ export type Query = {
   getEmployeesByCategory: Array<Employee>;
   layouts: Array<CompanyLayout>;
   me?: Maybe<User>;
+  searchEmployees: Array<Employee>;
 };
 
 
@@ -144,6 +149,11 @@ export type QueryCategoriesArgs = {
 
 export type QueryGetEmployeesByCategoryArgs = {
   catId: Scalars['Float'];
+};
+
+
+export type QuerySearchEmployeesArgs = {
+  search: Scalars['String'];
 };
 
 export type SubCategoryInput = {
@@ -176,7 +186,7 @@ export type UsernamePasswordInput = {
   username: Scalars['String'];
 };
 
-export type RegularEmployeeFragment = { __typename?: 'Employee', name: string, id: number, function: string };
+export type RegularEmployeeFragment = { __typename?: 'Employee', name: string, id: number, function: string, chat?: Maybe<string>, sectorsName?: Maybe<string>, email: string, abilities?: Maybe<string>, tags?: Maybe<string>, country?: Maybe<string>, state?: Maybe<string>, city?: Maybe<string> };
 
 export type RegularErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
@@ -242,7 +252,7 @@ export type CategoriesQueryVariables = Exact<{
 }>;
 
 
-export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description?: Maybe<string>, id: number, employees?: Maybe<Array<{ __typename?: 'Employee', name: string, id: number, function: string }>>, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description?: Maybe<string>, employees?: Maybe<Array<{ __typename?: 'Employee', name: string, id: number, function: string }>> }>> }> };
+export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description?: Maybe<string>, id: number, employees?: Maybe<Array<{ __typename?: 'Employee', name: string, id: number, function: string, chat?: Maybe<string>, sectorsName?: Maybe<string>, email: string, abilities?: Maybe<string>, tags?: Maybe<string>, country?: Maybe<string>, state?: Maybe<string>, city?: Maybe<string> }>>, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description?: Maybe<string>, employees?: Maybe<Array<{ __typename?: 'Employee', name: string, id: number, function: string, chat?: Maybe<string>, sectorsName?: Maybe<string>, email: string, abilities?: Maybe<string>, tags?: Maybe<string>, country?: Maybe<string>, state?: Maybe<string>, city?: Maybe<string> }>> }>> }> };
 
 export type LayoutsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -254,11 +264,26 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: number, username: string, email: string }> };
 
+export type SearchEmployeesQueryVariables = Exact<{
+  input: Scalars['String'];
+}>;
+
+
+export type SearchEmployeesQuery = { __typename?: 'Query', searchEmployees: Array<{ __typename?: 'Employee', name: string, id: number, function: string, chat?: Maybe<string>, sectorsName?: Maybe<string>, email: string, abilities?: Maybe<string>, tags?: Maybe<string>, country?: Maybe<string>, state?: Maybe<string>, city?: Maybe<string> }> };
+
 export const RegularEmployeeFragmentDoc = gql`
     fragment RegularEmployee on Employee {
   name
   id
   function
+  chat
+  sectorsName
+  email
+  abilities
+  tags
+  country
+  state
+  city
 }
     `;
 export const RegularErrorFragmentDoc = gql`
@@ -673,12 +698,48 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const SearchEmployeesDocument = gql`
+    query SearchEmployees($input: String!) {
+  searchEmployees(search: $input) {
+    ...RegularEmployee
+  }
+}
+    ${RegularEmployeeFragmentDoc}`;
+
+/**
+ * __useSearchEmployeesQuery__
+ *
+ * To run a query within a React component, call `useSearchEmployeesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchEmployeesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchEmployeesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSearchEmployeesQuery(baseOptions: Apollo.QueryHookOptions<SearchEmployeesQuery, SearchEmployeesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchEmployeesQuery, SearchEmployeesQueryVariables>(SearchEmployeesDocument, options);
+      }
+export function useSearchEmployeesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchEmployeesQuery, SearchEmployeesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchEmployeesQuery, SearchEmployeesQueryVariables>(SearchEmployeesDocument, options);
+        }
+export type SearchEmployeesQueryHookResult = ReturnType<typeof useSearchEmployeesQuery>;
+export type SearchEmployeesLazyQueryHookResult = ReturnType<typeof useSearchEmployeesLazyQuery>;
+export type SearchEmployeesQueryResult = Apollo.QueryResult<SearchEmployeesQuery, SearchEmployeesQueryVariables>;
 export const namedOperations = {
   Query: {
     Bye: 'Bye',
     Categories: 'Categories',
     Layouts: 'Layouts',
-    Me: 'Me'
+    Me: 'Me',
+    SearchEmployees: 'SearchEmployees'
   },
   Mutation: {
     addCategory: 'addCategory',

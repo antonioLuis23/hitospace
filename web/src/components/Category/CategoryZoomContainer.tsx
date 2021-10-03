@@ -1,17 +1,15 @@
 import { ApolloQueryResult } from "@apollo/client";
-import { Flex, Box, Grid } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/layout";
 import { Button, Spinner } from "@chakra-ui/react";
-import React from "react";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import React, { useState } from "react";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import {
-  useMeQuery,
-  useCategoriesQuery,
   CategoriesQuery,
   Exact,
+  useSearchEmployeesQuery,
 } from "../../generated/graphql";
-import Hero from "../UI/Hero";
+import EmployeeContainer from "../Employee/EmployeesContainer";
 import Layout from "../UI/Layout";
-import CategoryCard from "./CategoryCard";
 import CategoryContainer from "./CategoryContainer";
 
 interface CategoryZoomContainerType {
@@ -26,14 +24,31 @@ interface CategoryZoomContainerType {
     >
   ) => Promise<ApolloQueryResult<CategoriesQuery>>;
 }
+let timeOutId: any;
 const CategoryZoomContainer: React.FC<CategoryZoomContainerType> = ({
   data,
   loading,
   isEditable = false,
   refetchCategory,
 }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const onSearch = (e) => {
+    console.log("e:", e);
+    if (timeOutId) clearTimeout(timeOutId);
+    timeOutId = setTimeout(() => setSearchQuery(e), 500);
+  };
+
+  const { data: dataEmployee, loading: loadingEmployee } =
+    useSearchEmployeesQuery({ variables: { input: searchQuery } });
+  console.log("data::", dataEmployee);
+
   return (
-    <Layout variant="large">
+    <Layout variant="large" onSearch={onSearch}>
+      {dataEmployee && dataEmployee.searchEmployees && (
+        <Box mb={8}>
+          <EmployeeContainer employees={dataEmployee.searchEmployees} />
+        </Box>
+      )}
       <TransformWrapper
         initialScale={1}
         // wheel={{ disabled: true }}

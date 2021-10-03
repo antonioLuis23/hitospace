@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/layout";
 import {
   Button,
   Modal,
@@ -27,6 +27,7 @@ const EmployeeIcon: React.FC<EmployeeInfoType> = (props) => {
     <React.Fragment>
       <Box
         key={props.employee.id}
+        bg={useColorModeValue("#F8F8F8", "#2d3443")}
         onClick={onOpen}
         borderRadius={"md"}
         boxShadow={"md"}
@@ -37,7 +38,7 @@ const EmployeeIcon: React.FC<EmployeeInfoType> = (props) => {
         // boxShadow={"md"}
         // borderRadius={"md"}
       >
-        <Box>
+        <Flex alignItems="center" justifyContent="center">
           <Image
             src={useColorModeValue(
               "/assets/icons/person-black-48dp.svg",
@@ -47,9 +48,13 @@ const EmployeeIcon: React.FC<EmployeeInfoType> = (props) => {
             width="20px"
             height="20px"
           />
-        </Box>
+        </Flex>
         <Box>
-          <Text fontSize="xs" color={useColorModeValue("gray.700", "gray.50")}>
+          <Text
+            fontSize="xs"
+            textAlign="center"
+            color={useColorModeValue("gray.700", "gray.50")}
+          >
             {props.employee.name}
           </Text>
         </Box>

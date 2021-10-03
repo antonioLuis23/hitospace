@@ -92,14 +92,7 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   let renderEmployees = null;
   if (cat.employees.length > 0 && openPanel) {
     console.log("entrou aqui???");
-    renderEmployees = (
-      <EmployeeContainer
-        employees={cat.employees}
-        isEditable={isEditable}
-        refetchCategory={refetchCategory}
-        parentId={cat.id}
-      />
-    );
+    renderEmployees = <EmployeeContainer employees={cat.employees} />;
   }
 
   return (

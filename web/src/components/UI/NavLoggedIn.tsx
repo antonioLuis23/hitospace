@@ -11,7 +11,7 @@ import {
   Link,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import {
   AiOutlineMenu,
   AiFillHome,
@@ -27,13 +27,21 @@ import { setAccessToken } from "../../lib/accessToken";
 import { useLogoutMutation, namedOperations } from "../../generated/graphql";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
 import Router from "next/router";
-const NavLoggedIn = () => {
+
+interface NavLoggedInType {
+  onSearch: (e: any) => void;
+}
+const NavLoggedIn: React.FC<NavLoggedInType> = ({ onSearch }) => {
   const bg = useColorModeValue("#F8F8F8", "#131823");
   const mobileNav = useDisclosure();
   const [logout, { loading: logoutFetching }] = useLogoutMutation({
     refetchQueries: [namedOperations.Query.Me],
   });
-
+  const [textSearched, setTextSearched] = useState("");
+  const onTextSearched = (evt) => {
+    setTextSearched(evt.target.value);
+    onSearch(evt.target.value);
+  };
   return (
     <React.Fragment>
       <chakra.header
@@ -148,7 +156,12 @@ const NavLoggedIn = () => {
                 pointerEvents="none"
                 children={<AiOutlineSearch />}
               />
-              <Input type="tel" placeholder="Pesquisar..." />
+              <Input
+                type="tel"
+                placeholder="Pesquisar..."
+                value={textSearched}
+                onChange={onTextSearched}
+              />
             </InputGroup>
 
             {/* <chakra.a
@@ -173,7 +186,7 @@ const NavLoggedIn = () => {
               }}
               isLoading={logoutFetching}
             >
-              Logout
+              Sair
             </Button>
             <Avatar
               size="sm"

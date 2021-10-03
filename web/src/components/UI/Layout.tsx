@@ -4,11 +4,12 @@ import { Wrapper, WrapperVariant } from "./Wrapper";
 
 interface LayoutProps {
   variant?: WrapperVariant;
+  onSearch: (e: any) => void;
 }
-const Layout: React.FC<LayoutProps> = ({ children, variant }) => {
+const Layout: React.FC<LayoutProps> = ({ children, variant, onSearch }) => {
   return (
     <React.Fragment>
-      <NavBar />
+      <NavBar onSearch={onSearch} />
 
       <Wrapper variant={variant}>{children}</Wrapper>
     </React.Fragment>

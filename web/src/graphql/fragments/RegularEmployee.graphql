@@ -2,4 +2,12 @@ fragment RegularEmployee on Employee {
   name
   id
   function
+  chat
+  sectorsName
+  email
+  abilities
+  tags
+  country
+  state
+  city
 }

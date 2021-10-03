@@ -1,8 +1,9 @@
-import { Flex, Box } from "@chakra-ui/layout";
+import { Flex, Box, Link, VStack } from "@chakra-ui/layout";
 import { useColorModeValue, Icon, chakra, Image } from "@chakra-ui/react";
 import React from "react";
 import { MdHeadset, MdEmail, MdLocationOn } from "react-icons/md";
-import { BsFillBriefcaseFill } from "react-icons/bs";
+import { BsFillBriefcaseFill, BsFillChatFill } from "react-icons/bs";
+import { RiToolsFill } from "react-icons/ri";
 import { CategoriesQuery } from "../../generated/graphql";
 
 interface EmployeeCardType {
@@ -46,45 +47,63 @@ const EmployeeCard: React.FC<EmployeeCardType> = (props) => {
         </Flex>
 
         <Box py={4} px={6}>
-          <chakra.p py={2} color={useColorModeValue("gray.700", "gray.400")}>
-            Full Stack maker & UI / UX Designer , love hip hop music Author of
-            Building UI.
-          </chakra.p>
+          {/* <chakra.p py={2} color={useColorModeValue("gray.700", "gray.400")}>
+            {"Tecnologias: " + props.employee.abilities}
+          </chakra.p> */}
+          <VStack spacing={4} align="flex-start">
+            <Flex
+              alignItems="center"
+              color={useColorModeValue("gray.700", "gray.200")}
+            >
+              <Icon as={BsFillBriefcaseFill} h={6} w={6} mr={2} />
 
-          <Flex
-            alignItems="center"
-            mt={4}
-            color={useColorModeValue("gray.700", "gray.200")}
-          >
-            <Icon as={BsFillBriefcaseFill} h={6} w={6} mr={2} />
+              <chakra.h1 px={2} fontSize="sm">
+                {props.employee.function}
+              </chakra.h1>
+            </Flex>
 
-            <chakra.h1 px={2} fontSize="sm">
-              Choc UI
-            </chakra.h1>
-          </Flex>
+            <Flex
+              alignItems="center"
+              color={useColorModeValue("gray.700", "gray.200")}
+            >
+              <Icon as={MdLocationOn} h={6} w={6} mr={2} />
 
-          <Flex
-            alignItems="center"
-            mt={4}
-            color={useColorModeValue("gray.700", "gray.200")}
-          >
-            <Icon as={MdLocationOn} h={6} w={6} mr={2} />
+              <chakra.h1 px={2} fontSize="sm">
+                {props.employee.city + " - " + props.employee.state}
+              </chakra.h1>
+            </Flex>
+            <Flex
+              alignItems="center"
+              color={useColorModeValue("gray.700", "gray.200")}
+            >
+              <Icon as={MdEmail} h={6} w={6} mr={2} />
 
-            <chakra.h1 px={2} fontSize="sm">
-              California
-            </chakra.h1>
-          </Flex>
-          <Flex
-            alignItems="center"
-            mt={4}
-            color={useColorModeValue("gray.700", "gray.200")}
-          >
-            <Icon as={MdEmail} h={6} w={6} mr={2} />
+              <chakra.h1 px={2} fontSize="sm">
+                {props.employee.email}
+              </chakra.h1>
+            </Flex>
 
-            <chakra.h1 px={2} fontSize="sm">
-              patterson@example.com
-            </chakra.h1>
-          </Flex>
+            <Flex
+              alignItems="center"
+              color={useColorModeValue("gray.700", "gray.200")}
+            >
+              <Icon as={BsFillChatFill} h={6} w={6} mr={2} />
+
+              <chakra.h1 px={2} fontSize="sm">
+                <Link href={props.employee.chat}>Workspace</Link>
+              </chakra.h1>
+            </Flex>
+            <Flex
+              alignItems="center"
+              color={useColorModeValue("gray.700", "gray.200")}
+            >
+              <Icon as={RiToolsFill} h={6} w={6} mr={2} />
+
+              <chakra.h1 px={2} fontSize="sm">
+                {props.employee.abilities}
+              </chakra.h1>
+            </Flex>
+          </VStack>
         </Box>
       </Box>
     </Flex>
