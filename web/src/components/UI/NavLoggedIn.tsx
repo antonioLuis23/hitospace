@@ -158,7 +158,7 @@ const NavLoggedIn: React.FC<NavLoggedInType> = ({ onSearch }) => {
               />
               <Input
                 type="tel"
-                placeholder="Pesquisar..."
+                placeholder="Pesquisar pessoas..."
                 value={textSearched}
                 onChange={onTextSearched}
               />

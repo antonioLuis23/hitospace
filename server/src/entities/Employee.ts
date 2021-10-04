@@ -6,10 +6,12 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { Category } from "./Category";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -53,6 +55,13 @@ export class Employee extends BaseEntity {
   @Field({ nullable: true })
   @Column({ nullable: true })
   chat: string;
+
+  @Field()
+  @Column()
+  userId: number;
+
+  @ManyToOne(() => User, (user) => user.employees)
+  user: User;
 
   @ManyToMany(() => Category, (category) => category.employees, {
     cascade: true,

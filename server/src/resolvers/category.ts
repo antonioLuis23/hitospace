@@ -127,6 +127,7 @@ export class CategoryResolver {
           let catParent = await Category.findOne(input.parentId);
           let catChild = Category.create({
             ...newInput,
+            userId: parseInt(payload!.userId),
             parent: catParent,
           });
           return catChild.save();
@@ -134,6 +135,7 @@ export class CategoryResolver {
           console.log("não tem parentID");
           return Category.create({
             ...newInput,
+            userId: parseInt(payload!.userId),
           }).save();
         }
       } else {

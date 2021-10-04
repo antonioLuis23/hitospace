@@ -8,7 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Category } from "./Category";
 import { CompanyLayout } from "./CompanyLayout";
+import { Employee } from "./Employee";
 
 @ObjectType()
 @Entity()
@@ -33,6 +35,12 @@ export class User extends BaseEntity {
 
   @OneToMany(() => CompanyLayout, (layout) => layout.user)
   layouts: CompanyLayout[];
+
+  @OneToMany(() => Employee, (employee) => employee.user)
+  employees: Employee[];
+
+  @OneToMany(() => Category, (category) => category.user)
+  categories: Category[];
 
   @Field(() => String)
   @CreateDateColumn()

@@ -35,7 +35,6 @@ export class CompanyLayout extends BaseEntity {
   @Column()
   userId: number;
 
-  // @Field(() => User)
   @ManyToOne(() => User, (user) => user.layouts)
   user: User;
 

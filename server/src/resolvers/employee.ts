@@ -8,9 +8,11 @@ import {
   Mutation,
   Query,
   Resolver,
+  UseMiddleware,
 } from "type-graphql";
 import { MyContext } from "../MyContext";
 import { getConnection } from "typeorm";
+import { isAuth } from "../isAuth";
 @InputType()
 class EmployeeInput {
   @Field()
@@ -22,22 +24,22 @@ class EmployeeInput {
   function!: string;
 
   @Field({ nullable: true })
-  tags: string;
+  tags?: string;
 
   @Field({ nullable: true })
-  chat: string;
+  chat?: string;
 
   @Field({ nullable: true })
-  abilities: string;
+  abilities?: string;
 
   @Field({ nullable: true })
-  country: string;
+  country?: string;
 
   @Field({ nullable: true })
-  state: string;
+  state?: string;
 
   @Field({ nullable: true })
-  city: string;
+  city?: string;
 
   @Field(() => [String])
   sectorIds: string[];
@@ -47,10 +49,14 @@ class EmployeeInput {
 @Resolver(Category)
 export class EmployeeResolver {
   @Mutation(() => Employee)
+  @UseMiddleware(isAuth)
   async addEmployee(
     @Arg("input") input: EmployeeInput,
-    @Ctx() { conn }: MyContext
-  ): Promise<Employee> {
+    @Ctx() { conn, payload }: MyContext
+  ): Promise<Employee | null> {
+    if (!payload!.userId) {
+      return null;
+    }
     let catParents: Category[] = [];
     let sectorsName = "";
     for (let i = 0; i < input.sectorIds.length; i++) {
@@ -60,15 +66,36 @@ export class EmployeeResolver {
       sectorsName += cat.name + ", ";
       catParents.push(cat);
     }
+    console.log("catParents:", catParents);
     sectorsName = sectorsName.slice(0, -2);
     let { sectorIds, ...newInput } = input;
     let catChild = await Employee.create({
       sectors: catParents,
+      userId: parseInt(payload!.userId),
       sectorsName,
       ...newInput,
     });
 
     return await conn.manager.save(catChild);
+  }
+
+  @UseMiddleware(isAuth)
+  async editEmployee(
+    @Arg("employeeId") employeeId: number,
+    @Arg("input") input: EmployeeInput,
+    @Ctx() { payload }: MyContext
+  ) {
+    const result = await getConnection()
+      .createQueryBuilder()
+      .update(Employee)
+      .set({ ...input })
+      .where('id = :id and "userId" = :userId', {
+        id: employeeId,
+        userId: parseInt(payload!.userId),
+      })
+      .returning("*")
+      .execute();
+    return result.raw[0];
   }
 
   @Query(() => [Employee])

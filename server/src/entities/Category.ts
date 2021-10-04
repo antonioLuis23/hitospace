@@ -14,6 +14,7 @@ import {
 } from "typeorm";
 import { Employee } from "./Employee";
 import { CompanyLayout } from "./CompanyLayout";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -46,6 +47,13 @@ export class Category extends BaseEntity {
   @Field(() => CompanyLayout)
   @ManyToOne(() => CompanyLayout, (layout) => layout.categories)
   layout: CompanyLayout;
+
+  @Field()
+  @Column()
+  userId: number;
+
+  @ManyToOne(() => User, (user) => user.categories)
+  user: User;
 
   @Field(() => [Category], { nullable: true })
   @TreeChildren()
