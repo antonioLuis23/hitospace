@@ -57,17 +57,8 @@ export class EmployeeResolver {
     if (!payload!.userId) {
       return null;
     }
-    let catParents: Category[] = [];
-    let sectorsName = "";
-    for (let i = 0; i < input.sectorIds.length; i++) {
-      const cat = (await Category.findOne(
-        parseInt(input.sectorIds[i])
-      )) as Category;
-      sectorsName += cat.name + ", ";
-      catParents.push(cat);
-    }
-    console.log("catParents:", catParents);
-    sectorsName = sectorsName.slice(0, -2);
+
+    let [catParents, sectorsName] = await this.getCategoriesAndName(input);
     let { sectorIds, ...newInput } = input;
     let catChild = await Employee.create({
       sectors: catParents,
@@ -79,23 +70,66 @@ export class EmployeeResolver {
     return await conn.manager.save(catChild);
   }
 
+  async getCategoriesAndName(
+    input: EmployeeInput
+  ): Promise<[Category[], string]> {
+    let catParents: Category[] = [];
+    let sectorsName = "";
+    for (let i = 0; i < input.sectorIds.length; i++) {
+      const cat = (await Category.findOne(
+        parseInt(input.sectorIds[i])
+      )) as Category;
+      sectorsName += cat.name + ", ";
+      catParents.push(cat);
+    }
+    sectorsName = sectorsName.slice(0, -2);
+    return [catParents, sectorsName];
+  }
+
+  @Mutation(() => Employee)
   @UseMiddleware(isAuth)
   async editEmployee(
     @Arg("employeeId") employeeId: number,
     @Arg("input") input: EmployeeInput,
     @Ctx() { payload }: MyContext
   ) {
-    const result = await getConnection()
-      .createQueryBuilder()
-      .update(Employee)
-      .set({ ...input })
-      .where('id = :id and "userId" = :userId', {
-        id: employeeId,
-        userId: parseInt(payload!.userId),
-      })
-      .returning("*")
-      .execute();
-    return result.raw[0];
+    const updateEmployee = await Employee.findOne(employeeId, {
+      relations: ["sectors"],
+    });
+    if (updateEmployee!.userId !== parseInt(payload!.userId)) {
+      return null;
+    }
+
+    const [catParents, sectorsName] = await this.getCategoriesAndName(input);
+    let { sectorIds, ...newInput } = input;
+    updateEmployee!.sectors = catParents as Category[];
+    updateEmployee!.sectorsName = sectorsName as string;
+
+    Object.assign(updateEmployee, newInput);
+
+    return updateEmployee?.save();
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteEmployee(
+    @Arg("employeeId") employeeId: number,
+    @Ctx() { payload, conn }: MyContext
+  ): Promise<boolean> {
+    if (!payload!.userId) {
+      return false;
+    }
+    const deleteEmployee = await Employee.findOne(employeeId, {
+      relations: ["sectors"],
+    });
+    if (deleteEmployee && deleteEmployee.userId === parseInt(payload!.userId)) {
+      deleteEmployee!.sectors = [];
+      await deleteEmployee.save();
+      // conn.manager.remove(deleteEmployee);
+      await Employee.delete({ id: deleteEmployee.id });
+      return true;
+    }
+    return false;
   }
 
   @Query(() => [Employee])
