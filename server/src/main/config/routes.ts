@@ -1,5 +1,4 @@
 import { Express, Router } from "express";
-import { readdirSync } from "fs";
 import { adaptRoute } from "@/main/adapters";
 import { makeLoadCategoryController } from "@/main/factories";
 
