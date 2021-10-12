@@ -1,0 +1,12 @@
+export { FindUniqueCategoryResolver } from "./Category/FindUniqueCategoryResolver";
+export { FindFirstCategoryResolver } from "./Category/FindFirstCategoryResolver";
+export { FindManyCategoryResolver } from "./Category/FindManyCategoryResolver";
+export { CreateCategoryResolver } from "./Category/CreateCategoryResolver";
+export { CreateManyCategoryResolver } from "./Category/CreateManyCategoryResolver";
+export { DeleteCategoryResolver } from "./Category/DeleteCategoryResolver";
+export { UpdateCategoryResolver } from "./Category/UpdateCategoryResolver";
+export { DeleteManyCategoryResolver } from "./Category/DeleteManyCategoryResolver";
+export { UpdateManyCategoryResolver } from "./Category/UpdateManyCategoryResolver";
+export { UpsertCategoryResolver } from "./Category/UpsertCategoryResolver";
+export { AggregateCategoryResolver } from "./Category/AggregateCategoryResolver";
+export { GroupByCategoryResolver } from "./Category/GroupByCategoryResolver";
