@@ -31,14 +31,14 @@ const NavNotLoggedIn = () => {
           <Flex>
             <chakra.a
               href="/"
-              title="Kurospace Home Page"
+              title="Hitospace Home Page"
               display="flex"
               alignItems="center"
             >
-              <VisuallyHidden>Kurospace</VisuallyHidden>
+              <VisuallyHidden>Hitospace</VisuallyHidden>
 
               <chakra.h1 fontSize="xl" fontWeight="medium" ml="2">
-                Kurospace
+                Hitospace
               </chakra.h1>
             </chakra.a>
           </Flex>

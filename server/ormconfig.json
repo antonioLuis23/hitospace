@@ -5,6 +5,6 @@
   "password": "postgres",
   "logging": true,
   "synchronize": true,
-  "migrations": ["dist/migrations/**/*.js"],
-  "entities": ["dist/entities/**/*.js"]
+  "migrations": ["dist/main/graphql/migrations/**/*.js"],
+  "entities": ["dist/main/graphql/entities/**/*.js"]
 }
