@@ -6,5 +6,5 @@
   "logging": true,
   "synchronize": true,
   "migrations": ["dist/main/graphql/migrations/**/*.js"],
-  "entities": ["dist/main/graphql/entities/**/*.js"]
+  "entities": ["dist/infra/db/entities/**/*.js"]
 }
