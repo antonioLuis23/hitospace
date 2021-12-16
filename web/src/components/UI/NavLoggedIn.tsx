@@ -40,6 +40,7 @@ const NavLoggedIn: React.FC<NavLoggedInType> = ({ onSearch }) => {
   const [textSearched, setTextSearched] = useState("");
   const onTextSearched = (evt) => {
     setTextSearched(evt.target.value);
+    console.log("ev.target.value", evt.target.value);
     onSearch(evt.target.value);
   };
   return (

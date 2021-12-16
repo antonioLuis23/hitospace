@@ -15,13 +15,15 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import Image from "next/image";
-import { CategoriesQuery } from "../../generated/graphql";
+import { CategoriesQuery, Exact } from "../../generated/graphql";
 import EmployeeCard from "./EmployeeCard";
+import { ApolloQueryResult } from "@apollo/client";
 
 interface EmployeeInfoType {
   employee: CategoriesQuery["categories"][0]["employees"][0];
+  categoryId: number;
 }
-const EmployeeIcon: React.FC<EmployeeInfoType> = (props) => {
+const EmployeeIcon: React.FC<EmployeeInfoType> = ({ categoryId, ...props }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <React.Fragment>
@@ -63,7 +65,7 @@ const EmployeeIcon: React.FC<EmployeeInfoType> = (props) => {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent width="23%">
-            <EmployeeCard employee={props.employee} />
+            <EmployeeCard employee={props.employee} categoryId={categoryId} />
           </ModalContent>
         </Modal>
       </Portal>

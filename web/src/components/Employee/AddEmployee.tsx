@@ -1,50 +1,66 @@
-import { ApolloQueryResult } from "@apollo/client";
-import { Box, Text } from "@chakra-ui/layout";
-import { Button, Grid, Select, useToast } from "@chakra-ui/react";
-import { Formik, Form } from "formik";
-import React, { useState } from "react";
+import { Box } from "@chakra-ui/layout";
+import { Button, useToast } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
+import React from "react";
 import {
   CategoriesQuery,
-  Exact,
   useAddEmployeeMutation,
-  useCategoriesQuery,
-  useLayoutsQuery,
+  useEditEmployeeMutation,
 } from "../../generated/graphql";
 import { InputField } from "../InputField";
-
+import { useApolloClient } from "@apollo/client";
 interface AddEmployeeType {
   closeModal: () => void;
-  refetchCategory: (
-    variables?: Partial<
-      Exact<{
-        [key: string]: never;
-      }>
-    >
-  ) => Promise<ApolloQueryResult<CategoriesQuery>>;
+
   parentId?: number;
+  isEdit?: boolean;
+  employee?: CategoriesQuery["categories"][0]["employees"][0];
 }
 
 const AddEmployee: React.FC<AddEmployeeType> = ({
   closeModal,
-  refetchCategory,
   parentId,
+  isEdit = false,
+  employee,
 }) => {
+  const [addEmployee] = useAddEmployeeMutation();
+  const [editEmployee] = useEditEmployeeMutation();
+  const client = useApolloClient();
+
+  console.log("employee:", employee);
   const toast = useToast();
   const submitFormHandler = async (values) => {
-    const response = await addEmployee({
-      variables: {
-        input: {
-          sectorIds: [parentId + ""],
-          ...values,
+    let response: any;
+    let title = "";
+    if (isEdit) {
+      response = await editEmployee({
+        variables: {
+          input: {
+            sectorIds: [parentId + ""],
+            ...values,
+          },
+          employeeId: employee?.id,
         },
-      },
+      });
+      title = "Informação Editada!";
+    } else {
+      response = await addEmployee({
+        variables: {
+          input: {
+            sectorIds: [parentId + ""],
+            ...values,
+          },
+        },
+      });
+      title = "Pessoa Adicionada!";
+    }
+    await client.refetchQueries({
+      include: ["Categories"],
     });
-    console.log("response:", response);
-    refetchCategory();
     closeModal();
-    if (response.data.addEmployee) {
+    if (response.data.addEmployee || response.data.editEmployee) {
       toast({
-        title: "Pessoa Adicionada!",
+        title: title,
         // description: "We've created your account for you.",
         status: "success",
         duration: 2000,
@@ -55,19 +71,17 @@ const AddEmployee: React.FC<AddEmployeeType> = ({
     return response;
   };
 
-  const [addEmployee] = useAddEmployeeMutation();
-
   return (
     <Box p={4}>
       <Formik
         initialValues={{
-          name: "",
-          function: "",
-          email: "",
-          abilities: "",
-          country: "",
-          state: "",
-          city: "",
+          name: employee ? employee.name : "",
+          function: employee ? employee.function : "",
+          email: employee ? employee.email : "",
+          abilities: employee ? employee.abilities : "",
+          country: employee ? employee.country : "",
+          state: employee ? employee.state : "",
+          city: employee ? employee.city : "",
         }}
         onSubmit={submitFormHandler}
       >

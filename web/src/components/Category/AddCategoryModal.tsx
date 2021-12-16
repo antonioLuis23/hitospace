@@ -7,19 +7,11 @@ import AddCategory from "./AddCategory";
 interface ModalAddCategoryType {
   isOpen: boolean;
   onClose: () => void;
-  refetchCategory: (
-    variables?: Partial<
-      Exact<{
-        [key: string]: never;
-      }>
-    >
-  ) => Promise<ApolloQueryResult<CategoriesQuery>>;
   parentId?: number;
 }
 const AddCategoryModal: React.FC<ModalAddCategoryType> = ({
   isOpen,
   onClose,
-  refetchCategory,
   parentId = null,
 }) => {
   return (
@@ -27,11 +19,7 @@ const AddCategoryModal: React.FC<ModalAddCategoryType> = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent width="23%">
-          <AddCategory
-            closeModal={onClose}
-            refetchCategory={refetchCategory}
-            parentId={parentId}
-          />
+          <AddCategory closeModal={onClose} parentId={parentId} />
         </ModalContent>
       </Modal>
     </Portal>

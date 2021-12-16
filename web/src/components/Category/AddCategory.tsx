@@ -1,36 +1,21 @@
-import { ApolloQueryResult } from "@apollo/client";
 import { Box } from "@chakra-ui/layout";
 import { Button, useToast } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
-import {
-  CategoriesQuery,
-  Exact,
-  useAddCategoryMutation,
-} from "../../generated/graphql";
+import { useAddCategoryMutation } from "../../generated/graphql";
 import { InputField } from "../InputField";
-
+import { useApolloClient } from "@apollo/client";
 interface AddCategoryType {
   closeModal: () => void;
-  refetchCategory: (
-    variables?: Partial<
-      Exact<{
-        [key: string]: never;
-      }>
-    >
-  ) => Promise<ApolloQueryResult<CategoriesQuery>>;
   parentId?: number;
 }
 
-const AddCategory: React.FC<AddCategoryType> = ({
-  closeModal,
-  refetchCategory,
-  parentId,
-}) => {
+const AddCategory: React.FC<AddCategoryType> = ({ closeModal, parentId }) => {
   const router = useRouter();
   const [addCategory] = useAddCategoryMutation();
   const toast = useToast();
+  const client = useApolloClient();
   console.log("parentId", parentId);
 
   return (
@@ -53,7 +38,9 @@ const AddCategory: React.FC<AddCategoryType> = ({
             },
           });
           console.log("response:", response);
-          refetchCategory();
+          await client.refetchQueries({
+            include: ["Categories"],
+          });
           closeModal();
           if (response.data.addCategory) {
             toast({

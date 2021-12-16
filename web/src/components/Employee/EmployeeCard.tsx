@@ -1,16 +1,27 @@
 import { Flex, Box, Link, VStack } from "@chakra-ui/layout";
-import { useColorModeValue, Icon, chakra, Image } from "@chakra-ui/react";
+import {
+  useColorModeValue,
+  Icon,
+  chakra,
+  Image,
+  useDisclosure,
+} from "@chakra-ui/react";
 import React from "react";
 import { MdHeadset, MdEmail, MdLocationOn } from "react-icons/md";
 import { BsFillBriefcaseFill, BsFillChatFill } from "react-icons/bs";
 import { RiToolsFill } from "react-icons/ri";
-import { CategoriesQuery } from "../../generated/graphql";
+import { CategoriesQuery, Exact } from "../../generated/graphql";
+import { MdModeEdit } from "react-icons/md";
+import AddEmployeeModal from "./AddEmployeeModal";
+import { ApolloQueryResult } from "@apollo/client";
 
 interface EmployeeCardType {
   employee: CategoriesQuery["categories"][0]["employees"][0];
+  categoryId: number;
 }
 
-const EmployeeCard: React.FC<EmployeeCardType> = (props) => {
+const EmployeeCard: React.FC<EmployeeCardType> = ({ categoryId, ...props }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Flex
       bg={useColorModeValue("#F9FAFB", "gray.600")}
@@ -19,6 +30,22 @@ const EmployeeCard: React.FC<EmployeeCardType> = (props) => {
       justifyContent="center"
       rounded="lg"
     >
+      <AddEmployeeModal
+        isOpen={isOpen}
+        onClose={onClose}
+        parentId={categoryId}
+        employee={props.employee}
+        isEdit={true}
+      />
+      <Flex
+        justifyContent="flex-end"
+        position="absolute"
+        marginRight="19rem"
+        marginBottom="29rem"
+        onClick={onOpen}
+      >
+        <MdModeEdit />
+      </Flex>
       <Box
         w="sm"
         mx="auto"

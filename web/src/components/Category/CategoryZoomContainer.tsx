@@ -1,11 +1,9 @@
-import { ApolloQueryResult } from "@apollo/client";
 import { Box, Flex } from "@chakra-ui/layout";
 import { Button, Spinner } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import {
   CategoriesQuery,
-  Exact,
   useSearchEmployeesQuery,
 } from "../../generated/graphql";
 import EmployeeContainer from "../Employee/EmployeesContainer";
@@ -16,20 +14,12 @@ interface CategoryZoomContainerType {
   data: CategoriesQuery;
   loading: boolean;
   isEditable?: boolean;
-  refetchCategory?: (
-    variables?: Partial<
-      Exact<{
-        [key: string]: never;
-      }>
-    >
-  ) => Promise<ApolloQueryResult<CategoriesQuery>>;
 }
 let timeOutId: any;
 const CategoryZoomContainer: React.FC<CategoryZoomContainerType> = ({
   data,
   loading,
   isEditable = false,
-  refetchCategory,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const onSearch = (e) => {
@@ -91,13 +81,7 @@ const CategoryZoomContainer: React.FC<CategoryZoomContainerType> = ({
                     />
                   </Flex>
                 ) : (
-                  <CategoryContainer
-                    data={data}
-                    setTransform={setTransform}
-                    zoomToElement={zoomToElement}
-                    isEditable={isEditable}
-                    refetchCategory={refetchCategory}
-                  />
+                  <CategoryContainer data={data} isEditable={isEditable} />
                 )}
               </Box>
             </TransformComponent>

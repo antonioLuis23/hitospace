@@ -1,0 +1,7 @@
+mutation editEmployee($input: EmployeeInput!, $employeeId: Int!) {
+  editEmployee(input: $input, employeeId: $employeeId) {
+    id
+    name
+    function
+  }
+}

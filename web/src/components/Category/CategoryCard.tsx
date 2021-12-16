@@ -16,18 +16,10 @@ interface CategoryPropsType {
   sizeHeadingClose?: string;
   sizePyOpen?: string;
   sizePyClose?: string;
-  refetchCategory?: (
-    variables?: Partial<
-      Exact<{
-        [key: string]: never;
-      }>
-    >
-  ) => Promise<ApolloQueryResult<CategoriesQuery>>;
 }
 const CategoryCard: React.FC<CategoryPropsType> = ({
   isEditable,
   cat,
-  refetchCategory,
   sizeHeadingOpen = "md",
   sizeHeadingClose = "lg",
   sizePyOpen = "0.5rem",
@@ -74,7 +66,6 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
               sizePyOpen="0.5rem"
               sizePyClose="1.4rem"
               isEditable={isEditable}
-              refetchCategory={refetchCategory}
             />
           ))}
         {isEditable && (
@@ -92,7 +83,9 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   let renderEmployees = null;
   if (cat.employees.length > 0 && openPanel) {
     console.log("entrou aqui???");
-    renderEmployees = <EmployeeContainer employees={cat.employees} />;
+    renderEmployees = (
+      <EmployeeContainer categoryId={cat.id} employees={cat.employees} />
+    );
   }
 
   return (
@@ -100,7 +93,6 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
       <AddEmployeeModal
         isOpen={isAddEmployeeOpen}
         onClose={onAddEmployeeClose}
-        refetchCategory={refetchCategory}
         parentId={cat.id}
       />
       <Card
@@ -112,12 +104,7 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
         sizePy={openPanel ? sizePyOpen : sizePyClose}
         isEditable={isEditable}
       >
-        <AddCategoryModal
-          isOpen={isOpen}
-          onClose={onClose}
-          refetchCategory={refetchCategory}
-          parentId={cat.id}
-        />
+        <AddCategoryModal isOpen={isOpen} onClose={onClose} parentId={cat.id} />
         {renderEmployees}
         {renderSubCat}
       </Card>

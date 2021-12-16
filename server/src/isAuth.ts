@@ -28,6 +28,7 @@ export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
     console.log("authorization::", authorization);
     const token = (<any>authorization).split(" ")[1];
     console.log("token::", token);
+    console.log("access token:", process.env.ACCESS_TOKEN_SECRET!);
     const payload = verify(token, process.env.ACCESS_TOKEN_SECRET!);
     console.log("passed verification");
     let user = await User.findOne((payload! as any).userId);

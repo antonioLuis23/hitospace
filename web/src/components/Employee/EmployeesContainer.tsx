@@ -1,11 +1,16 @@
+import { ApolloQueryResult } from "@apollo/client";
 import { Flex } from "@chakra-ui/layout";
 import React from "react";
-import { CategoriesQuery } from "../../generated/graphql";
+import { CategoriesQuery, Exact } from "../../generated/graphql";
 import EmployeeIcon from "./EmployeeIcon";
 interface EmployeeContainerType {
   employees: CategoriesQuery["categories"][0]["employees"];
+  categoryId?: number;
 }
-const EmployeeContainer: React.FC<EmployeeContainerType> = ({ employees }) => {
+const EmployeeContainer: React.FC<EmployeeContainerType> = ({
+  employees,
+  categoryId,
+}) => {
   const employeeCards = (
     <React.Fragment>
       <Flex
@@ -15,7 +20,9 @@ const EmployeeContainer: React.FC<EmployeeContainerType> = ({ employees }) => {
         sx={{ gap: "10px" }}
       >
         {employees &&
-          employees.map((sub) => <EmployeeIcon key={sub.id} employee={sub} />)}
+          employees.map((sub) => (
+            <EmployeeIcon key={sub.id} employee={sub} categoryId={categoryId} />
+          ))}
       </Flex>
     </React.Fragment>
   );

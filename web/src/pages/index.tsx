@@ -1,9 +1,4 @@
-import { Button } from "@chakra-ui/button";
-import { Box, Flex, Grid } from "@chakra-ui/layout";
-import { Spinner } from "@chakra-ui/react";
 import React from "react";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
-import CategoryCard from "../components/Category/CategoryCard";
 import CategoryZoomContainer from "../components/Category/CategoryZoomContainer";
 import Hero from "../components/UI/Hero";
 import Layout from "../components/UI/Layout";

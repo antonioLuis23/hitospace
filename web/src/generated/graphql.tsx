@@ -27,6 +27,7 @@ export type Category = {
   layoutId: Scalars['Float'];
   name: Scalars['String'];
   updatedAt: Scalars['DateTime'];
+  userId: Scalars['Float'];
 };
 
 export type CategoryInput = {
@@ -68,6 +69,7 @@ export type Employee = {
   state?: Maybe<Scalars['String']>;
   tags?: Maybe<Scalars['String']>;
   updatedAt: Scalars['String'];
+  userId: Scalars['Float'];
 };
 
 export type EmployeeInput = {
@@ -95,6 +97,8 @@ export type Mutation = {
   addCompanyLayout: CompanyLayout;
   addEmployee: Employee;
   addSubCategory: Category;
+  deleteEmployee: Scalars['Boolean'];
+  editEmployee: Employee;
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
@@ -118,6 +122,17 @@ export type MutationAddEmployeeArgs = {
 
 export type MutationAddSubCategoryArgs = {
   input: SubCategoryInput;
+};
+
+
+export type MutationDeleteEmployeeArgs = {
+  employeeId: Scalars['Int'];
+};
+
+
+export type MutationEditEmployeeArgs = {
+  employeeId: Scalars['Int'];
+  input: EmployeeInput;
 };
 
 
@@ -221,6 +236,14 @@ export type AddSubCategoryMutationVariables = Exact<{
 
 
 export type AddSubCategoryMutation = { __typename?: 'Mutation', addSubCategory: { __typename?: 'Category', name: string, id: number, description?: Maybe<string> } };
+
+export type EditEmployeeMutationVariables = Exact<{
+  input: EmployeeInput;
+  employeeId: Scalars['Int'];
+}>;
+
+
+export type EditEmployeeMutation = { __typename?: 'Mutation', editEmployee: { __typename?: 'Employee', id: number, name: string, function: string } };
 
 export type LoginMutationVariables = Exact<{
   usernameOrEmail: Scalars['String'];
@@ -452,6 +475,42 @@ export function useAddSubCategoryMutation(baseOptions?: Apollo.MutationHookOptio
 export type AddSubCategoryMutationHookResult = ReturnType<typeof useAddSubCategoryMutation>;
 export type AddSubCategoryMutationResult = Apollo.MutationResult<AddSubCategoryMutation>;
 export type AddSubCategoryMutationOptions = Apollo.BaseMutationOptions<AddSubCategoryMutation, AddSubCategoryMutationVariables>;
+export const EditEmployeeDocument = gql`
+    mutation editEmployee($input: EmployeeInput!, $employeeId: Int!) {
+  editEmployee(input: $input, employeeId: $employeeId) {
+    id
+    name
+    function
+  }
+}
+    `;
+export type EditEmployeeMutationFn = Apollo.MutationFunction<EditEmployeeMutation, EditEmployeeMutationVariables>;
+
+/**
+ * __useEditEmployeeMutation__
+ *
+ * To run a mutation, you first call `useEditEmployeeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditEmployeeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editEmployeeMutation, { data, loading, error }] = useEditEmployeeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      employeeId: // value for 'employeeId'
+ *   },
+ * });
+ */
+export function useEditEmployeeMutation(baseOptions?: Apollo.MutationHookOptions<EditEmployeeMutation, EditEmployeeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditEmployeeMutation, EditEmployeeMutationVariables>(EditEmployeeDocument, options);
+      }
+export type EditEmployeeMutationHookResult = ReturnType<typeof useEditEmployeeMutation>;
+export type EditEmployeeMutationResult = Apollo.MutationResult<EditEmployeeMutation>;
+export type EditEmployeeMutationOptions = Apollo.BaseMutationOptions<EditEmployeeMutation, EditEmployeeMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {
   login(usernameOrEmail: $usernameOrEmail, password: $password) {
@@ -746,6 +805,7 @@ export const namedOperations = {
     addCompanyLayout: 'addCompanyLayout',
     addEmployee: 'addEmployee',
     addSubCategory: 'addSubCategory',
+    editEmployee: 'editEmployee',
     Login: 'Login',
     Logout: 'Logout',
     Register: 'Register'

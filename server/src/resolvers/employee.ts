@@ -5,6 +5,7 @@ import {
   Ctx,
   Field,
   InputType,
+  Int,
   Mutation,
   Query,
   Resolver,
@@ -89,7 +90,7 @@ export class EmployeeResolver {
   @Mutation(() => Employee)
   @UseMiddleware(isAuth)
   async editEmployee(
-    @Arg("employeeId") employeeId: number,
+    @Arg("employeeId", () => Int!) employeeId: number,
     @Arg("input") input: EmployeeInput,
     @Ctx() { payload }: MyContext
   ) {
@@ -113,8 +114,8 @@ export class EmployeeResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteEmployee(
-    @Arg("employeeId") employeeId: number,
-    @Ctx() { payload, conn }: MyContext
+    @Arg("employeeId", () => Int!) employeeId: number,
+    @Ctx() { payload }: MyContext
   ): Promise<boolean> {
     if (!payload!.userId) {
       return false;

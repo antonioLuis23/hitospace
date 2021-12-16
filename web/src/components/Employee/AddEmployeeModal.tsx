@@ -7,19 +7,16 @@ import AddEmployee from "./AddEmployee";
 interface ModalAddEmployeeType {
   isOpen: boolean;
   onClose: () => void;
-  refetchCategory: (
-    variables?: Partial<
-      Exact<{
-        [key: string]: never;
-      }>
-    >
-  ) => Promise<ApolloQueryResult<CategoriesQuery>>;
+
   parentId: number;
+  isEdit?: boolean;
+  employee?: CategoriesQuery["categories"][0]["employees"][0];
 }
 const AddEmployeeModal: React.FC<ModalAddEmployeeType> = ({
   isOpen,
   onClose,
-  refetchCategory,
+  isEdit = false,
+  employee,
   parentId = null,
 }) => {
   return (
@@ -29,8 +26,9 @@ const AddEmployeeModal: React.FC<ModalAddEmployeeType> = ({
         <ModalContent width="23%">
           <AddEmployee
             closeModal={onClose}
-            refetchCategory={refetchCategory}
             parentId={parentId}
+            isEdit={isEdit}
+            employee={employee}
           />
         </ModalContent>
       </Modal>
