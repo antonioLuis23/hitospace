@@ -24,7 +24,6 @@ const Card: React.FC<CardType> = ({
   margin = "initial",
   width = "100%",
   isEditable = false,
-
   ...props
 }) => {
   const [showEditButtons, setshowEditButtons] = useState(false);

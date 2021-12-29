@@ -129,7 +129,7 @@ const AddEmployee: React.FC<AddEmployeeType> = ({
               isLoading={isSubmitting}
               colorScheme="gray"
             >
-              Adicionar
+              {isEdit ? "Editar" : "Adicionar"}
             </Button>
           </Form>
         )}

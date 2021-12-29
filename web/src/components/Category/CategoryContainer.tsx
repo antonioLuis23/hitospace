@@ -20,6 +20,7 @@ const CategoryContainer: React.FC<CategoryContainerType> = ({
     <Grid
       mx={5}
       templateColumns="repeat(2,1fr)"
+      gridAutoRows="minmax(min-content, max-content)"
       // templateColumns="repeat(auto-fit, minmax(40rem, 2fr))"
 
       gap={2}

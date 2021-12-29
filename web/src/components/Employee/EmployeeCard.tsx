@@ -1,19 +1,23 @@
-import { Flex, Box, Link, VStack } from "@chakra-ui/layout";
+import { useApolloClient } from "@apollo/client";
+import { Box, Flex, Link, VStack } from "@chakra-ui/layout";
 import {
-  useColorModeValue,
-  Icon,
   chakra,
+  Icon,
   Image,
+  useColorModeValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
-import { MdHeadset, MdEmail, MdLocationOn } from "react-icons/md";
 import { BsFillBriefcaseFill, BsFillChatFill } from "react-icons/bs";
+import { MdEmail, MdLocationOn, MdModeEdit, MdDelete } from "react-icons/md";
 import { RiToolsFill } from "react-icons/ri";
-import { CategoriesQuery, Exact } from "../../generated/graphql";
-import { MdModeEdit } from "react-icons/md";
+import {
+  CategoriesQuery,
+  useDeleteEmployeeMutation,
+} from "../../generated/graphql";
+import ConfirmationDialog from "../UI/ConfirmationDialog";
 import AddEmployeeModal from "./AddEmployeeModal";
-import { ApolloQueryResult } from "@apollo/client";
 
 interface EmployeeCardType {
   employee: CategoriesQuery["categories"][0]["employees"][0];
@@ -21,7 +25,52 @@ interface EmployeeCardType {
 }
 
 const EmployeeCard: React.FC<EmployeeCardType> = ({ categoryId, ...props }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isEditEmployeeOpen,
+    onOpen: onEditEmployeeOpen,
+    onClose: onEditEmployeeClose,
+  } = useDisclosure();
+  const {
+    isOpen: isModalConfirmationOpen,
+    onOpen: onModalConfirmationOpen,
+    onClose: onModalConfirmationClose,
+  } = useDisclosure();
+  const toast = useToast();
+  const [deleteEmployee] = useDeleteEmployeeMutation({
+    variables: {
+      id: props.employee?.id,
+    },
+  });
+  const client = useApolloClient();
+
+  const onDeleteClick = async () => {
+    console.log("deletou colaborador");
+    const response = await deleteEmployee({});
+    console.log("response:", response);
+    await client.refetchQueries({
+      include: ["Categories"],
+    });
+    if (response.data.deleteEmployee) {
+      toast({
+        title: "Pessoa excluida!",
+        // description: "We've created your account for you.",
+        status: "success",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Não foi possível excluir!",
+        // description: "We've created your account for you.",
+        status: "error",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+    }
+    onModalConfirmationClose();
+  };
   return (
     <Flex
       bg={useColorModeValue("#F9FAFB", "gray.600")}
@@ -31,20 +80,33 @@ const EmployeeCard: React.FC<EmployeeCardType> = ({ categoryId, ...props }) => {
       rounded="lg"
     >
       <AddEmployeeModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isEditEmployeeOpen}
+        onClose={onEditEmployeeClose}
         parentId={categoryId}
         employee={props.employee}
         isEdit={true}
       />
+      <ConfirmationDialog
+        header="Apagar pessoa?"
+        message="Você tem certeza que deseja apagar?"
+        isOpen={isModalConfirmationOpen}
+        action={onDeleteClick}
+        onClose={onModalConfirmationClose}
+      />
       <Flex
         justifyContent="flex-end"
         position="absolute"
-        marginRight="19rem"
+        marginLeft="15rem"
         marginBottom="29rem"
-        onClick={onOpen}
       >
-        <MdModeEdit />
+        <Flex ml={6} gap="7px" cursor={"pointer"}>
+          <Box onClick={onEditEmployeeOpen}>
+            <MdModeEdit />
+          </Box>
+          <Box ml={2} onClick={onModalConfirmationOpen}>
+            <MdDelete />
+          </Box>
+        </Flex>
       </Flex>
       <Box
         w="sm"

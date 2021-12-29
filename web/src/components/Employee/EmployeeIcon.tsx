@@ -64,7 +64,7 @@ const EmployeeIcon: React.FC<EmployeeInfoType> = ({ categoryId, ...props }) => {
       <Portal>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
-          <ModalContent width="23%">
+          <ModalContent width="21rem">
             <EmployeeCard employee={props.employee} categoryId={categoryId} />
           </ModalContent>
         </Modal>
