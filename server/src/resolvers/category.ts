@@ -16,6 +16,7 @@ import { getConnection } from "typeorm";
 import { Employee } from "../entities/Employee";
 import { isAuth } from "../isAuth";
 import { MyContext } from "../MyContext";
+import { EditCategoryForm } from "./form/EditCategoryForm";
 
 @InputType()
 class CategoryInput {
@@ -30,21 +31,6 @@ class CategoryInput {
 
   @Field({ nullable: true })
   parentId?: number;
-}
-
-@InputType()
-class SubCategoryInput {
-  @Field()
-  name: string;
-  @Field()
-  description: string;
-  @Field()
-  parentId: number;
-  @Field()
-  bgColor: string;
-
-  @Field()
-  textColor: string;
 }
 
 const getEmployeeByCategory = async (catId: number): Promise<Employee[]> => {
@@ -145,15 +131,37 @@ export class CategoryResolver {
   }
 
   @Mutation(() => Category)
-  async addSubCategory(
-    @Arg("input") input: SubCategoryInput
-  ): Promise<Category> {
-    let catParent = await Category.findOne(input.parentId);
-    let catChild = Category.create({
-      name: input.name,
-      description: input.description,
-      parent: catParent,
-    });
-    return await catChild.save();
+  @UseMiddleware(isAuth)
+  async editCategory(
+    @Arg("categoryId", () => Int!) categoryId: number,
+    @Arg("input") input: EditCategoryForm,
+    @Ctx() { payload }: MyContext
+  ) {
+    const updateCategory = await Category.findOne(categoryId);
+    if (updateCategory!.userId !== parseInt(payload!.userId)) {
+      return null;
+    }
+    console.log("updateCategory", updateCategory);
+
+    Object.assign(updateCategory, input);
+    console.log("updateCategory", updateCategory);
+
+    return updateCategory?.save();
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteCategory(
+    @Arg("categoryId", () => Int!) categoryId: number,
+    @Ctx() { payload }: MyContext
+  ): Promise<boolean> {
+    const deleteCategory = await Category.findOne(categoryId);
+    if (deleteCategory && deleteCategory.userId === parseInt(payload!.userId)) {
+      await deleteCategory.save();
+      // conn.manager.remove(deleteEmployee);
+      await Category.delete({ id: deleteCategory.id });
+      return true;
+    }
+    return false;
   }
 }

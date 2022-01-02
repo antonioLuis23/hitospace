@@ -33,10 +33,11 @@ export const isAuth: MiddlewareFn<MyContext> = async ({ context }, next) => {
     console.log("passed verification");
     let user = await User.findOne((payload! as any).userId);
     if (!user) {
-      return next();
+      throw new Error("User not authenticated!");
     }
     context.payload = payload as any;
   } catch (err) {
+    throw new Error("User not authenticated!");
     console.log("erro no token:", err);
     context.payload = { userId: "" };
   }
