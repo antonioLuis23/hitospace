@@ -61,7 +61,6 @@ const AddEmployee: React.FC<AddEmployeeType> = ({
     if (response.data.addEmployee || response.data.editEmployee) {
       toast({
         title: title,
-        // description: "We've created your account for you.",
         status: "success",
         duration: 2000,
         position: "top",

@@ -63,9 +63,7 @@ export class Employee extends BaseEntity {
   @ManyToOne(() => User, (user) => user.employees)
   user: User;
 
-  @ManyToMany(() => Category, (category) => category.employees, {
-    cascade: true,
-  })
+  @ManyToMany(() => Category, (category) => category.employees)
   @JoinTable()
   sectors: Category[];
 

@@ -1,13 +1,30 @@
+import { useApolloClient } from "@apollo/client";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
-import { Grid, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import {
+  Grid,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useColorModeValue,
+  useDisclosure,
+  useToast,
+  UseToastOptions,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
-import { CategoriesQuery, Exact } from "../../generated/graphql";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoMdPersonAdd } from "react-icons/io";
+import { MdDelete, MdModeEdit } from "react-icons/md";
+import {
+  CategoriesQuery,
+  useDeleteCategoryMutation,
+} from "../../generated/graphql";
+import AddEmployeeModal from "../Employee/AddEmployeeModal";
 import EmployeeContainer from "../Employee/EmployeesContainer";
-import Card from "../UI/Card";
+import ConfirmationDialog from "../UI/ConfirmationDialog";
 import AddCategoryButton from "./AddCategoryButton";
 import AddCategoryModal from "./AddCategoryModal";
-import { ApolloQueryResult } from "@apollo/client";
-import AddEmployeeModal from "../Employee/AddEmployeeModal";
 
 interface CategoryPropsType {
   cat: CategoriesQuery["categories"][0];
@@ -29,11 +46,55 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   let renderSubCat = null;
   const [openPanel, setOpenPanel] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [showEditButtons, setshowEditButtons] = useState(false);
   const {
     isOpen: isAddEmployeeOpen,
     onOpen: onAddEmployeeOpen,
     onClose: onAddEmployeeClose,
   } = useDisclosure();
+  const {
+    isOpen: isEditCategoryOpen,
+    onOpen: onEditCategoryOpen,
+    onClose: onEditCategoryClose,
+  } = useDisclosure();
+  const {
+    isOpen: isModalConfirmationOpen,
+    onOpen: onModalConfirmationOpen,
+    onClose: onModalConfirmationClose,
+  } = useDisclosure();
+
+  const toast = useToast();
+  const client = useApolloClient();
+
+  const [deleteCategory] = useDeleteCategoryMutation({
+    variables: {
+      id: cat.id,
+    },
+  });
+
+  const onDeleteClick = async () => {
+    console.log("deletou categoria");
+    const response = await deleteCategory({});
+    console.log("response:", response);
+    await client.refetchQueries({
+      include: ["Categories"],
+    });
+    let toastData: UseToastOptions = {
+      title: "Categoria excluida!",
+      // description: "We've created your account for you.",
+      status: "success",
+      duration: 2000,
+      position: "top",
+      isClosable: true,
+    };
+    if (response.data.deleteCategory) {
+      toast(toastData);
+    } else {
+      toast["title"] = "Não foi possível excluir!";
+      toast["status"] = "error";
+      toast(toastData);
+    }
+  };
 
   const clickCategoryCard = (e) => {
     const target: any = e.target;
@@ -82,33 +143,93 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
 
   let renderEmployees = null;
   if (cat.employees.length > 0 && openPanel) {
-    console.log("entrou aqui???");
     renderEmployees = (
       <EmployeeContainer categoryId={cat.id} employees={cat.employees} />
     );
   }
 
   return (
-    <React.Fragment>
+    <Box
+      bg={useColorModeValue("#F8F8F8", "#2d3443")}
+      textAlign="center"
+      onMouseEnter={() => {
+        setshowEditButtons(true);
+      }}
+      py={1}
+      onMouseLeave={() => {
+        setshowEditButtons(false);
+      }}
+      key={cat.id}
+      cursor="pointer"
+      transition="all 0.2s ease-in-out"
+      boxShadow={useColorModeValue("md", "md")}
+      borderRadius="md"
+      _hover={useColorModeValue({ boxShadow: "lg" }, { boxShadow: "lg" })}
+      onClick={clickCategoryCard}
+    >
       <AddEmployeeModal
         isOpen={isAddEmployeeOpen}
         onClose={onAddEmployeeClose}
         parentId={cat.id}
+        isEdit={false}
       />
-      <Card
-        title={cat.name}
-        keyId={cat.id}
-        clickFunction={clickCategoryCard}
-        onClickAddPerson={onAddEmployeeOpen}
-        sizeHeading={openPanel ? sizeHeadingOpen : sizeHeadingClose}
-        sizePy={openPanel ? sizePyOpen : sizePyClose}
-        isEditable={isEditable}
-      >
+      <ConfirmationDialog
+        header="Apagar categoria?"
+        message="Você tem certeza que deseja apagar?"
+        isOpen={isModalConfirmationOpen}
+        action={onDeleteClick}
+        onClose={onModalConfirmationClose}
+      />
+      {isEditable && (
+        <Flex
+          justifyContent="flex-end"
+          marginLeft="0.5rem"
+          mr={2}
+          mt={2}
+          marginBottom="-2.5rem"
+        >
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<BsThreeDotsVertical />}
+              variant="outline"
+            />
+            <MenuList>
+              <MenuItem icon={<IoMdPersonAdd />} onClick={onAddEmployeeOpen}>
+                Adicionar Pessoa
+              </MenuItem>
+              <MenuItem icon={<MdModeEdit />} onClick={onEditCategoryOpen}>
+                Editar
+              </MenuItem>
+              <MenuItem icon={<MdDelete />} onClick={onModalConfirmationOpen}>
+                Excluir
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
+      )}
+      <Flex flexDirection="column" alignItems="center" height="100%">
+        <Heading
+          py={openPanel ? sizePyOpen : sizePyClose}
+          as="h2"
+          color={useColorModeValue("gray.700", "gray.50")}
+          size={openPanel ? sizeHeadingOpen : sizeHeadingClose}
+        >
+          {cat.name}
+        </Heading>
+        <AddCategoryModal
+          isOpen={isEditCategoryOpen}
+          category={cat}
+          isEdit={true}
+          onClose={onEditCategoryClose}
+          parentId={cat.id}
+        />
         <AddCategoryModal isOpen={isOpen} onClose={onClose} parentId={cat.id} />
         {renderEmployees}
         {renderSubCat}
-      </Card>
-    </React.Fragment>
+      </Flex>
+    </Box>
   );
 };
 

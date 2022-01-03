@@ -33,19 +33,6 @@ class CategoryInput {
   parentId?: number;
 }
 
-const getEmployeeByCategory = async (catId: number): Promise<Employee[]> => {
-  return getConnection().query(
-    `
-  select emp.* 
-  from employee emp
-  join employee_sectors_category empcat on (emp.id = empcat."employeeId")
-  where empcat."categoryId" = $1
-
-  `,
-    [catId]
-  ) as Promise<Employee[]>;
-};
-
 const getLayoutByUserAndId = async (
   userId: number,
   layoutId: number
@@ -68,23 +55,12 @@ export class CategoryResolver {
   @Query(() => [Category])
   async categories(@Arg("layoutId", () => Int!) layoutId: number) {
     const manager = getManager();
-    const trees = await manager.getTreeRepository(Category).findTrees();
+    const trees = await manager
+      .getTreeRepository(Category)
+      .findTrees({ relations: ["employees"] });
     console.log("trees", trees);
     let filteredTrees = trees.filter((tree) => tree.layoutId === layoutId);
     if (filteredTrees) {
-      for (let i = 0; i < filteredTrees.length; i++) {
-        filteredTrees[i]["employees"] = await getEmployeeByCategory(
-          trees[i].id
-        );
-        if (filteredTrees[i].catChildren.length > 0) {
-          for (let j = 0; j < filteredTrees[i].catChildren.length; j++) {
-            const catChildrenEmp = await getEmployeeByCategory(
-              filteredTrees[i].catChildren[j].id
-            );
-            filteredTrees[i].catChildren[j]["employees"] = catChildrenEmp;
-          }
-        }
-      }
       return filteredTrees;
     }
     return null;

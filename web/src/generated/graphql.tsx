@@ -54,6 +54,11 @@ export type CompanyLayoutInput = {
   name: Scalars['String'];
 };
 
+export type EditCategoryForm = {
+  description: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export type Employee = {
   __typename?: 'Employee';
   abilities?: Maybe<Scalars['String']>;
@@ -96,8 +101,9 @@ export type Mutation = {
   addCategory: Category;
   addCompanyLayout: CompanyLayout;
   addEmployee: Employee;
-  addSubCategory: Category;
+  deleteCategory: Scalars['Boolean'];
   deleteEmployee: Scalars['Boolean'];
+  editCategory: Category;
   editEmployee: Employee;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -120,13 +126,19 @@ export type MutationAddEmployeeArgs = {
 };
 
 
-export type MutationAddSubCategoryArgs = {
-  input: SubCategoryInput;
+export type MutationDeleteCategoryArgs = {
+  categoryId: Scalars['Int'];
 };
 
 
 export type MutationDeleteEmployeeArgs = {
   employeeId: Scalars['Int'];
+};
+
+
+export type MutationEditCategoryArgs = {
+  categoryId: Scalars['Int'];
+  input: EditCategoryForm;
 };
 
 
@@ -169,14 +181,6 @@ export type QueryGetEmployeesByCategoryArgs = {
 
 export type QuerySearchEmployeesArgs = {
   search: Scalars['String'];
-};
-
-export type SubCategoryInput = {
-  bgColor: Scalars['String'];
-  description: Scalars['String'];
-  name: Scalars['String'];
-  parentId: Scalars['Float'];
-  textColor: Scalars['String'];
 };
 
 export type User = {
@@ -230,12 +234,12 @@ export type AddEmployeeMutationVariables = Exact<{
 
 export type AddEmployeeMutation = { __typename?: 'Mutation', addEmployee: { __typename?: 'Employee', id: number, name: string, function: string } };
 
-export type AddSubCategoryMutationVariables = Exact<{
-  input: SubCategoryInput;
+export type DeleteCategoryMutationVariables = Exact<{
+  id: Scalars['Int'];
 }>;
 
 
-export type AddSubCategoryMutation = { __typename?: 'Mutation', addSubCategory: { __typename?: 'Category', name: string, id: number, description?: Maybe<string> } };
+export type DeleteCategoryMutation = { __typename?: 'Mutation', deleteCategory: boolean };
 
 export type DeleteEmployeeMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -243,6 +247,14 @@ export type DeleteEmployeeMutationVariables = Exact<{
 
 
 export type DeleteEmployeeMutation = { __typename?: 'Mutation', deleteEmployee: boolean };
+
+export type EditCategoryMutationVariables = Exact<{
+  input: EditCategoryForm;
+  categoryId: Scalars['Int'];
+}>;
+
+
+export type EditCategoryMutation = { __typename?: 'Mutation', editCategory: { __typename?: 'Category', id: number, name: string, description?: Maybe<string> } };
 
 export type EditEmployeeMutationVariables = Exact<{
   input: EmployeeInput;
@@ -447,41 +459,37 @@ export function useAddEmployeeMutation(baseOptions?: Apollo.MutationHookOptions<
 export type AddEmployeeMutationHookResult = ReturnType<typeof useAddEmployeeMutation>;
 export type AddEmployeeMutationResult = Apollo.MutationResult<AddEmployeeMutation>;
 export type AddEmployeeMutationOptions = Apollo.BaseMutationOptions<AddEmployeeMutation, AddEmployeeMutationVariables>;
-export const AddSubCategoryDocument = gql`
-    mutation addSubCategory($input: SubCategoryInput!) {
-  addSubCategory(input: $input) {
-    name
-    id
-    description
-  }
+export const DeleteCategoryDocument = gql`
+    mutation deleteCategory($id: Int!) {
+  deleteCategory(categoryId: $id)
 }
     `;
-export type AddSubCategoryMutationFn = Apollo.MutationFunction<AddSubCategoryMutation, AddSubCategoryMutationVariables>;
+export type DeleteCategoryMutationFn = Apollo.MutationFunction<DeleteCategoryMutation, DeleteCategoryMutationVariables>;
 
 /**
- * __useAddSubCategoryMutation__
+ * __useDeleteCategoryMutation__
  *
- * To run a mutation, you first call `useAddSubCategoryMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddSubCategoryMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCategoryMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [addSubCategoryMutation, { data, loading, error }] = useAddSubCategoryMutation({
+ * const [deleteCategoryMutation, { data, loading, error }] = useDeleteCategoryMutation({
  *   variables: {
- *      input: // value for 'input'
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useAddSubCategoryMutation(baseOptions?: Apollo.MutationHookOptions<AddSubCategoryMutation, AddSubCategoryMutationVariables>) {
+export function useDeleteCategoryMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCategoryMutation, DeleteCategoryMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddSubCategoryMutation, AddSubCategoryMutationVariables>(AddSubCategoryDocument, options);
+        return Apollo.useMutation<DeleteCategoryMutation, DeleteCategoryMutationVariables>(DeleteCategoryDocument, options);
       }
-export type AddSubCategoryMutationHookResult = ReturnType<typeof useAddSubCategoryMutation>;
-export type AddSubCategoryMutationResult = Apollo.MutationResult<AddSubCategoryMutation>;
-export type AddSubCategoryMutationOptions = Apollo.BaseMutationOptions<AddSubCategoryMutation, AddSubCategoryMutationVariables>;
+export type DeleteCategoryMutationHookResult = ReturnType<typeof useDeleteCategoryMutation>;
+export type DeleteCategoryMutationResult = Apollo.MutationResult<DeleteCategoryMutation>;
+export type DeleteCategoryMutationOptions = Apollo.BaseMutationOptions<DeleteCategoryMutation, DeleteCategoryMutationVariables>;
 export const DeleteEmployeeDocument = gql`
     mutation deleteEmployee($id: Int!) {
   deleteEmployee(employeeId: $id)
@@ -513,6 +521,42 @@ export function useDeleteEmployeeMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteEmployeeMutationHookResult = ReturnType<typeof useDeleteEmployeeMutation>;
 export type DeleteEmployeeMutationResult = Apollo.MutationResult<DeleteEmployeeMutation>;
 export type DeleteEmployeeMutationOptions = Apollo.BaseMutationOptions<DeleteEmployeeMutation, DeleteEmployeeMutationVariables>;
+export const EditCategoryDocument = gql`
+    mutation editCategory($input: EditCategoryForm!, $categoryId: Int!) {
+  editCategory(input: $input, categoryId: $categoryId) {
+    id
+    name
+    description
+  }
+}
+    `;
+export type EditCategoryMutationFn = Apollo.MutationFunction<EditCategoryMutation, EditCategoryMutationVariables>;
+
+/**
+ * __useEditCategoryMutation__
+ *
+ * To run a mutation, you first call `useEditCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editCategoryMutation, { data, loading, error }] = useEditCategoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      categoryId: // value for 'categoryId'
+ *   },
+ * });
+ */
+export function useEditCategoryMutation(baseOptions?: Apollo.MutationHookOptions<EditCategoryMutation, EditCategoryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EditCategoryMutation, EditCategoryMutationVariables>(EditCategoryDocument, options);
+      }
+export type EditCategoryMutationHookResult = ReturnType<typeof useEditCategoryMutation>;
+export type EditCategoryMutationResult = Apollo.MutationResult<EditCategoryMutation>;
+export type EditCategoryMutationOptions = Apollo.BaseMutationOptions<EditCategoryMutation, EditCategoryMutationVariables>;
 export const EditEmployeeDocument = gql`
     mutation editEmployee($input: EmployeeInput!, $employeeId: Int!) {
   editEmployee(input: $input, employeeId: $employeeId) {
@@ -842,8 +886,9 @@ export const namedOperations = {
     addCategory: 'addCategory',
     addCompanyLayout: 'addCompanyLayout',
     addEmployee: 'addEmployee',
-    addSubCategory: 'addSubCategory',
+    deleteCategory: 'deleteCategory',
     deleteEmployee: 'deleteEmployee',
+    editCategory: 'editCategory',
     editEmployee: 'editEmployee',
     Login: 'Login',
     Logout: 'Logout',

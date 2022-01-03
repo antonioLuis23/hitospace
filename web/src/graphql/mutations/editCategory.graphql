@@ -1,0 +1,7 @@
+mutation editCategory($input: EditCategoryForm!, $categoryId: Int!) {
+  editCategory(input: $input, categoryId: $categoryId) {
+    id
+    name
+    description
+  }
+}

@@ -1,7 +1,0 @@
-mutation addSubCategory($input: SubCategoryInput!) {
-  addSubCategory(input: $input) {
-    name
-    id
-    description
-  }
-}

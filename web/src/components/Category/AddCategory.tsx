@@ -3,57 +3,85 @@ import { Button, useToast } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
-import { useAddCategoryMutation } from "../../generated/graphql";
+import {
+  CategoriesQuery,
+  useAddCategoryMutation,
+  useEditCategoryMutation,
+} from "../../generated/graphql";
 import { InputField } from "../InputField";
 import { useApolloClient } from "@apollo/client";
 interface AddCategoryType {
+  category?: CategoriesQuery["categories"][0];
   closeModal: () => void;
+  isEdit?: boolean;
   parentId?: number;
 }
 
-const AddCategory: React.FC<AddCategoryType> = ({ closeModal, parentId }) => {
+const AddCategory: React.FC<AddCategoryType> = ({
+  closeModal,
+  parentId,
+  isEdit = false,
+  category,
+}) => {
   const router = useRouter();
   const [addCategory] = useAddCategoryMutation();
+  const [editCategory] = useEditCategoryMutation();
   const toast = useToast();
   const client = useApolloClient();
   console.log("parentId", parentId);
+
+  const submitFormHandler = async (values) => {
+    let response: any;
+    let title = "";
+    console.log("router::111", parseInt(router.query.id as string));
+    if (isEdit) {
+      response = await editCategory({
+        variables: {
+          input: {
+            ...values,
+          },
+          categoryId: category?.id,
+        },
+      });
+      title = "Categoria Editada!";
+    } else {
+      response = await addCategory({
+        variables: {
+          input: {
+            layoutId: parseInt(router.query.id as string),
+            parentId: parentId,
+            ...values,
+          },
+        },
+      });
+      title = "Categoria Adicionada!";
+    }
+
+    console.log("response:", response);
+    await client.refetchQueries({
+      include: ["Categories"],
+    });
+    closeModal();
+    if (response.data.addCategory || response.data.editCategory) {
+      toast({
+        title: title,
+        status: "success",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+    }
+    return response;
+  };
 
   return (
     <Box p={4}>
       <Formik
         initialValues={{
-          name: "",
-          description: "",
+          name: category ? category.name : "",
+          description: category ? category.description : "",
         }}
-        onSubmit={async (values) => {
-          console.log("router::111", parseInt(router.query.id as string));
-
-          const response = await addCategory({
-            variables: {
-              input: {
-                layoutId: parseInt(router.query.id as string),
-                parentId: parentId,
-                ...values,
-              },
-            },
-          });
-          console.log("response:", response);
-          await client.refetchQueries({
-            include: ["Categories"],
-          });
-          closeModal();
-          if (response.data.addCategory) {
-            toast({
-              title: "Categoria Adicionada!",
-              // description: "We've created your account for you.",
-              status: "success",
-              duration: 2000,
-              position: "top",
-              isClosable: true,
-            });
-          }
-          return response;
-        }}
+        onSubmit={submitFormHandler}
       >
         {({ isSubmitting }) => (
           <Form>

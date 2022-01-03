@@ -33,11 +33,13 @@ export class Category extends BaseEntity {
   description: string;
 
   // @Field({ nullable: true })
-  @TreeParent()
+  @TreeParent({ onDelete: "CASCADE" })
   parent: Category;
 
   @Field(() => [Employee], { nullable: true })
-  @ManyToMany(() => Employee, (employee) => employee.sectors)
+  @ManyToMany(() => Employee, (employee) => employee.sectors, {
+    cascade: true,
+  })
   employees: Employee[];
 
   @Field()
@@ -56,7 +58,9 @@ export class Category extends BaseEntity {
   user: User;
 
   @Field(() => [Category], { nullable: true })
-  @TreeChildren()
+  @TreeChildren({
+    cascade: true,
+  })
   catChildren: Category[];
 
   @Field()

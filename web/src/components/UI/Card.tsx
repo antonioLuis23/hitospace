@@ -1,8 +1,18 @@
+import { HamburgerIcon } from "@chakra-ui/icons";
 import { Box, Flex, Heading } from "@chakra-ui/layout";
-import { useColorModeValue } from "@chakra-ui/react";
+import {
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { IconType } from "react-icons";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoMdPersonAdd } from "react-icons/io";
+import { MdModeEdit, MdDelete } from "react-icons/md";
 
 interface CardType {
   clickFunction: (e: any) => void;
@@ -48,16 +58,32 @@ const Card: React.FC<CardType> = ({
       _hover={useColorModeValue({ boxShadow: "lg" }, { boxShadow: "lg" })}
       onClick={props.clickFunction}
     >
-      {isEditable && showEditButtons && (
+      {isEditable && (
         <Flex
-          onClick={props.onClickAddPerson}
           justifyContent="flex-end"
-          position="absolute"
           marginLeft="0.5rem"
           mr={2}
           mt={2}
+          marginBottom="-1.2rem"
         >
-          <IoMdPersonAdd />
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<BsThreeDotsVertical />}
+              variant="outline"
+            />
+            <MenuList>
+              <MenuItem
+                icon={<IoMdPersonAdd />}
+                onClick={props.onClickAddPerson}
+              >
+                Adicionar Pessoa
+              </MenuItem>
+              <MenuItem icon={<MdModeEdit />}>Editar</MenuItem>
+              <MenuItem icon={<MdDelete />}>Excluir</MenuItem>
+            </MenuList>
+          </Menu>
         </Flex>
       )}
       <Flex flexDirection="column" alignItems="center" height="100%">

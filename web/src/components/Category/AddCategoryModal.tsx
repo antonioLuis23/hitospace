@@ -5,13 +5,17 @@ import React from "react";
 import { CategoriesQuery, Exact } from "../../generated/graphql";
 import AddCategory from "./AddCategory";
 interface ModalAddCategoryType {
+  category?: CategoriesQuery["categories"][0];
   isOpen: boolean;
+  isEdit?: boolean;
   onClose: () => void;
   parentId?: number;
 }
 const AddCategoryModal: React.FC<ModalAddCategoryType> = ({
   isOpen,
+  category,
   onClose,
+  isEdit = false,
   parentId = null,
 }) => {
   return (
@@ -19,7 +23,12 @@ const AddCategoryModal: React.FC<ModalAddCategoryType> = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent width="23%">
-          <AddCategory closeModal={onClose} parentId={parentId} />
+          <AddCategory
+            isEdit={isEdit}
+            closeModal={onClose}
+            parentId={parentId}
+            category={category}
+          />
         </ModalContent>
       </Modal>
     </Portal>
