@@ -58,18 +58,7 @@ const CategoryZoomContainer: React.FC<CategoryZoomContainerType> = ({
               <Button onClick={() => resetTransform()}>Resetar</Button>
             </Flex>
             <TransformComponent>
-              <Box
-                width="92vw"
-                height="85vh"
-                onClick={(e) => {
-                  const target: any = e.target;
-                  console.log("body innerText", target.id);
-                  if (target.id === "bodyContainer") {
-                    resetTransform();
-                  }
-                }}
-                id="bodyContainer"
-              >
+              <Box width="92vw" height="85vh" id="bodyContainer">
                 {loading && !data ? (
                   <Flex alignItems="center" justifyContent="center">
                     <Spinner

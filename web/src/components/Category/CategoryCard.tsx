@@ -46,7 +46,6 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   let renderSubCat = null;
   const [openPanel, setOpenPanel] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [showEditButtons, setshowEditButtons] = useState(false);
   const {
     isOpen: isAddEmployeeOpen,
     onOpen: onAddEmployeeOpen,
@@ -66,15 +65,15 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   const toast = useToast();
   const client = useApolloClient();
 
-  const [deleteCategory] = useDeleteCategoryMutation({
-    variables: {
-      id: cat.id,
-    },
-  });
+  const [deleteCategory] = useDeleteCategoryMutation();
 
   const onDeleteClick = async () => {
     console.log("deletou categoria");
-    const response = await deleteCategory({});
+    const response = await deleteCategory({
+      variables: {
+        id: cat.id,
+      },
+    });
     console.log("response:", response);
     await client.refetchQueries({
       include: ["Categories"],
@@ -90,8 +89,9 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
     if (response.data.deleteCategory) {
       toast(toastData);
     } else {
-      toast["title"] = "Não foi possível excluir!";
-      toast["status"] = "error";
+      console.log("não excluiu");
+      toastData["title"] = "Não foi possível excluir!";
+      toastData["status"] = "error";
       toast(toastData);
     }
   };
@@ -152,13 +152,6 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
     <Box
       bg={useColorModeValue("#F8F8F8", "#2d3443")}
       textAlign="center"
-      onMouseEnter={() => {
-        setshowEditButtons(true);
-      }}
-      py={1}
-      onMouseLeave={() => {
-        setshowEditButtons(false);
-      }}
       key={cat.id}
       cursor="pointer"
       transition="all 0.2s ease-in-out"
@@ -194,6 +187,7 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
               aria-label="Options"
               icon={<BsThreeDotsVertical />}
               variant="outline"
+              data-testid="options-category"
             />
             <MenuList>
               <MenuItem icon={<IoMdPersonAdd />} onClick={onAddEmployeeOpen}>
@@ -202,7 +196,11 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
               <MenuItem icon={<MdModeEdit />} onClick={onEditCategoryOpen}>
                 Editar
               </MenuItem>
-              <MenuItem icon={<MdDelete />} onClick={onModalConfirmationOpen}>
+              <MenuItem
+                icon={<MdDelete />}
+                onClick={onModalConfirmationOpen}
+                data-testid="delete-category"
+              >
                 Excluir
               </MenuItem>
             </MenuList>

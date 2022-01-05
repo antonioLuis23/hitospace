@@ -6,10 +6,13 @@
     "start": "next start",
     "test": "jest --watch",
     "test-coverage": "jest --coverage",
+    "test-verbose": "jest --verbose false",
     "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@apollo/client": "^3.4.11",
+    "@apollo/client": "3.5.6",
+    "@apollo/react-hooks": "^4.0.0",
+    "@apollo/react-testing": "^4.0.0",
     "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.8",
     "@emotion/core": "^11.0.0",
@@ -17,8 +20,6 @@
     "@emotion/styled": "^11.3.0",
     "@types/aria-query": "^4.2.2",
     "@types/jwt-decode": "^3.1.0",
-    "@urql/exchange-auth": "^0.1.6",
-    "@urql/exchange-graphcache": "^4.3.3",
     "apollo-link-context": "^1.0.20",
     "apollo-link-token-refresh": "^0.3.2",
     "cookie": "^0.4.1",

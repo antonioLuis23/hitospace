@@ -1,7 +1,13 @@
 import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
-import React from "react";
+import React, { Component } from "react";
 import theme from "../theme";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  ApolloCache,
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from "@apollo/client";
 import "focus-visible/dist/focus-visible";
 
 import { Global, css } from "@emotion/react";
@@ -16,10 +22,12 @@ const GlobalStyles = css`
   }
 `;
 
+const memoryCache = new InMemoryCache();
+
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
   credentials: "include",
-  cache: new InMemoryCache(),
+  cache: memoryCache,
 });
 function MyApp({ Component, pageProps }) {
   return (

@@ -133,6 +133,7 @@ export class CategoryResolver {
   ): Promise<boolean> {
     const deleteCategory = await Category.findOne(categoryId);
     if (deleteCategory && deleteCategory.userId === parseInt(payload!.userId)) {
+      deleteCategory.employees = [];
       await deleteCategory.save();
       // conn.manager.remove(deleteEmployee);
       await Category.delete({ id: deleteCategory.id });

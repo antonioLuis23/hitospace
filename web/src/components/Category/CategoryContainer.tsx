@@ -15,6 +15,7 @@ const CategoryContainer: React.FC<CategoryContainerType> = ({
 
   isEditable = false,
 }) => {
+  console.log("data:", data);
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Grid
