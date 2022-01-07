@@ -21,6 +21,7 @@ import {
   useDeleteCategoryMutation,
 } from "../../generated/graphql";
 import AddEmployeeModal from "../Employee/AddEmployeeModal";
+import AddEmployeeOption from "../Employee/AddEmployeeOption";
 import EmployeeContainer from "../Employee/EmployeesContainer";
 import ConfirmationDialog from "../UI/ConfirmationDialog";
 import AddCategoryButton from "./AddCategoryButton";
@@ -47,9 +48,9 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   const [openPanel, setOpenPanel] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    isOpen: isAddEmployeeOpen,
-    onOpen: onAddEmployeeOpen,
-    onClose: onAddEmployeeClose,
+    isOpen: isEmployeeOptionOpen,
+    onOpen: onEmployeeOptionOpen,
+    onClose: onEmployeeOptionClose,
   } = useDisclosure();
   const {
     isOpen: isEditCategoryOpen,
@@ -160,9 +161,9 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
       _hover={useColorModeValue({ boxShadow: "lg" }, { boxShadow: "lg" })}
       onClick={clickCategoryCard}
     >
-      <AddEmployeeModal
-        isOpen={isAddEmployeeOpen}
-        onClose={onAddEmployeeClose}
+      <AddEmployeeOption
+        isOpen={isEmployeeOptionOpen}
+        onClose={onEmployeeOptionClose}
         parentId={cat.id}
         isEdit={false}
       />
@@ -190,7 +191,7 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
               data-testid="options-category"
             />
             <MenuList>
-              <MenuItem icon={<IoMdPersonAdd />} onClick={onAddEmployeeOpen}>
+              <MenuItem icon={<IoMdPersonAdd />} onClick={onEmployeeOptionOpen}>
                 Adicionar Pessoa
               </MenuItem>
               <MenuItem icon={<MdModeEdit />} onClick={onEditCategoryOpen}>

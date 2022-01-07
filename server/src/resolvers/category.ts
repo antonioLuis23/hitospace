@@ -13,7 +13,6 @@ import {
 import { getManager } from "typeorm";
 import { CompanyLayout } from "../entities/CompanyLayout";
 import { getConnection } from "typeorm";
-import { Employee } from "../entities/Employee";
 import { isAuth } from "../isAuth";
 import { MyContext } from "../MyContext";
 import { EditCategoryForm } from "./form/EditCategoryForm";
