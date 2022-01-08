@@ -162,6 +162,7 @@ export type Query = {
   __typename?: 'Query';
   bye: Scalars['String'];
   categories: Array<Category>;
+  getAllEmployees: Array<Employee>;
   getEmployeesByCategory: Array<Employee>;
   layouts: Array<CompanyLayout>;
   me?: Maybe<User>;
@@ -295,6 +296,11 @@ export type CategoriesQueryVariables = Exact<{
 
 
 export type CategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', name: string, description?: Maybe<string>, id: number, employees?: Maybe<Array<{ __typename?: 'Employee', name: string, id: number, function: string, chat?: Maybe<string>, sectorsName?: Maybe<string>, email: string, abilities?: Maybe<string>, tags?: Maybe<string>, country?: Maybe<string>, state?: Maybe<string>, city?: Maybe<string> }>>, catChildren?: Maybe<Array<{ __typename?: 'Category', name: string, id: number, description?: Maybe<string>, employees?: Maybe<Array<{ __typename?: 'Employee', name: string, id: number, function: string, chat?: Maybe<string>, sectorsName?: Maybe<string>, email: string, abilities?: Maybe<string>, tags?: Maybe<string>, country?: Maybe<string>, state?: Maybe<string>, city?: Maybe<string> }>> }>> }> };
+
+export type GetAllEmployeesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllEmployeesQuery = { __typename?: 'Query', getAllEmployees: Array<{ __typename?: 'Employee', name: string, id: number, function: string, chat?: Maybe<string>, sectorsName?: Maybe<string>, email: string, abilities?: Maybe<string>, tags?: Maybe<string>, country?: Maybe<string>, state?: Maybe<string>, city?: Maybe<string> }> };
 
 export type LayoutsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -770,6 +776,40 @@ export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export const GetAllEmployeesDocument = gql`
+    query getAllEmployees {
+  getAllEmployees {
+    ...RegularEmployee
+  }
+}
+    ${RegularEmployeeFragmentDoc}`;
+
+/**
+ * __useGetAllEmployeesQuery__
+ *
+ * To run a query within a React component, call `useGetAllEmployeesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllEmployeesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllEmployeesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllEmployeesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllEmployeesQuery, GetAllEmployeesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllEmployeesQuery, GetAllEmployeesQueryVariables>(GetAllEmployeesDocument, options);
+      }
+export function useGetAllEmployeesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllEmployeesQuery, GetAllEmployeesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllEmployeesQuery, GetAllEmployeesQueryVariables>(GetAllEmployeesDocument, options);
+        }
+export type GetAllEmployeesQueryHookResult = ReturnType<typeof useGetAllEmployeesQuery>;
+export type GetAllEmployeesLazyQueryHookResult = ReturnType<typeof useGetAllEmployeesLazyQuery>;
+export type GetAllEmployeesQueryResult = Apollo.QueryResult<GetAllEmployeesQuery, GetAllEmployeesQueryVariables>;
 export const LayoutsDocument = gql`
     query Layouts {
   layouts {
@@ -878,6 +918,7 @@ export const namedOperations = {
   Query: {
     Bye: 'Bye',
     Categories: 'Categories',
+    getAllEmployees: 'getAllEmployees',
     Layouts: 'Layouts',
     Me: 'Me',
     SearchEmployees: 'SearchEmployees'

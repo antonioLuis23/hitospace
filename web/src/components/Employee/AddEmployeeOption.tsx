@@ -5,7 +5,9 @@ import { BsPersonCheckFill } from "react-icons/bs";
 import { IoMdPersonAdd } from "react-icons/io";
 import { CategoriesQuery } from "../../generated/graphql";
 import CardButtonIcon from "../UI/CardButtonIcon";
+import ModalWrapper from "../UI/ModalWrapper";
 import AddEmployeeModal from "./AddEmployeeModal";
+import SelectEmployeesModal from "./SelectEmployeesModal";
 interface AddEmployeeOptionType {
   isOpen: boolean;
   onClose: () => void;
@@ -26,36 +28,48 @@ const AddEmployeeOption: React.FC<AddEmployeeOptionType> = ({
     onOpen: onAddEmployeeOpen,
     onClose: onAddEmployeeClose,
   } = useDisclosure();
+
+  const {
+    isOpen: isSelectEmployeesOpen,
+    onOpen: onSelectEmployeesOpen,
+    onClose: onSelectEmployeesClose,
+  } = useDisclosure();
   const clickAddNew = () => {
     onClose();
     onAddEmployeeOpen();
   };
+  const clickSelectEmployees = () => {
+    onClose();
+    onSelectEmployeesOpen();
+  };
   return (
-    <Portal>
+    <React.Fragment>
       <AddEmployeeModal
         isOpen={isAddEmployeeOpen}
         onClose={onAddEmployeeClose}
         parentId={parentId}
         isEdit={isEdit}
       />
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent width="23%">
-          <Flex flexDirection="column" gridGap={2} p={4}>
-            <CardButtonIcon
-              name="Criar Novo"
-              Icon={IoMdPersonAdd}
-              clickHandler={clickAddNew}
-            />
-            <CardButtonIcon
-              name="Adicionar Existente"
-              Icon={BsPersonCheckFill}
-              clickHandler={() => {}}
-            />
-          </Flex>
-        </ModalContent>
-      </Modal>
-    </Portal>
+      <SelectEmployeesModal
+        isOpen={isSelectEmployeesOpen}
+        onClose={onSelectEmployeesClose}
+        parentId={parentId}
+      />
+      <ModalWrapper isOpen={isOpen} onClose={onClose} width="23%">
+        <Flex flexDirection="column" gridGap={2} p={4}>
+          <CardButtonIcon
+            name="Criar Novo"
+            Icon={IoMdPersonAdd}
+            clickHandler={clickAddNew}
+          />
+          <CardButtonIcon
+            name="Adicionar Existente"
+            Icon={BsPersonCheckFill}
+            clickHandler={clickSelectEmployees}
+          />
+        </Flex>
+      </ModalWrapper>
+    </React.Fragment>
   );
 };
 

@@ -134,6 +134,7 @@ export class EmployeeResolver {
   }
 
   @Query(() => [Employee])
+  @UseMiddleware(isAuth)
   async getEmployeesByCategory(@Arg("catId") catId: number) {
     return Employee.find({
       relations: ["sectors"],
@@ -142,6 +143,16 @@ export class EmployeeResolver {
   }
 
   @Query(() => [Employee])
+  @UseMiddleware(isAuth)
+  async getAllEmployees(@Ctx() { payload }: MyContext) {
+    console.log(payload);
+    return await Employee.find({
+      where: { userId: payload?.userId },
+    });
+  }
+
+  @Query(() => [Employee])
+  @UseMiddleware(isAuth)
   async searchEmployees(@Arg("search") search: string) {
     const data = await getConnection()
       .createQueryBuilder(Employee, "c")
