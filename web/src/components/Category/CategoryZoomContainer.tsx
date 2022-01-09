@@ -4,8 +4,12 @@ import React, { useState } from "react";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import {
   CategoriesQuery,
+  useGetAllEmployeesQuery,
   useSearchEmployeesQuery,
 } from "../../generated/graphql";
+import EmployeesContext, {
+  EmployeesContextProvider,
+} from "../../store/employees-context";
 import EmployeeContainer from "../Employee/EmployeesContainer";
 import Layout from "../UI/Layout";
 import CategoryContainer from "./CategoryContainer";
@@ -31,53 +35,54 @@ const CategoryZoomContainer: React.FC<CategoryZoomContainerType> = ({
   const { data: dataEmployee, loading: loadingEmployee } =
     useSearchEmployeesQuery({ variables: { input: searchQuery } });
   console.log("data::", dataEmployee);
-
   return (
-    <Layout variant="large" onSearch={onSearch}>
-      {dataEmployee && dataEmployee.searchEmployees && (
-        <Box mb={8}>
-          <EmployeeContainer employees={dataEmployee.searchEmployees} />
-        </Box>
-      )}
-      <TransformWrapper
-        initialScale={1}
-        // wheel={{ disabled: true }}
-        // panning={{ disabled: true }}
-        // doubleClick={{ disabled: true }}
-      >
-        {({
-          zoomIn,
-          zoomOut,
-          setTransform,
-          resetTransform,
-          zoomToElement,
-          ...rest
-        }) => (
-          <React.Fragment>
-            <Flex alignItems="center" justifyContent="center" mb={4}>
-              <Button onClick={() => resetTransform()}>Resetar</Button>
-            </Flex>
-            <TransformComponent>
-              <Box width="92vw" height="85vh" id="bodyContainer">
-                {loading && !data ? (
-                  <Flex alignItems="center" justifyContent="center">
-                    <Spinner
-                      thickness="4px"
-                      speed="0.65s"
-                      emptyColor="gray.200"
-                      color="grey.500"
-                      size="xl"
-                    />
-                  </Flex>
-                ) : (
-                  <CategoryContainer data={data} isEditable={isEditable} />
-                )}
-              </Box>
-            </TransformComponent>
-          </React.Fragment>
+    <EmployeesContextProvider>
+      <Layout variant="large" onSearch={onSearch}>
+        {dataEmployee && dataEmployee.searchEmployees && (
+          <Box mb={8}>
+            <EmployeeContainer employees={dataEmployee.searchEmployees} />
+          </Box>
         )}
-      </TransformWrapper>
-    </Layout>
+        <TransformWrapper
+          initialScale={1}
+          // wheel={{ disabled: true }}
+          // panning={{ disabled: true }}
+          // doubleClick={{ disabled: true }}
+        >
+          {({
+            zoomIn,
+            zoomOut,
+            setTransform,
+            resetTransform,
+            zoomToElement,
+            ...rest
+          }) => (
+            <React.Fragment>
+              <Flex alignItems="center" justifyContent="center" mb={4}>
+                <Button onClick={() => resetTransform()}>Resetar</Button>
+              </Flex>
+              <TransformComponent>
+                <Box width="92vw" height="85vh" id="bodyContainer">
+                  {loading && !data ? (
+                    <Flex alignItems="center" justifyContent="center">
+                      <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="grey.500"
+                        size="xl"
+                      />
+                    </Flex>
+                  ) : (
+                    <CategoryContainer data={data} isEditable={isEditable} />
+                  )}
+                </Box>
+              </TransformComponent>
+            </React.Fragment>
+          )}
+        </TransformWrapper>
+      </Layout>
+    </EmployeesContextProvider>
   );
 };
 

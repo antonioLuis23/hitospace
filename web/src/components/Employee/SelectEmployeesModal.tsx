@@ -1,9 +1,8 @@
-import { ApolloQueryResult } from "@apollo/client";
-import { Modal, ModalOverlay, ModalContent } from "@chakra-ui/modal";
-import { Portal } from "@chakra-ui/react";
-import React from "react";
-import { CategoriesQuery, Exact } from "../../generated/graphql";
+import React, { useContext } from "react";
+import { CategoriesQuery } from "../../generated/graphql";
+import EmployeesContext from "../../store/employees-context";
 import ModalWrapper from "../UI/ModalWrapper";
+import EmployeeContainer from "./EmployeesContainer";
 interface SelectEmployeesModalType {
   isOpen: boolean;
   onClose: () => void;
@@ -18,9 +17,16 @@ const SelectEmployeesModal: React.FC<SelectEmployeesModalType> = ({
   employee,
   parentId = null,
 }) => {
+  const ctx = useContext(EmployeesContext);
+  console.log("ctx:", ctx);
   return (
     <ModalWrapper isOpen={isOpen} onClose={onClose} width="23%">
-      <p>Teste</p>
+      {ctx && (
+        <EmployeeContainer
+          employees={ctx.getAllEmployees}
+          categoryId={parentId}
+        />
+      )}
     </ModalWrapper>
   );
 };
