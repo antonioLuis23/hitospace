@@ -17,7 +17,7 @@ import {
   useDeleteEmployeeMutation,
 } from "../../generated/graphql";
 import ConfirmationDialog from "../UI/ConfirmationDialog";
-import AddEmployeeModal from "./AddEmployeeModal";
+import AddEmployeeModal from "./Add/AddEmployeeModal";
 
 interface EmployeeCardType {
   employee: CategoriesQuery["categories"][0]["employees"][0];

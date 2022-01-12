@@ -1,6 +1,6 @@
 import React from "react";
-import Card from "../UI/Card";
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
+import Card from "../../UI/Card";
 
 interface AddCategoryButtonType {
   onClickButton: () => void;

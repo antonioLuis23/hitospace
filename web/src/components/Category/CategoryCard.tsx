@@ -20,12 +20,12 @@ import {
   CategoriesQuery,
   useDeleteCategoryMutation,
 } from "../../generated/graphql";
-import AddEmployeeModal from "../Employee/AddEmployeeModal";
-import AddEmployeeOption from "../Employee/AddEmployeeOption";
+import AddEmployeeModal from "../Employee/Add/AddEmployeeModal";
+import AddEmployeeOption from "../Employee/Add/AddEmployeeOption";
 import EmployeeContainer from "../Employee/EmployeesContainer";
 import ConfirmationDialog from "../UI/ConfirmationDialog";
-import AddCategoryButton from "./AddCategoryButton";
-import AddCategoryModal from "./AddCategoryModal";
+import AddCategoryButton from "./Add/AddCategoryButton";
+import AddCategoryModal from "./Add/AddCategoryModal";
 
 interface CategoryPropsType {
   cat: CategoriesQuery["categories"][0];
@@ -69,13 +69,11 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
   const [deleteCategory] = useDeleteCategoryMutation();
 
   const onDeleteClick = async () => {
-    console.log("deletou categoria");
     const response = await deleteCategory({
       variables: {
         id: cat.id,
       },
     });
-    console.log("response:", response);
     await client.refetchQueries({
       include: ["Categories"],
     });
@@ -90,7 +88,6 @@ const CategoryCard: React.FC<CategoryPropsType> = ({
     if (response.data.deleteCategory) {
       toast(toastData);
     } else {
-      console.log("não excluiu");
       toastData["title"] = "Não foi possível excluir!";
       toastData["status"] = "error";
       toast(toastData);

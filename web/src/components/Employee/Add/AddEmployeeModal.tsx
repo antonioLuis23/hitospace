@@ -1,9 +1,6 @@
-import { ApolloQueryResult } from "@apollo/client";
-import { Modal, ModalOverlay, ModalContent } from "@chakra-ui/modal";
-import { Portal } from "@chakra-ui/react";
 import React from "react";
-import { CategoriesQuery, Exact } from "../../generated/graphql";
-import ModalWrapper from "../UI/ModalWrapper";
+import { CategoriesQuery } from "../../../generated/graphql";
+import ModalWrapper from "../../UI/ModalWrapper";
 import AddEmployee from "./AddEmployee";
 interface ModalAddEmployeeType {
   isOpen: boolean;

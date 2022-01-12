@@ -7,8 +7,8 @@ import {
   CategoriesQuery,
   useAddCategoryMutation,
   useEditCategoryMutation,
-} from "../../generated/graphql";
-import { InputField } from "../InputField";
+} from "../../../generated/graphql";
+import { InputField } from "../../InputField";
 import { useApolloClient } from "@apollo/client";
 interface AddCategoryType {
   category?: CategoriesQuery["categories"][0];

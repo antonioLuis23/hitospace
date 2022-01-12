@@ -96,15 +96,6 @@ const main = async () => {
   app.listen(4000, () => {
     console.log("server rodando em localhost:4000");
   });
-
-  //   let tutorial = new Tutorial();
-  //   tutorial.title =
-  //     "Python for Data Science - Course for Beginners (Learn Python, Pandas, NumPy, Matplotlib)";
-  //   tutorial.link = "https://www.youtube.com/watch?v=LHBE6Q9XlzI";
-  //   tutorial.date = "2020/06/2";
-  //   tutorial.code = "LHBE6Q9XlzI";
-  //   await conn.manager.save(tutorial);
-  //   console.log("Tutorial salvo");
 };
 
 main();

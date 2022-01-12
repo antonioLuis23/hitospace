@@ -2,8 +2,8 @@ import { Grid } from "@chakra-ui/layout";
 import { useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { CategoriesQuery } from "../../generated/graphql";
-import AddCategoryButton from "./AddCategoryButton";
-import AddCategoryModal from "./AddCategoryModal";
+import AddCategoryButton from "./Add/AddCategoryButton";
+import AddCategoryModal from "./Add/AddCategoryModal";
 import CategoryCard from "./CategoryCard";
 
 interface CategoryContainerType {

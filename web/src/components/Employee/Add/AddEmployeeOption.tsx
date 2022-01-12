@@ -1,13 +1,13 @@
-import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/modal";
-import { Box, Flex, Portal, useDisclosure } from "@chakra-ui/react";
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { BsPersonCheckFill } from "react-icons/bs";
 import { IoMdPersonAdd } from "react-icons/io";
-import { CategoriesQuery } from "../../generated/graphql";
-import CardButtonIcon from "../UI/CardButtonIcon";
-import ModalWrapper from "../UI/ModalWrapper";
+import { CategoriesQuery } from "../../../generated/graphql";
+import CardButtonIcon from "../../UI/CardButtonIcon";
+import ModalWrapper from "../../UI/ModalWrapper";
+import SelectEmployeesModal from "../Select/SelectEmployeesModal";
 import AddEmployeeModal from "./AddEmployeeModal";
-import SelectEmployeesModal from "./SelectEmployeesModal";
+
 interface AddEmployeeOptionType {
   isOpen: boolean;
   onClose: () => void;

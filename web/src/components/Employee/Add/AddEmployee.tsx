@@ -6,8 +6,8 @@ import {
   CategoriesQuery,
   useAddEmployeeMutation,
   useEditEmployeeMutation,
-} from "../../generated/graphql";
-import { InputField } from "../InputField";
+} from "../../../generated/graphql";
+import { InputField } from "../../InputField";
 import { useApolloClient } from "@apollo/client";
 interface AddEmployeeType {
   closeModal: () => void;
