@@ -39,6 +39,7 @@ const main = async () => {
     })
   );
   app.use(cookieParser());
+  app.get("/", (_, res) => res.send("Hello"));
   app.post("/refresh_token", async (req, res) => {
     const token = req.cookies.gte;
     if (!token) {
