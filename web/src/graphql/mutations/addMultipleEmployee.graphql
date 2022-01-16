@@ -1,0 +1,3 @@
+mutation addMultipleEmployee($input: MultipleEmployeeInput!) {
+  addMultipleEmployee(input: $input)
+}

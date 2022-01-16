@@ -46,6 +46,15 @@ class EmployeeInput {
   sectorIds: string[];
 }
 
+@InputType()
+class MultipleEmployeeInput {
+  @Field(() => [String])
+  employeesId: string[];
+
+  @Field()
+  categoryId!: string;
+}
+
 @Resolver(Employee)
 @Resolver(Category)
 export class EmployeeResolver {
@@ -69,6 +78,31 @@ export class EmployeeResolver {
     });
 
     return await conn.manager.save(catChild);
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async addMultipleEmployee(
+    @Arg("input") input: MultipleEmployeeInput,
+    @Ctx() { payload }: MyContext
+  ): Promise<boolean | null> {
+    if (!payload!.userId) {
+      return false;
+    }
+    const category = await Category.findOne(input.categoryId, {
+      relations: ["employees"],
+    });
+    if (category) {
+      for (let i = 0; i < input.employeesId.length; i++) {
+        const employee = await Employee.findOne(input.employeesId[i]);
+        if (employee) {
+          category.employees.push(employee);
+        }
+      }
+      await category.save();
+      return true;
+    }
+    return false;
   }
 
   async getCategoriesAndName(

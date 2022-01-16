@@ -1,23 +1,17 @@
 import { Box, Flex } from "@chakra-ui/layout";
 import {
-  Button,
   Modal,
-  ModalBody,
-  ModalCloseButton,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
   Portal,
   Text,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
 import Image from "next/image";
-import { CategoriesQuery, Exact } from "../../generated/graphql";
+import React from "react";
+import { CategoriesQuery } from "../../generated/graphql";
 import EmployeeCard from "./EmployeeCard";
-import { ApolloQueryResult } from "@apollo/client";
 
 interface EmployeeInfoType {
   employee: CategoriesQuery["categories"][0]["employees"][0];

@@ -96,11 +96,17 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
+export type MultipleEmployeeInput = {
+  categoryId: Scalars['String'];
+  employeesId: Array<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addCategory: Category;
   addCompanyLayout: CompanyLayout;
   addEmployee: Employee;
+  addMultipleEmployee: Scalars['Boolean'];
   deleteCategory: Scalars['Boolean'];
   deleteEmployee: Scalars['Boolean'];
   editCategory: Category;
@@ -123,6 +129,11 @@ export type MutationAddCompanyLayoutArgs = {
 
 export type MutationAddEmployeeArgs = {
   input: EmployeeInput;
+};
+
+
+export type MutationAddMultipleEmployeeArgs = {
+  input: MultipleEmployeeInput;
 };
 
 
@@ -234,6 +245,13 @@ export type AddEmployeeMutationVariables = Exact<{
 
 
 export type AddEmployeeMutation = { __typename?: 'Mutation', addEmployee: { __typename?: 'Employee', id: number, name: string, function: string } };
+
+export type AddMultipleEmployeeMutationVariables = Exact<{
+  input: MultipleEmployeeInput;
+}>;
+
+
+export type AddMultipleEmployeeMutation = { __typename?: 'Mutation', addMultipleEmployee: boolean };
 
 export type DeleteCategoryMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -465,6 +483,37 @@ export function useAddEmployeeMutation(baseOptions?: Apollo.MutationHookOptions<
 export type AddEmployeeMutationHookResult = ReturnType<typeof useAddEmployeeMutation>;
 export type AddEmployeeMutationResult = Apollo.MutationResult<AddEmployeeMutation>;
 export type AddEmployeeMutationOptions = Apollo.BaseMutationOptions<AddEmployeeMutation, AddEmployeeMutationVariables>;
+export const AddMultipleEmployeeDocument = gql`
+    mutation addMultipleEmployee($input: MultipleEmployeeInput!) {
+  addMultipleEmployee(input: $input)
+}
+    `;
+export type AddMultipleEmployeeMutationFn = Apollo.MutationFunction<AddMultipleEmployeeMutation, AddMultipleEmployeeMutationVariables>;
+
+/**
+ * __useAddMultipleEmployeeMutation__
+ *
+ * To run a mutation, you first call `useAddMultipleEmployeeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddMultipleEmployeeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addMultipleEmployeeMutation, { data, loading, error }] = useAddMultipleEmployeeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddMultipleEmployeeMutation(baseOptions?: Apollo.MutationHookOptions<AddMultipleEmployeeMutation, AddMultipleEmployeeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddMultipleEmployeeMutation, AddMultipleEmployeeMutationVariables>(AddMultipleEmployeeDocument, options);
+      }
+export type AddMultipleEmployeeMutationHookResult = ReturnType<typeof useAddMultipleEmployeeMutation>;
+export type AddMultipleEmployeeMutationResult = Apollo.MutationResult<AddMultipleEmployeeMutation>;
+export type AddMultipleEmployeeMutationOptions = Apollo.BaseMutationOptions<AddMultipleEmployeeMutation, AddMultipleEmployeeMutationVariables>;
 export const DeleteCategoryDocument = gql`
     mutation deleteCategory($id: Int!) {
   deleteCategory(categoryId: $id)
@@ -927,6 +976,7 @@ export const namedOperations = {
     addCategory: 'addCategory',
     addCompanyLayout: 'addCompanyLayout',
     addEmployee: 'addEmployee',
+    addMultipleEmployee: 'addMultipleEmployee',
     deleteCategory: 'deleteCategory',
     deleteEmployee: 'deleteEmployee',
     editCategory: 'editCategory',
