@@ -17,6 +17,7 @@ const AddCategoryModal: React.FC<ModalAddCategoryType> = ({
   isEdit = false,
   parentId = null,
 }) => {
+  console.log("test");
   return (
     <Portal>
       <Modal isOpen={isOpen} onClose={onClose}>
