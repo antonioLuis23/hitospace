@@ -65,4 +65,4 @@ export const Register: React.FC<registerProps> = ({}) => {
   );
 };
 
-export default withApollo(Register);
+export default Register;
