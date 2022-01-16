@@ -1,8 +1,8 @@
 {
   "type": "postgres",
-  "database": "vizoffice",
-  "username": "postgres",
-  "password": "postgres",
+  "database": "hitospace",
+  "username": "hitospace",
+  "password": "hitospace",
   "logging": true,
   "synchronize": true,
   "migrations": ["dist/migrations/**/*.js"],
