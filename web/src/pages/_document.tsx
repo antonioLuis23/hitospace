@@ -5,12 +5,7 @@ export default class Document extends NextDocument {
   render() {
     return (
       <Html lang="en">
-        <Head>
-          <meta
-            http-equiv="Content-Security-Policy"
-            content="upgrade-insecure-requests"
-          />
-        </Head>
+        <Head />
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
