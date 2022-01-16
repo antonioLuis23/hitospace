@@ -1,8 +1,8 @@
 {
   "type": "postgres",
   "database": "hitospace",
-  "username": "hitospace",
-  "password": "hitospace",
+  "username": "postgres",
+  "password": "postgres",
   "logging": true,
   "synchronize": true,
   "migrations": ["dist/migrations/**/*.js"],
