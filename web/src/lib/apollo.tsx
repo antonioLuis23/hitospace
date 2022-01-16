@@ -17,7 +17,7 @@ const initApolloClient = (initialState = {}, serverAccessToken?: string) => {
   const cache = new InMemoryCache().restore(initialState);
 
   const httpLink = createHttpLink({
-    uri: "http://localhost:4000/graphql",
+    uri: "http://ec2-52-90-57-180.compute-1.amazonaws.com:4000/graphql",
     credentials: "include",
     fetch,
   });
@@ -108,7 +108,7 @@ const withApollo = (PageComponent, { ssr = true } = {}) => {
           const cookies = cookie.parse(req.headers.cookie);
           if (cookies.gte) {
             const response = await fetch(
-              "http://localhost:4000/refresh_token",
+              "http://ec2-52-90-57-180.compute-1.amazonaws.com:4000/refresh_token",
               {
                 method: "POST",
                 credentials: "include",
