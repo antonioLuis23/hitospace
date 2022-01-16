@@ -1,8 +1,7 @@
-import { ApolloQueryResult } from "@apollo/client";
-import { Modal, ModalOverlay, ModalContent } from "@chakra-ui/modal";
+import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/modal";
 import { Portal } from "@chakra-ui/react";
 import React from "react";
-import { CategoriesQuery, Exact } from "../../generated/graphql";
+import { CategoriesQuery } from "../../../generated/graphql";
 import AddCategory from "./AddCategory";
 interface ModalAddCategoryType {
   category?: CategoriesQuery["categories"][0];
