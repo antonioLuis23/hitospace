@@ -11,6 +11,7 @@ import {
   Link,
   useDisclosure,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import React, { useState } from "react";
 import {
   AiOutlineMenu,
@@ -49,7 +50,7 @@ const NavLoggedIn: React.FC<NavLoggedInType> = ({ onSearch }) => {
         bg={bg}
         w="full"
         px={{ base: 2, sm: 4 }}
-        py={4}
+        py={3}
         shadow="md"
       >
         <Flex alignItems="center" justifyContent="space-between" mx="auto">
@@ -108,18 +109,18 @@ const NavLoggedIn: React.FC<NavLoggedInType> = ({ onSearch }) => {
                 </Button> */}
               </VStack>
             </Box>
-            <chakra.a
-              href="/"
-              title="Kurospace Home Page"
-              display="flex"
-              alignItems="center"
-            >
-              <VisuallyHidden>Kurospace</VisuallyHidden>
 
-              <chakra.h1 fontSize="xl" fontWeight="medium" ml="2">
-                Kurospace
-              </chakra.h1>
-            </chakra.a>
+            <Box marginTop="6px">
+              <Image
+                src={useColorModeValue(
+                  "/assets/images/icon light mode.png",
+                  "/assets/images/icon dark mode.png"
+                )}
+                alt="HITOSPACE"
+                width="150px"
+                height="22px"
+              />
+            </Box>
 
             <HStack spacing={3} display={{ base: "none", md: "inline-flex" }}>
               <Link as={NextLink} href="/">
@@ -191,8 +192,8 @@ const NavLoggedIn: React.FC<NavLoggedInType> = ({ onSearch }) => {
             </Button>
             <Avatar
               size="sm"
-              name="Dan Abrahmov"
-              src="https://bit.ly/dan-abramov"
+              name="Profile"
+              src="/assets/images/person-icon.png"
             />
           </HStack>
         </Flex>

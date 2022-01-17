@@ -1,17 +1,17 @@
-import { Flex, HStack, Box, VStack } from "@chakra-ui/layout";
+import { Box, Flex, HStack, VStack } from "@chakra-ui/layout";
 import {
+  Button,
+  chakra,
+  CloseButton,
+  IconButton,
+  Link,
   useColorModeValue,
   useDisclosure,
-  chakra,
-  VisuallyHidden,
-  Button,
-  IconButton,
-  CloseButton,
-  Link,
 } from "@chakra-ui/react";
+import Image from "next/image";
+import NextLink from "next/link";
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
-import NextLink from "next/link";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
 
 const NavNotLoggedIn = () => {
@@ -24,23 +24,22 @@ const NavNotLoggedIn = () => {
         bg={bg}
         w="full"
         px={{ base: 2, sm: 4 }}
-        py={4}
+        py={3}
         shadow="md"
       >
         <Flex alignItems="center" justifyContent="space-between" mx="auto">
           <Flex>
-            <chakra.a
-              href="/"
-              title="Kurospace Home Page"
-              display="flex"
-              alignItems="center"
-            >
-              <VisuallyHidden>Kurospace</VisuallyHidden>
-
-              <chakra.h1 fontSize="xl" fontWeight="medium" ml="2">
-                Kurospace
-              </chakra.h1>
-            </chakra.a>
+            <Box marginTop="6px">
+              <Image
+                src={useColorModeValue(
+                  "/assets/images/icon light mode.png",
+                  "/assets/images/icon dark mode.png"
+                )}
+                alt="HITOSPACE"
+                width="150px"
+                height="22px"
+              />
+            </Box>
           </Flex>
           <HStack display="flex" alignItems="center" spacing={1}>
             <ColorModeSwitcher />
@@ -51,15 +50,13 @@ const NavNotLoggedIn = () => {
               color="gray.700"
               display={{ base: "none", md: "inline-flex" }}
             >
-              <Button variant="ghost">Recursos</Button>
-              <Button variant="ghost">Blog</Button>
               <Link as={NextLink} href="/login">
                 <Button variant="ghost">Login</Button>
               </Link>
             </HStack>
             <Button colorScheme="gray" size="sm">
               <Link as={NextLink} href="/register">
-                Começar
+                Registrar
               </Link>
             </Button>
             <Box display={{ base: "inline-flex", md: "none" }}>

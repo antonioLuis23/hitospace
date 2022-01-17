@@ -18,7 +18,7 @@ const AddEmployeeModal: React.FC<ModalAddEmployeeType> = ({
   parentId = null,
 }) => {
   return (
-    <ModalWrapper isOpen={isOpen} onClose={onClose} width="23%">
+    <ModalWrapper isOpen={isOpen} onClose={onClose} width="80%">
       <AddEmployee
         closeModal={onClose}
         parentId={parentId}

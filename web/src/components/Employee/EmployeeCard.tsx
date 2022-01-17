@@ -9,6 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
+import { AiFillTag } from "react-icons/ai";
 import { BsFillBriefcaseFill, BsFillChatFill } from "react-icons/bs";
 import { MdEmail, MdLocationOn, MdModeEdit, MdDelete } from "react-icons/md";
 import { RiToolsFill } from "react-icons/ri";
@@ -179,9 +180,10 @@ const EmployeeCard: React.FC<EmployeeCardType> = ({ categoryId, ...props }) => {
               <Icon as={BsFillChatFill} h={6} w={6} mr={2} />
 
               <chakra.h1 px={2} fontSize="sm">
-                <Link href={props.employee.chat}>Workspace</Link>
+                <Link href={props.employee.chat}>Chat</Link>
               </chakra.h1>
             </Flex>
+
             <Flex
               alignItems="center"
               color={useColorModeValue("gray.700", "gray.200")}
@@ -190,6 +192,16 @@ const EmployeeCard: React.FC<EmployeeCardType> = ({ categoryId, ...props }) => {
 
               <chakra.h1 px={2} fontSize="sm">
                 {props.employee.abilities}
+              </chakra.h1>
+            </Flex>
+            <Flex
+              alignItems="center"
+              color={useColorModeValue("gray.700", "gray.200")}
+            >
+              <Icon as={AiFillTag} h={6} w={6} mr={2} />
+
+              <chakra.h1 px={2} fontSize="sm">
+                {props.employee.tags}
               </chakra.h1>
             </Flex>
           </VStack>

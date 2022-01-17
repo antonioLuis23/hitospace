@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/layout";
-import { Button, useToast } from "@chakra-ui/react";
+import { Button, useToast, Grid } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
 import {
@@ -81,46 +81,56 @@ const AddEmployee: React.FC<AddEmployeeType> = ({
           country: employee ? employee.country : "",
           state: employee ? employee.state : "",
           city: employee ? employee.city : "",
+          tags: employee ? employee.tags : "",
         }}
         onSubmit={submitFormHandler}
       >
         {({ isSubmitting }) => (
           <Form>
-            <Box mt={4}>
-              <InputField
-                name="name"
-                placeholder="Nome"
-                label="Nome do colaborador"
-              />
-            </Box>
+            <Grid gridTemplateColumns="repeat(2, 1fr)" gap={2}>
+              <Box mt={4}>
+                <InputField
+                  name="name"
+                  placeholder="Nome"
+                  label="Nome do colaborador"
+                />
+              </Box>
 
-            <Box mt={4}>
-              <InputField
-                name="email"
-                placeholder="Email"
-                label="Email"
-                type="email"
-              />
-            </Box>
-            <Box mt={4}>
-              <InputField name="function" placeholder="Função" label="Função" />
-            </Box>
-            <Box mt={4}>
-              <InputField
-                name="abilities"
-                placeholder="Habilidades"
-                label="Habilidades"
-              />
-            </Box>
-            <Box mt={4}>
-              <InputField name="country" placeholder="País" label="País" />
-            </Box>
-            <Box mt={4}>
-              <InputField name="state" placeholder="Estado" label="Estado" />
-            </Box>
-            <Box mt={4}>
-              <InputField name="city" placeholder="Cidade" label="Cidade" />
-            </Box>
+              <Box mt={4}>
+                <InputField
+                  name="email"
+                  placeholder="Email"
+                  label="Email"
+                  type="email"
+                />
+              </Box>
+              <Box mt={4}>
+                <InputField
+                  name="function"
+                  placeholder="Função"
+                  label="Função"
+                />
+              </Box>
+              <Box mt={4}>
+                <InputField
+                  name="abilities"
+                  placeholder="Habilidades"
+                  label="Habilidades"
+                />
+              </Box>
+              <Box mt={4}>
+                <InputField name="country" placeholder="País" label="País" />
+              </Box>
+              <Box mt={4}>
+                <InputField name="state" placeholder="Estado" label="Estado" />
+              </Box>
+              <Box mt={4}>
+                <InputField name="city" placeholder="Cidade" label="Cidade" />
+              </Box>
+              <Box mt={4}>
+                <InputField name="tags" placeholder="Tags" label="Tags" />
+              </Box>
+            </Grid>
 
             <Button
               mt={4}
