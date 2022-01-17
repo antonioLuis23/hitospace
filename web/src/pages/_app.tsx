@@ -25,7 +25,7 @@ const GlobalStyles = css`
 const memoryCache = new InMemoryCache();
 
 const client = new ApolloClient({
-  uri: "http://ec2-52-90-57-180.compute-1.amazonaws.com:4000/graphql",
+  uri: "https://www.antonioluiscs.com.br/graphql",
   credentials: "include",
   cache: memoryCache,
 });
